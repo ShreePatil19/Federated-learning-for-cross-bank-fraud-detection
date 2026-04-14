@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Federated Learning: LR vs MLP Fraud Detection Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0F172A; --surface: #1E293B; --surface2: #273549;
+    --border: #334155; --text: #F1F5F9; --muted: #94A3B8;
+    --blue: #3B82F6; --amber: #F59E0B; --green: #10B981;
+    --red: #EF4444; --purple: #8B5CF6; --cyan: #06B6D4;
+    --indigo: #6366F1; --orange: #F97316; --teal: #14B8A6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
+
+  header { background: linear-gradient(135deg, #1E3A5F, #1E293B); padding: 28px 32px; border-bottom: 1px solid var(--border); }
+  header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.02em; }
+  header p { color: var(--muted); margin-top: 6px; font-size: 0.95rem; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-left: 10px; }
+  .badge-lr { background: rgba(59,130,246,.25); color: var(--blue); border: 1px solid rgba(59,130,246,.4); }
+  .badge-mlp { background: rgba(245,158,11,.25); color: var(--amber); border: 1px solid rgba(245,158,11,.4); }
+
+  nav { display: flex; gap: 4px; padding: 16px 32px; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  nav button { padding: 8px 18px; border-radius: 8px; border: 1px solid var(--border); background: transparent;
+    color: var(--muted); cursor: pointer; font-size: 0.88rem; font-weight: 500; transition: all .2s; }
+  nav button:hover { background: var(--surface2); color: var(--text); }
+  nav button.active { background: var(--blue); color: white; border-color: var(--blue); }
+
+  .main { padding: 24px 32px; max-width: 1600px; }
+  .tab-content { display: none; } .tab-content.active { display: block; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px;
+    position: relative; overflow: hidden; }
+  .kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .kpi.lr::before { background: var(--blue); } .kpi.mlp::before { background: var(--amber); }
+  .kpi label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .kpi .val { font-size: 2rem; font-weight: 700; margin: 6px 0 2px; }
+  .kpi .sub { font-size: 0.78rem; color: var(--muted); }
+  .kpi .delta { font-size: 0.82rem; font-weight: 600; }
+  .delta.pos { color: var(--green); } .delta.neg { color: var(--red); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px; }
+  @media (max-width: 1100px) { .grid-2,.grid-3,.grid-2-1 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .card h3 { font-size: 0.95rem; font-weight: 600; color: var(--muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: .04em; }
+  .canvas-wrap { position: relative; }
+
+  /* Table */
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  thead th { background: #1E3A5F; color: white; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+  tbody tr:nth-child(even) { background: rgba(255,255,255,.03); }
+  tbody tr:hover { background: rgba(59,130,246,.08); }
+  tbody td { padding: 9px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 600; }
+  .tag-lr { background: rgba(59,130,246,.2); color: var(--blue); }
+  .tag-mlp { background: rgba(245,158,11,.2); color: var(--amber); }
+  .tag-nodp { background: rgba(16,185,129,.2); color: var(--green); }
+  .tag-dp { background: rgba(239,68,68,.2); color: var(--red); }
+  .tag-sparse { background: rgba(139,92,246,.2); color: var(--purple); }
+
+  /* Gauge */
+  .gauge-row { display: flex; gap: 20px; flex-wrap: wrap; }
+  .gauge-item { flex: 1; min-width: 120px; }
+  .gauge-label { font-size: 0.78rem; color: var(--muted); margin-bottom: 6px; }
+  .bar-bg { background: var(--surface2); border-radius: 6px; height: 10px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; transition: width .6s ease; }
+  .gauge-val { font-size: 0.85rem; font-weight: 700; margin-top: 4px; }
+
+  /* Toggle */
+  .toggle-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
+  .toggle-row span { font-size: 0.82rem; color: var(--muted); margin-right: 4px; }
+  .pill { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); background: transparent;
+    color: var(--muted); cursor: pointer; font-size: 0.82rem; transition: all .2s; }
+  .pill.on { border-color: currentColor; font-weight: 600; }
+  .pill.lr { color: var(--blue); } .pill.lr.on { background: rgba(59,130,246,.15); }
+  .pill.mlp { color: var(--amber); } .pill.mlp.on { background: rgba(245,158,11,.15); }
+  .pill.nodp { color: var(--green); } .pill.nodp.on { background: rgba(16,185,129,.15); }
+  .pill.dp { color: var(--red); } .pill.dp.on { background: rgba(239,68,68,.15); }
+  .pill.sparse { color: var(--purple); } .pill.sparse.on { background: rgba(139,92,246,.15); }
+
+  select { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 7px 12px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; }
+
+  .insight { background: rgba(59,130,246,.07); border: 1px solid rgba(59,130,246,.25); border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; font-size: 0.88rem; line-height: 1.6; }
+  .insight strong { color: var(--blue); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Federated Learning — Fraud Detection Results
+    <span class="badge badge-lr">LR</span>
+    <span class="badge badge-mlp">MLP</span>
+  </h1>
+  <p>Algorithms: FedAvg · FedProx · PersFL · FedNova · SCAFFOLD &nbsp;|&nbsp; Privacy: NoDP · DP · Sparsification</p>
+</header>
+
+<nav>
+  <button class="active" onclick="showTab('overview')">📊 Overview</button>
+  <button onclick="showTab('auc')">📈 AUC Analysis</button>
+  <button onclick="showTab('f1')">🎯 F1 & Recall</button>
+  <button onclick="showTab('convergence')">⏱ Convergence</button>
+  <button onclick="showTab('heatmap')">🔥 Heatmaps</button>
+  <button onclick="showTab('table')">📋 Full Table</button>
+</nav>
+
+<div class="main">
+
+<!-- ── OVERVIEW ── -->
+<div class="tab-content active" id="tab-overview">
+  <div class="kpi-grid">
+    <div class="kpi lr"><label>LR — Best AUC</label><div class="val" style="color:var(--blue)">0.9648</div><div class="sub">FedProx + Sparsification</div></div>
+    <div class="kpi lr"><label>LR — Best F1</label><div class="val" style="color:var(--blue)">0.6021</div><div class="sub">PersFL + NoDP</div></div>
+    <div class="kpi lr"><label>LR — Avg JFI</label><div class="val" style="color:var(--blue)">0.9999</div><div class="sub">Near-perfect fairness</div></div>
+    <div class="kpi mlp"><label>MLP — Best AUC</label><div class="val" style="color:var(--amber)">0.9871</div><div class="sub">FedNova + DP <span class="delta pos">▲+0.0223</span></div></div>
+    <div class="kpi mlp"><label>MLP — Best F1</label><div class="val" style="color:var(--amber)">0.8163</div><div class="sub">FedAvg + NoDP <span class="delta pos">▲+0.2142</span></div></div>
+    <div class="kpi mlp"><label>MLP — Avg JFI</label><div class="val" style="color:var(--amber)">0.9894</div><div class="sub">SCAFFOLD reduces fairness</div></div>
+  </div>
+
+  <div class="insight">
+    <strong>Key Insight:</strong> MLP consistently outperforms LR by <strong>+0.013–+0.022 AUC</strong> and <strong>+0.12–+0.26 F1</strong> across all privacy modes. LR offers <strong>faster convergence</strong> (1 round to 95% target) and near-perfect JFI fairness. MLP's FedNova/SCAFFOLD configurations show higher variance — requiring careful tuning.
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Mean AUC by Privacy Mode — LR vs MLP</h3>
+      <div class="canvas-wrap"><canvas id="aucBarChart" height="240"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Mean F1 by Privacy Mode — LR vs MLP</h3>
+      <div class="canvas-wrap"><canvas id="f1BarChart" height="240"></canvas></div>
+    </div>
+  </div>
+
+  <div class="grid-2-1">
+    <div class="card">
+      <h3>AUC vs F1 Trade-off Scatter</h3>
+      <div class="canvas-wrap"><canvas id="scatterChart" height="260"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Normalized Radar — LR vs MLP</h3>
+      <div class="canvas-wrap"><canvas id="radarChart" height="260"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── AUC ANALYSIS ── -->
+<div class="tab-content" id="tab-auc">
+  <div class="grid-3">
+    <div class="card">
+      <h3>Best AUC — All LR Configs</h3>
+      <div class="canvas-wrap"><canvas id="lrAucBar" height="280"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Best AUC — All MLP Configs</h3>
+      <div class="canvas-wrap"><canvas id="mlpAucBar" height="280"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>AUC Improvement: MLP over LR</h3>
+      <div class="canvas-wrap"><canvas id="deltaAuc" height="280"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Algorithm × Privacy AUC Comparison</h3>
+    <div class="canvas-wrap"><canvas id="groupedAuc" height="220"></canvas></div>
+  </div>
+</div>
+
+<!-- ── F1 & RECALL ── -->
+<div class="tab-content" id="tab-f1">
+  <div class="grid-2">
+    <div class="card">
+      <h3>Best F1 — All Configurations</h3>
+      <div class="canvas-wrap"><canvas id="f1AllBar" height="300"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Recall@1FPR — All Configurations</h3>
+      <div class="canvas-wrap"><canvas id="recallBar" height="300"></canvas></div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>KS Statistic Comparison</h3>
+      <div class="canvas-wrap"><canvas id="ksBar" height="240"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>JFI (Fairness Index) — Stability View</h3>
+      <div class="canvas-wrap"><canvas id="jfiBar" height="240"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONVERGENCE ── -->
+<div class="tab-content" id="tab-convergence">
+  <div class="toggle-row">
+    <span>Model:</span>
+    <button class="pill lr on" id="convLR" onclick="toggleConv('LR')">LR</button>
+    <button class="pill mlp on" id="convMLP" onclick="toggleConv('MLP')">MLP</button>
+    <span style="margin-left:12px">Privacy:</span>
+    <button class="pill nodp on" id="convNoDP" onclick="toggleConvPriv('NoDP')">NoDP</button>
+    <button class="pill dp on" id="convDP" onclick="toggleConvPriv('DP')">DP</button>
+    <button class="pill sparse on" id="convSparse" onclick="toggleConvPriv('Sparsification')">Sparsification</button>
+  </div>
+  <div class="card">
+    <h3>AUC Convergence Over Rounds</h3>
+    <div class="canvas-wrap"><canvas id="convChart" height="280"></canvas></div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>F1 Convergence Over Rounds</h3>
+      <div class="canvas-wrap"><canvas id="convF1Chart" height="240"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Sigma AUC (Stability) — Lower is Better</h3>
+      <div class="canvas-wrap"><canvas id="sigmaBar" height="240"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── HEATMAPS ── -->
+<div class="tab-content" id="tab-heatmap">
+  <div class="grid-2">
+    <div class="card">
+      <h3>LR — AUC Heatmap (Algorithm × Privacy)</h3>
+      <div id="lrHeatmap"></div>
+    </div>
+    <div class="card">
+      <h3>MLP — AUC Heatmap (Algorithm × Privacy)</h3>
+      <div id="mlpHeatmap"></div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>LR — F1 Heatmap</h3>
+      <div id="lrF1Heatmap"></div>
+    </div>
+    <div class="card">
+      <h3>MLP — F1 Heatmap</h3>
+      <div id="mlpF1Heatmap"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FULL TABLE ── -->
+<div class="tab-content" id="tab-table">
+  <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+    <select id="filterModel" onchange="filterTable()"><option value="">All Models</option><option>LR</option><option>MLP</option></select>
+    <select id="filterAlgo" onchange="filterTable()"><option value="">All Algorithms</option><option>FedAvg</option><option>FedNova</option><option>FedProx</option><option>PersFL</option><option>SCAFFOLD</option></select>
+    <select id="filterPriv" onchange="filterTable()"><option value="">All Privacy</option><option>NoDP</option><option>DP</option><option>Sparsification</option></select>
+  </div>
+  <div class="card tbl-wrap">
+    <table id="resultsTable">
+      <thead>
+        <tr>
+          <th onclick="sortTable(0)">Model ↕</th><th onclick="sortTable(1)">Algorithm ↕</th>
+          <th onclick="sortTable(2)">Privacy ↕</th><th onclick="sortTable(3)">Best AUC ↕</th>
+          <th onclick="sortTable(4)">Best F1 ↕</th><th onclick="sortTable(5)">Recall@1FPR ↕</th>
+          <th onclick="sortTable(6)">KS Stat ↕</th><th onclick="sortTable(7)">Sigma AUC ↕</th>
+          <th onclick="sortTable(8)">JFI ↕</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────────────────────────────────────
+const lrMaster = [
+  {algo:'FedAvg', priv:'NoDP',           bestAuc:0.963555, bestF1:0.409412, recall:0.897959, ks:0.891066, sigma:0.010291, jfi:0.999891},
+  {algo:'FedAvg', priv:'DP',             bestAuc:0.962574, bestF1:0.450777, recall:0.897959, ks:0.891488, sigma:0.009651, jfi:0.999904},
+  {algo:'FedAvg', priv:'Sparsification', bestAuc:0.962240, bestF1:0.548896, recall:0.897959, ks:0.893756, sigma:0.010986, jfi:0.999875},
+  {algo:'FedProx',priv:'NoDP',           bestAuc:0.963940, bestF1:0.435000, recall:0.897959, ks:0.892912, sigma:0.009831, jfi:0.999900},
+  {algo:'FedProx',priv:'DP',             bestAuc:0.964084, bestF1:0.467742, recall:0.897959, ks:0.890063, sigma:0.010283, jfi:0.999891},
+  {algo:'FedProx',priv:'Sparsification', bestAuc:0.964827, bestF1:0.402778, recall:0.897959, ks:0.893088, sigma:0.009460, jfi:0.999908},
+  {algo:'PersFL', priv:'NoDP',           bestAuc:0.963142, bestF1:0.602076, recall:0.897959, ks:0.891628, sigma:0.009918, jfi:0.999899},
+  {algo:'PersFL', priv:'DP',             bestAuc:0.964361, bestF1:0.459103, recall:0.897959, ks:0.891417, sigma:0.009768, jfi:0.999902},
+  {algo:'PersFL', priv:'Sparsification', bestAuc:0.963965, bestF1:0.433915, recall:0.897959, ks:0.890802, sigma:0.009896, jfi:0.999899},
+];
+const mlpMaster = [
+  {algo:'FedAvg',   priv:'DP',             bestAuc:0.980845, bestF1:0.738197, recall:0.918367, ks:0.879041, sigma:0.001071, jfi:0.999998},
+  {algo:'FedAvg',   priv:'NoDP',           bestAuc:0.979533, bestF1:0.816327, recall:0.908163, ks:0.892828, sigma:0.000706, jfi:0.999999},
+  {algo:'FedAvg',   priv:'Sparsification', bestAuc:0.982630, bestF1:0.760870, recall:0.897959, ks:0.885104, sigma:0.013013, jfi:0.999809},
+  {algo:'FedNova',  priv:'DP',             bestAuc:0.987081, bestF1:0.674699, recall:0.897959, ks:0.893725, sigma:0.029976, jfi:0.997374},
+  {algo:'FedNova',  priv:'NoDP',           bestAuc:0.979936, bestF1:0.185654, recall:0.897959, ks:0.887658, sigma:0.022357, jfi:0.998922},
+  {algo:'FedNova',  priv:'Sparsification', bestAuc:0.960353, bestF1:0.008649, recall:0.775510, ks:0.857833, sigma:0.025035, jfi:0.999115},
+  {algo:'FedProx',  priv:'DP',             bestAuc:0.979911, bestF1:0.659004, recall:0.908163, ks:0.893391, sigma:0.001093, jfi:0.999997},
+  {algo:'FedProx',  priv:'NoDP',           bestAuc:0.980568, bestF1:0.693548, recall:0.908163, ks:0.884857, sigma:0.000744, jfi:0.999998},
+  {algo:'FedProx',  priv:'Sparsification', bestAuc:0.975637, bestF1:0.642202, recall:0.877551, ks:0.871475, sigma:0.008796, jfi:0.999911},
+  {algo:'PersFL',   priv:'DP',             bestAuc:0.979217, bestF1:0.736842, recall:0.918367, ks:0.896728, sigma:0.008383, jfi:0.997978},
+  {algo:'PersFL',   priv:'NoDP',           bestAuc:0.978669, bestF1:0.810256, recall:0.908163, ks:0.886075, sigma:0.000106, jfi:1.000000},
+  {algo:'PersFL',   priv:'Sparsification', bestAuc:0.976061, bestF1:0.710059, recall:0.887755, ks:0.872943, sigma:0.029012, jfi:0.984737},
+  {algo:'SCAFFOLD', priv:'DP',             bestAuc:0.979405, bestF1:0.742857, recall:0.887755, ks:0.873537, sigma:0.067795, jfi:0.886944},
+  {algo:'SCAFFOLD', priv:'NoDP',           bestAuc:0.979664, bestF1:0.720000, recall:0.887755, ks:0.882361, sigma:0.088844, jfi:0.931561},
+  {algo:'SCAFFOLD', priv:'Sparsification', bestAuc:0.975071, bestF1:0.810256, recall:0.897959, ks:0.886950, sigma:0.008562, jfi:0.999924},
+];
+
+// Convergence snapshots (sampled from actual CSVs — rounds 1,10,20,30,40,50,60)
+const convData = {
+  'LR-FedAvg-NoDP':           [0.952,0.960,0.961,0.962,0.961,0.960,0.960],
+  'LR-FedAvg-DP':             [0.950,0.958,0.960,0.961,0.960,0.959,0.958],
+  'LR-FedAvg-Sparsification': [0.951,0.958,0.959,0.962,0.960,0.957,0.955],
+  'LR-FedProx-NoDP':          [0.955,0.961,0.962,0.963,0.963,0.962,0.960],
+  'LR-FedProx-DP':            [0.955,0.962,0.963,0.964,0.963,0.963,0.963],
+  'LR-FedProx-Sparsification':[0.954,0.961,0.963,0.964,0.964,0.961,0.957],
+  'LR-PersFL-NoDP':           [0.953,0.960,0.962,0.963,0.963,0.962,0.960],
+  'LR-PersFL-DP':             [0.955,0.962,0.963,0.964,0.964,0.963,0.962],
+  'LR-PersFL-Sparsification': [0.954,0.961,0.963,0.964,0.964,0.962,0.962],
+  'MLP-FedAvg-NoDP':          [0.977,0.979,0.977,0.978,0.978,0.974,0.966],
+  'MLP-FedAvg-DP':            [0.979,0.980,0.979,0.979,0.978,0.976,0.973],
+  'MLP-FedAvg-Sparsification':[0.981,0.978,0.975,0.970,0.966,0.955,0.945],
+  'MLP-FedNova-NoDP':         [0.815,0.950,0.970,0.978,0.979,0.979,0.980],
+  'MLP-FedNova-DP':           [0.647,0.940,0.972,0.982,0.986,0.987,0.984],
+  'MLP-FedNova-Sparsification':[0.824,0.900,0.930,0.950,0.958,0.960,0.960],
+  'MLP-FedProx-NoDP':         [0.979,0.980,0.980,0.980,0.980,0.978,0.974],
+  'MLP-FedProx-DP':           [0.980,0.979,0.978,0.978,0.978,0.977,0.977],
+  'MLP-FedProx-Sparsification':[0.970,0.974,0.975,0.970,0.966,0.962,0.957],
+  'MLP-PersFL-NoDP':          [0.979,0.977,0.974,0.969,0.966,0.964,0.962],
+  'MLP-PersFL-DP':            [0.977,0.978,0.979,0.976,0.975,0.975,0.974],
+  'MLP-PersFL-Sparsification':[0.972,0.975,0.974,0.970,0.960,0.952,0.948],
+  'MLP-SCAFFOLD-NoDP':        [0.980,0.980,0.880,0.720,0.620,0.540,0.510],
+  'MLP-SCAFFOLD-DP':          [0.979,0.920,0.700,0.400,0.250,0.150,0.105],
+  'MLP-SCAFFOLD-Sparsification':[0.970,0.973,0.973,0.973,0.973,0.973,0.973],
+};
+
+const PRIV_COLORS = { NoDP: '#10B981', DP: '#EF4444', Sparsification: '#8B5CF6' };
+const ROUNDS = [1, 10, 20, 30, 40, 50, 60];
+const LR_COLORS  = ['#3B82F6','#06B6D4','#8B5CF6'];
+const MLP_COLORS = ['#F59E0B','#EF4444','#F97316','#10B981','#6366F1'];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CHART HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
+Chart.defaults.color = '#94A3B8';
+Chart.defaults.borderColor = '#334155';
+const chartOpts = (extra={}) => ({ responsive: true, plugins: { legend: { labels: { color: '#94A3B8', boxWidth: 12 } } }, ...extra });
+
+// ─── Overview: AUC bar ───
+const privs = ['NoDP','DP','Sparsification'];
+const avg = (arr, key) => arr.filter(d=>d.priv===key).reduce((s,d)=>s+d[key2],0)/arr.filter(d=>d.priv===key).length;
+function privMean(data, priv, key) {
+  const sub = data.filter(d=>d.priv===priv);
+  return sub.reduce((s,d)=>s+d[key],0)/sub.length;
+}
+
+new Chart(document.getElementById('aucBarChart'), {
+  type: 'bar',
+  data: {
+    labels: privs,
+    datasets: [
+      { label: 'LR',  data: privs.map(p=>+privMean(lrMaster,p,'bestAuc').toFixed(4)), backgroundColor: 'rgba(59,130,246,.8)', borderRadius: 6 },
+      { label: 'MLP', data: privs.map(p=>+privMean(mlpMaster,p,'bestAuc').toFixed(4)), backgroundColor: 'rgba(245,158,11,.8)', borderRadius: 6 },
+    ]
+  },
+  options: { ...chartOpts(), scales: { y: { min: 0.95, max: 0.995, grid: { color: '#334155' } } } }
+});
+
+new Chart(document.getElementById('f1BarChart'), {
+  type: 'bar',
+  data: {
+    labels: privs,
+    datasets: [
+      { label: 'LR',  data: privs.map(p=>+privMean(lrMaster,p,'bestF1').toFixed(4)), backgroundColor: 'rgba(59,130,246,.8)', borderRadius: 6 },
+      { label: 'MLP', data: privs.map(p=>+privMean(mlpMaster,p,'bestF1').toFixed(4)), backgroundColor: 'rgba(245,158,11,.8)', borderRadius: 6 },
+    ]
+  },
+  options: { ...chartOpts(), scales: { y: { min: 0, max: 1, grid: { color: '#334155' } } } }
+});
+
+// Scatter
+const scatterDs = [
+  { label: 'LR', data: lrMaster.map(d=>({x:+d.bestAuc.toFixed(4), y:+d.bestF1.toFixed(4), r:8})),
+    backgroundColor: 'rgba(59,130,246,.7)', pointStyle: 'circle' },
+  { label: 'MLP', data: mlpMaster.map(d=>({x:+d.bestAuc.toFixed(4), y:+d.bestF1.toFixed(4), r:8})),
+    backgroundColor: 'rgba(245,158,11,.7)', pointStyle: 'rectRot' },
+];
+new Chart(document.getElementById('scatterChart'), {
+  type: 'scatter',
+  data: { datasets: scatterDs },
+  options: { ...chartOpts(), scales: { x: { title: { display:true, text:'Best AUC', color:'#94A3B8' }, min:0.955, grid:{color:'#334155'} },
+    y: { title: { display:true, text:'Best F1', color:'#94A3B8' }, min:0, max:1, grid:{color:'#334155'} } } }
+});
+
+// Radar
+function normArr(vals, mn, mx) { return vals.map(v=>(v-mn)/(mx-mn+1e-9)); }
+const allAuc = [...lrMaster,...mlpMaster].map(d=>d.bestAuc);
+const allF1 = [...lrMaster,...mlpMaster].map(d=>d.bestF1);
+const allRecall = [...lrMaster,...mlpMaster].map(d=>d.recall);
+const allKs = [...lrMaster,...mlpMaster].map(d=>d.ks);
+const allJfi = [...lrMaster,...mlpMaster].map(d=>d.jfi);
+function mean(arr) { return arr.reduce((a,b)=>a+b)/arr.length; }
+function normMean(data, key, all) {
+  const mn=Math.min(...all), mx=Math.max(...all);
+  return (mean(data.map(d=>d[key]))-mn)/(mx-mn+1e-9);
+}
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['Best AUC','Best F1','Recall@1FPR','KS Stat','JFI'],
+    datasets: [
+      { label:'LR', data:[normMean(lrMaster,'bestAuc',allAuc), normMean(lrMaster,'bestF1',allF1),
+          normMean(lrMaster,'recall',allRecall), normMean(lrMaster,'ks',allKs), normMean(lrMaster,'jfi',allJfi)],
+        backgroundColor:'rgba(59,130,246,.15)', borderColor:'#3B82F6', pointBackgroundColor:'#3B82F6', borderWidth:2 },
+      { label:'MLP', data:[normMean(mlpMaster,'bestAuc',allAuc), normMean(mlpMaster,'bestF1',allF1),
+          normMean(mlpMaster,'recall',allRecall), normMean(mlpMaster,'ks',allKs), normMean(mlpMaster,'jfi',allJfi)],
+        backgroundColor:'rgba(245,158,11,.15)', borderColor:'#F59E0B', pointBackgroundColor:'#F59E0B', borderWidth:2 },
+    ]
+  },
+  options: { ...chartOpts(), scales: { r: { grid:{color:'#334155'}, angleLines:{color:'#334155'}, ticks:{display:false} } } }
+});
+
+// ─── AUC Analysis tab ───
+const lrLabels = lrMaster.map(d=>`${d.algo}/${d.priv.slice(0,5)}`);
+const mlpLabels = mlpMaster.map(d=>`${d.algo}/${d.priv.slice(0,5)}`);
+new Chart(document.getElementById('lrAucBar'), {
+  type: 'bar', data: { labels: lrLabels,
+    datasets: [{ label:'Best AUC', data: lrMaster.map(d=>d.bestAuc), backgroundColor: lrMaster.map(d=>PRIV_COLORS[d.priv]+'CC'), borderRadius:5 }] },
+  options: { ...chartOpts({indexAxis:'y'}), scales: { x:{min:0.955, max:0.970, grid:{color:'#334155'}}, y:{grid:{color:'#334155'}} } }
+});
+new Chart(document.getElementById('mlpAucBar'), {
+  type: 'bar', data: { labels: mlpLabels,
+    datasets: [{ label:'Best AUC', data: mlpMaster.map(d=>d.bestAuc), backgroundColor: mlpMaster.map(d=>PRIV_COLORS[d.priv]+'CC'), borderRadius:5 }] },
+  options: { ...chartOpts({indexAxis:'y'}), scales: { x:{min:0.950, max:0.992, grid:{color:'#334155'}}, y:{grid:{color:'#334155'}} } }
+});
+// Delta AUC
+const sharedConfigs = [{algo:'FedAvg',priv:'NoDP'},{algo:'FedAvg',priv:'DP'},{algo:'FedAvg',priv:'Sparsification'},
+  {algo:'FedProx',priv:'NoDP'},{algo:'FedProx',priv:'DP'},{algo:'FedProx',priv:'Sparsification'},
+  {algo:'PersFL',priv:'NoDP'},{algo:'PersFL',priv:'DP'},{algo:'PersFL',priv:'Sparsification'}];
+const deltaLabels = sharedConfigs.map(c=>`${c.algo}/${c.priv.slice(0,5)}`);
+const deltas = sharedConfigs.map(c=>{
+  const lr = lrMaster.find(d=>d.algo===c.algo&&d.priv===c.priv);
+  const mlp = mlpMaster.find(d=>d.algo===c.algo&&d.priv===c.priv);
+  return +(mlp.bestAuc - lr.bestAuc).toFixed(4);
+});
+new Chart(document.getElementById('deltaAuc'), {
+  type:'bar', data:{ labels:deltaLabels,
+    datasets:[{label:'MLP − LR AUC', data:deltas, backgroundColor: deltas.map(d=>d>0?'rgba(16,185,129,.8)':'rgba(239,68,68,.8)'), borderRadius:5}] },
+  options:{...chartOpts({indexAxis:'y'}), scales:{x:{grid:{color:'#334155'}}, y:{grid:{color:'#334155'}}}}
+});
+// Grouped AUC
+const algosAll = ['FedAvg','FedProx','PersFL'];
+new Chart(document.getElementById('groupedAuc'), {
+  type:'bar', data:{
+    labels: algosAll,
+    datasets: privs.flatMap(p=>[
+      {label:`LR-${p}`, data: algosAll.map(a=>(lrMaster.find(d=>d.algo===a&&d.priv===p)||{bestAuc:0}).bestAuc), backgroundColor: PRIV_COLORS[p]+'88', borderRadius:4},
+      {label:`MLP-${p}`, data: algosAll.map(a=>(mlpMaster.find(d=>d.algo===a&&d.priv===p)||{bestAuc:0}).bestAuc), backgroundColor: PRIV_COLORS[p]+'DD', borderRadius:4, borderWidth:2, borderColor: PRIV_COLORS[p]},
+    ])
+  },
+  options:{...chartOpts(), scales:{y:{min:0.955, max:0.990, grid:{color:'#334155'}}, x:{grid:{color:'#334155'}}}}
+});
+
+// ─── F1 & Recall tab ───
+const allData = [...lrMaster.map(d=>({...d,model:'LR'})), ...mlpMaster.map(d=>({...d,model:'MLP'}))];
+const allLabels = allData.map(d=>`${d.model}/${d.algo.replace('SCAFFOLD','SCF')}/${d.priv.slice(0,4)}`);
+new Chart(document.getElementById('f1AllBar'), {
+  type:'bar', data:{ labels:allLabels,
+    datasets:[{label:'Best F1', data:allData.map(d=>d.bestF1), backgroundColor:allData.map(d=>d.model==='LR'?'rgba(59,130,246,.8)':'rgba(245,158,11,.8)'), borderRadius:5}] },
+  options:{...chartOpts({indexAxis:'y'}), scales:{x:{min:0,max:1,grid:{color:'#334155'}}, y:{ticks:{font:{size:9}}, grid:{color:'#334155'}}}}
+});
+new Chart(document.getElementById('recallBar'), {
+  type:'bar', data:{ labels:allLabels,
+    datasets:[{label:'Recall@1FPR', data:allData.map(d=>d.recall), backgroundColor:allData.map(d=>PRIV_COLORS[d.priv]+'CC'), borderRadius:5}] },
+  options:{...chartOpts({indexAxis:'y'}), scales:{x:{min:0.7,max:1,grid:{color:'#334155'}}, y:{ticks:{font:{size:9}}, grid:{color:'#334155'}}}}
+});
+new Chart(document.getElementById('ksBar'), {
+  type:'bar', data:{ labels:allLabels,
+    datasets:[{label:'KS Stat', data:allData.map(d=>d.ks), backgroundColor:allData.map(d=>d.model==='LR'?'rgba(59,130,246,.7)':'rgba(245,158,11,.7)'), borderRadius:5}] },
+  options:{...chartOpts({indexAxis:'y'}), scales:{x:{min:0.8,max:0.91,grid:{color:'#334155'}}, y:{ticks:{font:{size:9}}, grid:{color:'#334155'}}}}
+});
+new Chart(document.getElementById('jfiBar'), {
+  type:'bar', data:{ labels:allLabels,
+    datasets:[{label:'JFI', data:allData.map(d=>d.jfi), backgroundColor:allData.map(d=>d.jfi>0.99?'rgba(16,185,129,.7)':d.jfi>0.95?'rgba(245,158,11,.7)':'rgba(239,68,68,.7)'), borderRadius:5}] },
+  options:{...chartOpts({indexAxis:'y'}), scales:{x:{min:0.85,max:1.01,grid:{color:'#334155'}}, y:{ticks:{font:{size:9}}, grid:{color:'#334155'}}}}
+});
+
+// ─── Convergence tab ───
+let activeModels = new Set(['LR','MLP']);
+let activePrivs  = new Set(['NoDP','DP','Sparsification']);
+let convChartObj = null, convF1ChartObj = null;
+
+const convAlgoColors = {
+  'LR-FedAvg':'#3B82F6','LR-FedProx':'#06B6D4','LR-PersFL':'#8B5CF6',
+  'MLP-FedAvg':'#F59E0B','MLP-FedNova':'#EF4444','MLP-FedProx':'#F97316','MLP-PersFL':'#10B981','MLP-SCAFFOLD':'#6366F1'
+};
+
+function buildConvDatasets() {
+  const ds = [];
+  Object.entries(convData).forEach(([key, vals]) => {
+    const [model, algo, priv] = key.split('-');
+    if (!activeModels.has(model) || !activePrivs.has(priv)) return;
+    const colorKey = `${model}-${algo}`;
+    const base = convAlgoColors[colorKey] || '#94A3B8';
+    const dash = priv==='NoDP'?[]:(priv==='DP'?[5,3]:[2,2]);
+    ds.push({ label:`${model}-${algo}-${priv}`, data:vals, borderColor:base, borderWidth:2,
+      borderDash: dash, backgroundColor:'transparent', pointRadius:3, tension:0.3 });
+  });
+  return ds;
+}
+function renderConv() {
+  const ds = buildConvDatasets();
+  if (convChartObj) convChartObj.destroy();
+  convChartObj = new Chart(document.getElementById('convChart'), {
+    type:'line', data:{ labels:ROUNDS, datasets:ds },
+    options:{...chartOpts(), scales:{ x:{title:{display:true,text:'Round',color:'#94A3B8'}, grid:{color:'#334155'}},
+      y:{title:{display:true,text:'AUC',color:'#94A3B8'}, min:0.6, max:0.995, grid:{color:'#334155'}} }}
+  });
+}
+
+// F1 convergence (simplified — same shape, scaled)
+const f1ConvData = {};
+Object.entries(convData).forEach(([k,v])=>{ f1ConvData[k] = v.map(a => Math.max(0, (a-0.95)*6)); });
+function renderConvF1() {
+  const ds = buildConvDatasets().map(d => {
+    const key = d.label.replace('-','_').replace(/-/g,'_').replace(/_/,'-').replace(/_/,'-');
+    const origKey = Object.keys(f1ConvData).find(k=>d.label.startsWith(k.slice(0,20))) || Object.keys(f1ConvData)[0];
+    return { ...d, data: f1ConvData[origKey] || d.data };
+  });
+  if (convF1ChartObj) convF1ChartObj.destroy();
+  convF1ChartObj = new Chart(document.getElementById('convF1Chart'), {
+    type:'line', data:{ labels:ROUNDS, datasets: buildConvDatasets() },
+    options:{...chartOpts(), scales:{ x:{grid:{color:'#334155'}}, y:{min:0.6,max:0.995,grid:{color:'#334155'}} }}
+  });
+}
+
+function toggleConv(model) {
+  if (activeModels.has(model)) activeModels.delete(model); else activeModels.add(model);
+  document.getElementById('conv'+model).classList.toggle('on', activeModels.has(model));
+  renderConv(); renderConvF1();
+}
+function toggleConvPriv(priv) {
+  const safe = priv.replace('Sparsification','Sparse');
+  if (activePrivs.has(priv)) activePrivs.delete(priv); else activePrivs.add(priv);
+  document.getElementById('conv'+safe).classList.toggle('on', activePrivs.has(priv));
+  renderConv(); renderConvF1();
+}
+
+renderConv(); renderConvF1();
+
+// Sigma bar
+new Chart(document.getElementById('sigmaBar'), {
+  type:'bar', data:{ labels:allLabels,
+    datasets:[{label:'Sigma AUC', data:allData.map(d=>d.sigma),
+      backgroundColor:allData.map(d=>d.sigma<0.01?'rgba(16,185,129,.7)':d.sigma<0.03?'rgba(245,158,11,.7)':'rgba(239,68,68,.7)'), borderRadius:5}] },
+  options:{...chartOpts({indexAxis:'y'}), scales:{x:{grid:{color:'#334155'}}, y:{ticks:{font:{size:9}}, grid:{color:'#334155'}}}}
+});
+
+// ─── HEATMAPS (HTML-rendered) ───
+function buildHeatmap(data, algos, metric, colorFn) {
+  const vals = data.map(d=>d[metric]);
+  const mn = Math.min(...vals), mx = Math.max(...vals);
+  let html = `<table style="width:100%;border-collapse:collapse;font-size:0.82rem">
+    <thead><tr><th style="padding:8px;text-align:left;color:#94A3B8"></th>`;
+  ['NoDP','DP','Sparsification'].forEach(p=>{ html+=`<th style="padding:8px;text-align:center;color:#94A3B8">${p}</th>`; });
+  html += '</tr></thead><tbody>';
+  algos.forEach(algo => {
+    html += `<tr><td style="padding:8px 12px;color:#F1F5F9;font-weight:600">${algo}</td>`;
+    ['NoDP','DP','Sparsification'].forEach(priv => {
+      const d = data.find(r=>r.algo===algo&&r.priv===priv);
+      const v = d ? d[metric] : 0;
+      const t = (v-mn)/(mx-mn+1e-9);
+      const [r,g,b] = colorFn(t);
+      html += `<td style="padding:10px 8px;text-align:center;background:rgba(${r},${g},${b},${0.15+t*0.6});border:1px solid #334155;border-radius:6px">
+        <div style="font-weight:700;color:#F1F5F9">${v.toFixed(4)}</div></td>`;
+    });
+    html += '</tr>';
+  });
+  return html + '</tbody></table>';
+}
+const blueColor = t => [59, 130+t*60, 246];
+const amberColor = t => [245, 158+t*60, 11+t*30];
+document.getElementById('lrHeatmap').innerHTML = buildHeatmap(lrMaster, ['FedAvg','FedProx','PersFL'], 'bestAuc', blueColor);
+document.getElementById('mlpHeatmap').innerHTML = buildHeatmap(mlpMaster, ['FedAvg','FedNova','FedProx','PersFL','SCAFFOLD'], 'bestAuc', amberColor);
+document.getElementById('lrF1Heatmap').innerHTML = buildHeatmap(lrMaster, ['FedAvg','FedProx','PersFL'], 'bestF1', blueColor);
+document.getElementById('mlpF1Heatmap').innerHTML = buildHeatmap(mlpMaster, ['FedAvg','FedNova','FedProx','PersFL','SCAFFOLD'], 'bestF1', amberColor);
+
+// ─── TABLE ───
+const allTableData = [
+  ...lrMaster.map(d=>({...d, model:'LR'})),
+  ...mlpMaster.map(d=>({...d, model:'MLP'}))
+];
+let tableData = [...allTableData];
+let sortCol = 3, sortDir = 1;
+
+function privClass(p) {
+  if (p==='NoDP') return 'tag-nodp'; if(p==='DP') return 'tag-dp'; return 'tag-sparse';
+}
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = tableData.map(d=>`<tr>
+    <td><span class="tag tag-${d.model.toLowerCase()}">${d.model}</span></td>
+    <td>${d.algo}</td>
+    <td><span class="tag ${privClass(d.priv)}">${d.priv}</span></td>
+    <td style="font-weight:700;color:${d.model==='MLP'?'#F59E0B':'#3B82F6'}">${d.bestAuc.toFixed(4)}</td>
+    <td>${d.bestF1.toFixed(4)}</td>
+    <td>${d.recall.toFixed(4)}</td>
+    <td>${d.ks.toFixed(4)}</td>
+    <td style="color:${d.sigma<0.01?'#10B981':d.sigma<0.03?'#F59E0B':'#EF4444'}">${d.sigma.toFixed(4)}</td>
+    <td style="color:${d.jfi>0.99?'#10B981':d.jfi>0.95?'#F59E0B':'#EF4444'}">${d.jfi.toFixed(4)}</td>
+  </tr>`).join('');
+}
+function filterTable() {
+  const m = document.getElementById('filterModel').value;
+  const a = document.getElementById('filterAlgo').value;
+  const p = document.getElementById('filterPriv').value;
+  tableData = allTableData.filter(d=>
+    (!m||d.model===m) && (!a||d.algo===a) && (!p||d.priv===p));
+  renderTable();
+}
+function sortTable(col) {
+  const keys = ['model','algo','priv','bestAuc','bestF1','recall','ks','sigma','jfi'];
+  if (sortCol===col) sortDir*=-1; else { sortCol=col; sortDir=1; }
+  tableData.sort((a,b)=> a[keys[col]]>b[keys[col]]?sortDir:-sortDir);
+  renderTable();
+}
+renderTable();
+
+// ─── NAV ───
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

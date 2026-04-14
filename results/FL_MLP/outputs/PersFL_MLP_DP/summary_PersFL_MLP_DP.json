@@ -1,0 +1,27 @@
+{
+  "combination": "PersFL_MLP_DP",
+  "best_round": 23,
+  "best_auc": 0.979217,
+  "best_f1": 0.636364,
+  "final_metrics": {
+    "round": 60,
+    "auc": 0.974474,
+    "f1": 0.711297,
+    "precision": 0.602837,
+    "recall": 0.867347,
+    "ks_stat": 0.90338,
+    "recall_1fpr": 0.908163,
+    "prec_at_k": 0.309859,
+    "sigma_auc": 9.7e-05,
+    "jfi": 1.0,
+    "loss": 0.00611,
+    "timestamp": "2026-03-30 15:58:06"
+  },
+  "bank_aucs_final": [
+    0.999903,
+    0.999719,
+    null,
+    0.999917,
+    0.999978
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "combination": "SCAFFOLD_MLP_NoDP",
+  "best_round": 1,
+  "best_auc": 0.979664,
+  "best_f1": 0.72,
+  "final_metrics": {
+    "round": 60,
+    "auc": 0.510186,
+    "f1": 0.0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "ks_stat": 0.020373,
+    "recall_1fpr": 0.020408,
+    "prec_at_k": 0.007042,
+    "sigma_auc": 0.00896,
+    "jfi": 0.999694,
+    "loss": 0.035653,
+    "timestamp": "2026-03-30 14:30:47"
+  },
+  "bank_aucs_final": [
+    0.509163,
+    0.524681,
+    null,
+    0.514695,
+    0.499956
+  ]
+}

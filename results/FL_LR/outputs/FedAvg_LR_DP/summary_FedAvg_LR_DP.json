@@ -1,0 +1,27 @@
+{
+  "combination": "FedAvg_LR_DP",
+  "best_round": 23,
+  "best_auc": 0.962574,
+  "best_f1": 0.450777,
+  "final_metrics": {
+    "round": 60,
+    "auc": 0.957554,
+    "f1": 0.517857,
+    "precision": 0.365546,
+    "recall": 0.887755,
+    "ks_stat": 0.891488,
+    "recall_1fpr": 0.897959,
+    "prec_at_k": 0.306338,
+    "sigma_auc": 0.009651,
+    "jfi": 0.999904,
+    "loss": 0.018575,
+    "timestamp": "2026-03-30 12:20:36"
+  },
+  "bank_aucs_final": [
+    0.973736,
+    0.980907,
+    null,
+    0.987828,
+    0.999912
+  ]
+}

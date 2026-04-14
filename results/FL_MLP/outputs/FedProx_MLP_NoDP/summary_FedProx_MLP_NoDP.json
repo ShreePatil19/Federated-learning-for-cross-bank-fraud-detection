@@ -1,0 +1,27 @@
+{
+  "combination": "FedProx_MLP_NoDP",
+  "best_round": 2,
+  "best_auc": 0.980568,
+  "best_f1": 0.361345,
+  "final_metrics": {
+    "round": 60,
+    "auc": 0.974054,
+    "f1": 0.646617,
+    "precision": 0.511905,
+    "recall": 0.877551,
+    "ks_stat": 0.898368,
+    "recall_1fpr": 0.908163,
+    "prec_at_k": 0.309859,
+    "sigma_auc": 0.000202,
+    "jfi": 1.0,
+    "loss": 0.006929,
+    "timestamp": "2026-03-30 13:46:09"
+  },
+  "bank_aucs_final": [
+    0.999776,
+    0.999419,
+    null,
+    0.999855,
+    0.999956
+  ]
+}

@@ -1,0 +1,324 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.dash { padding: 1.5rem 0; }
+.hdr { margin-bottom: 1.5rem; }
+.hdr h1 { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
+.hdr p { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
+.tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; margin-right: 4px; background: var(--color-background-secondary); color: var(--color-text-secondary); border: 0.5px solid var(--color-border-tertiary); }
+.grid4 { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-bottom: 1.5rem; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin-bottom: 1.5rem; }
+.mcard { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 14px 16px; }
+.mcard .lbl { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.mcard .val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+.mcard .sub { font-size: 11px; color: var(--color-text-secondary); margin-top: 3px; }
+.mcard .badge { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; background: var(--color-background-success); color: var(--color-text-success); margin-top: 4px; }
+.section-title { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 10px; letter-spacing: 0.03em; text-transform: uppercase; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+.controls { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; align-items: center; }
+.ctrl-label { font-size: 12px; color: var(--color-text-secondary); margin-right: 2px; }
+.tog { font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); cursor: pointer; transition: all 0.15s; }
+.tog.on { background: var(--color-text-primary); color: var(--color-background-primary); border-color: transparent; }
+.metric-btns { display: flex; gap: 6px; margin-bottom: 1rem; }
+.mbtn { font-size: 12px; padding: 4px 12px; border-radius: 4px; border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); cursor: pointer; }
+.mbtn.active { background: var(--color-background-info); color: var(--color-text-info); border-color: var(--color-border-info); }
+.legend-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+.leg-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--color-text-secondary); }
+.leg-sq { width: 24px; height: 3px; border-radius: 2px; flex-shrink: 0; }
+.chart-wrap { position: relative; width: 100%; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { text-align: left; font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); padding: 6px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); text-transform: uppercase; letter-spacing: 0.04em; }
+td { padding: 7px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-primary); }
+tr:last-child td { border-bottom: none; }
+tr.top td { font-weight: 500; }
+.rank { font-size: 11px; color: var(--color-text-tertiary); }
+.pill { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 10px; }
+.pill-blue { background: #E6F1FB; color: #185FA5; }
+.pill-teal { background: #E1F5EE; color: #0F6E56; }
+.pill-pink { background: #FBEAF0; color: #993556; }
+@media (prefers-color-scheme: dark) {
+  .pill-blue { background: #0C447C; color: #B5D4F4; }
+  .pill-teal { background: #085041; color: #9FE1CB; }
+  .pill-pink { background: #72243E; color: #F4C0D1; }
+}
+.sep { height: 0.5px; background: var(--color-border-tertiary); margin: 1rem 0; }
+</style>
+
+<div class="dash">
+<div class="hdr">
+  <h1>FL Fraud Detection — Benchmarking Results</h1>
+  <p style="margin-top:6px">
+    <span class="tag">LR model</span>
+    <span class="tag">ULB Credit Card Dataset</span>
+    <span class="tag">5 simulated banks</span>
+    <span class="tag">60 rounds</span>
+    <span class="tag">3 algorithms × 3 privacy modes</span>
+  </p>
+</div>
+
+<div class="grid4">
+  <div class="mcard">
+    <div class="lbl">Best AUC</div>
+    <div class="val">0.9648</div>
+    <div class="sub">FedProx + Sparsification</div>
+    <div class="badge">Round 19</div>
+  </div>
+  <div class="mcard">
+    <div class="lbl">Best F1</div>
+    <div class="val">0.602</div>
+    <div class="sub">PersFL + NoDP</div>
+    <div class="badge">Round 54</div>
+  </div>
+  <div class="mcard">
+    <div class="lbl">Avg JFI (fairness)</div>
+    <div class="val">0.9999</div>
+    <div class="sub">All configs near-perfect</div>
+  </div>
+  <div class="mcard">
+    <div class="lbl">Rounds to ≥95% AUC</div>
+    <div class="val">1</div>
+    <div class="sub">All 9 configurations</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="section-title">AUC / F1 / Loss over rounds</div>
+  <div class="metric-btns" id="metricBtns">
+    <button class="mbtn active" onclick="switchMetric('auc',this)">AUC</button>
+    <button class="mbtn" onclick="switchMetric('f1',this)">F1</button>
+    <button class="mbtn" onclick="switchMetric('loss',this)">Loss</button>
+  </div>
+  <div class="controls">
+    <span class="ctrl-label">Algorithm:</span>
+    <button class="tog on" id="tog-FedAvg" onclick="toggleFilter('algo','FedAvg',this)">FedAvg</button>
+    <button class="tog on" id="tog-FedProx" onclick="toggleFilter('algo','FedProx',this)">FedProx</button>
+    <button class="tog on" id="tog-PersFL" onclick="toggleFilter('algo','PersFL',this)">PersFL</button>
+    <span class="ctrl-label" style="margin-left:12px">Privacy:</span>
+    <button class="tog on" id="tog-NoDP" onclick="toggleFilter('priv','NoDP',this)">NoDP</button>
+    <button class="tog on" id="tog-DP" onclick="toggleFilter('priv','DP',this)">DP</button>
+    <button class="tog on" id="tog-Sparsification" onclick="toggleFilter('priv','Sparsification',this)">Sparsification</button>
+  </div>
+  <div class="legend-row" id="legendRow"></div>
+  <div class="chart-wrap" style="height:280px">
+    <canvas id="lineChart"></canvas>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card" style="margin-bottom:0">
+    <div class="section-title">Best AUC by config</div>
+    <div class="chart-wrap" style="height:220px">
+      <canvas id="barChart"></canvas>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:0">
+    <div class="section-title">Best F1 by config</div>
+    <div class="chart-wrap" style="height:220px">
+      <canvas id="f1Chart"></canvas>
+    </div>
+  </div>
+</div>
+
+<div style="height:1.25rem"></div>
+<div class="card" style="margin-bottom:0">
+  <div class="section-title">Leaderboard — all 9 configurations</div>
+  <table id="leaderTable"></table>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const MASTER = [
+  {algo:'FedAvg',priv:'NoDP',best_auc:0.963555,final_auc:0.960345,best_f1:0.409412,best_recall:0.897959,ks_stat:0.891066,sigma_auc:0.010291,jfi:0.999891,time:72.5},
+  {algo:'FedAvg',priv:'DP',best_auc:0.962574,final_auc:0.957554,best_f1:0.450777,best_recall:0.897959,ks_stat:0.891488,sigma_auc:0.009651,jfi:0.999904,time:71.9},
+  {algo:'FedAvg',priv:'Sparsification',best_auc:0.96224,final_auc:0.954933,best_f1:0.548896,best_recall:0.897959,ks_stat:0.893756,sigma_auc:0.010986,jfi:0.999875,time:71.8},
+  {algo:'FedProx',priv:'NoDP',best_auc:0.96394,final_auc:0.96013,best_f1:0.435,best_recall:0.897959,ks_stat:0.892912,sigma_auc:0.009831,jfi:0.9999,time:72.3},
+  {algo:'FedProx',priv:'DP',best_auc:0.964084,final_auc:0.963399,best_f1:0.467742,best_recall:0.897959,ks_stat:0.890063,sigma_auc:0.010283,jfi:0.999891,time:71.9},
+  {algo:'FedProx',priv:'Sparsification',best_auc:0.964827,final_auc:0.957475,best_f1:0.402778,best_recall:0.897959,ks_stat:0.893088,sigma_auc:0.00946,jfi:0.999908,time:71.6},
+  {algo:'PersFL',priv:'NoDP',best_auc:0.963142,final_auc:0.959953,best_f1:0.602076,best_recall:0.897959,ks_stat:0.891628,sigma_auc:0.009918,jfi:0.999899,time:71.3},
+  {algo:'PersFL',priv:'DP',best_auc:0.964361,final_auc:0.961908,best_f1:0.459103,best_recall:0.897959,ks_stat:0.891417,sigma_auc:0.009768,jfi:0.999902,time:70.2},
+  {algo:'PersFL',priv:'Sparsification',best_auc:0.963965,final_auc:0.961862,best_f1:0.433915,best_recall:0.897959,ks_stat:0.890802,sigma_auc:0.009896,jfi:0.999899,time:71.1},
+];
+
+const ROUNDS = {"FedAvg_DP":[{"round":1,"auc":0.955495,"f1":0.527273,"loss":0.02548,"jfi":0.999895},{"round":2,"auc":0.956541,"f1":0.51632,"loss":0.020485,"jfi":0.999907},{"round":3,"auc":0.953894,"f1":0.537037,"loss":0.01864,"jfi":0.999901},{"round":4,"auc":0.958453,"f1":0.519403,"loss":0.019817,"jfi":0.999909},{"round":5,"auc":0.954934,"f1":0.535385,"loss":0.018726,"jfi":0.999909},{"round":6,"auc":0.955997,"f1":0.557692,"loss":0.017026,"jfi":0.999905},{"round":7,"auc":0.957869,"f1":0.540373,"loss":0.018238,"jfi":0.999888},{"round":8,"auc":0.95692,"f1":0.53211,"loss":0.017729,"jfi":0.999905},{"round":9,"auc":0.959805,"f1":0.520958,"loss":0.019538,"jfi":0.999896},{"round":10,"auc":0.956094,"f1":0.514793,"loss":0.019586,"jfi":0.999909},{"round":11,"auc":0.958745,"f1":0.53211,"loss":0.017573,"jfi":0.999902},{"round":12,"auc":0.961013,"f1":0.435,"loss":0.021766,"jfi":0.999909},{"round":13,"auc":0.95563,"f1":0.574257,"loss":0.016947,"jfi":0.999905},{"round":14,"auc":0.959593,"f1":0.497143,"loss":0.018881,"jfi":0.999905},{"round":15,"auc":0.957816,"f1":0.51632,"loss":0.019806,"jfi":0.999906},{"round":16,"auc":0.959376,"f1":0.542056,"loss":0.01921,"jfi":0.999911},{"round":17,"auc":0.961532,"f1":0.513274,"loss":0.019526,"jfi":0.999902},{"round":18,"auc":0.954151,"f1":0.557692,"loss":0.01695,"jfi":0.9999},{"round":19,"auc":0.955778,"f1":0.550633,"loss":0.017422,"jfi":0.999904},{"round":20,"auc":0.95749,"f1":0.54375,"loss":0.017967,"jfi":0.999916},{"round":21,"auc":0.961273,"f1":0.535385,"loss":0.017992,"jfi":0.999893},{"round":22,"auc":0.955733,"f1":0.537037,"loss":0.018361,"jfi":0.999889},{"round":23,"auc":0.962574,"f1":0.450777,"loss":0.024646,"jfi":0.999864},{"round":24,"auc":0.958882,"f1":0.476712,"loss":0.02105,"jfi":0.999862},{"round":25,"auc":0.95707,"f1":0.519403,"loss":0.018661,"jfi":0.999904},{"round":26,"auc":0.960682,"f1":0.612676,"loss":0.017168,"jfi":0.999907},{"round":27,"auc":0.958889,"f1":0.552381,"loss":0.018223,"jfi":0.999908},{"round":28,"auc":0.959187,"f1":0.552381,"loss":0.017758,"jfi":0.999907},{"round":29,"auc":0.955145,"f1":0.524096,"loss":0.018206,"jfi":0.9999},{"round":30,"auc":0.955463,"f1":0.527273,"loss":0.019202,"jfi":0.9999},{"round":31,"auc":0.959038,"f1":0.5,"loss":0.020491,"jfi":0.999915},{"round":32,"auc":0.958112,"f1":0.528875,"loss":0.018597,"jfi":0.999905},{"round":33,"auc":0.958672,"f1":0.54717,"loss":0.018253,"jfi":0.999902},{"round":34,"auc":0.961353,"f1":0.5,"loss":0.021046,"jfi":0.999895},{"round":35,"auc":0.958192,"f1":0.559486,"loss":0.016691,"jfi":0.999905},{"round":36,"auc":0.962263,"f1":0.438287,"loss":0.023273,"jfi":0.999907},{"round":37,"auc":0.955129,"f1":0.563107,"loss":0.017226,"jfi":0.999895},{"round":38,"auc":0.961325,"f1":0.48468,"loss":0.020636,"jfi":0.999907},{"round":39,"auc":0.958144,"f1":0.464,"loss":0.020906,"jfi":0.999903},{"round":40,"auc":0.959421,"f1":0.472826,"loss":0.021365,"jfi":0.999918},{"round":41,"auc":0.955988,"f1":0.520958,"loss":0.019498,"jfi":0.99989},{"round":42,"auc":0.959739,"f1":0.517857,"loss":0.018236,"jfi":0.999897},{"round":43,"auc":0.954163,"f1":0.564935,"loss":0.016486,"jfi":0.999903},{"round":44,"auc":0.955237,"f1":0.54717,"loss":0.016884,"jfi":0.999902},{"round":45,"auc":0.956926,"f1":0.552381,"loss":0.01714,"jfi":0.99989},{"round":46,"auc":0.956605,"f1":0.563107,"loss":0.01668,"jfi":0.999881},{"round":47,"auc":0.958743,"f1":0.557692,"loss":0.01748,"jfi":0.999881},{"round":48,"auc":0.960246,"f1":0.6121,"loss":0.016383,"jfi":0.999891},{"round":49,"auc":0.961408,"f1":0.491525,"loss":0.02078,"jfi":0.999859},{"round":50,"auc":0.954514,"f1":0.572368,"loss":0.016648,"jfi":0.999894},{"round":51,"auc":0.957312,"f1":0.574257,"loss":0.016854,"jfi":0.999883},{"round":52,"auc":0.957474,"f1":0.545455,"loss":0.017878,"jfi":0.999881},{"round":53,"auc":0.95528,"f1":0.548896,"loss":0.016561,"jfi":0.999901},{"round":54,"auc":0.954854,"f1":0.537037,"loss":0.017745,"jfi":0.999903},{"round":55,"auc":0.960426,"f1":0.505814,"loss":0.021786,"jfi":0.999896},{"round":56,"auc":0.956231,"f1":0.479339,"loss":0.020625,"jfi":0.999918},{"round":57,"auc":0.952789,"f1":0.519403,"loss":0.019053,"jfi":0.999906},{"round":58,"auc":0.956677,"f1":0.520958,"loss":0.019489,"jfi":0.999904},{"round":59,"auc":0.955868,"f1":0.545455,"loss":0.018149,"jfi":0.999902},{"round":60,"auc":0.957554,"f1":0.517857,"loss":0.018575,"jfi":0.999904}],"FedAvg_NoDP":[{"round":1,"auc":0.952436,"f1":0.563107,"loss":0.023705,"jfi":0.999893},{"round":2,"auc":0.958771,"f1":0.593857,"loss":0.016939,"jfi":0.99989},{"round":3,"auc":0.957333,"f1":0.55414,"loss":0.01696,"jfi":0.999887},{"round":4,"auc":0.956229,"f1":0.666667,"loss":0.01586,"jfi":0.999891},{"round":5,"auc":0.958488,"f1":0.508772,"loss":0.020532,"jfi":0.999907},{"round":6,"auc":0.955246,"f1":0.53211,"loss":0.017955,"jfi":0.999899},{"round":7,"auc":0.953312,"f1":0.564935,"loss":0.017388,"jfi":0.999896},{"round":8,"auc":0.954184,"f1":0.587838,"loss":0.016864,"jfi":0.999902},{"round":9,"auc":0.960911,"f1":0.472826,"loss":0.02211,"jfi":0.999873},{"round":10,"auc":0.961873,"f1":0.505814,"loss":0.021079,"jfi":0.999909},{"round":11,"auc":0.960036,"f1":0.608392,"loss":0.017287,"jfi":0.999922},{"round":12,"auc":0.957655,"f1":0.59589,"loss":0.016933,"jfi":0.999906},{"round":13,"auc":0.959471,"f1":0.540373,"loss":0.01756,"jfi":0.999894},{"round":14,"auc":0.959042,"f1":0.570492,"loss":0.015096,"jfi":0.999898},{"round":15,"auc":0.957276,"f1":0.527273,"loss":0.01908,"jfi":0.999883},{"round":16,"auc":0.957184,"f1":0.528875,"loss":0.018935,"jfi":0.999901},{"round":17,"auc":0.955817,"f1":0.540373,"loss":0.017708,"jfi":0.999884},{"round":18,"auc":0.959906,"f1":0.483333,"loss":0.019996,"jfi":0.999883},{"round":19,"auc":0.960678,"f1":0.527273,"loss":0.021441,"jfi":0.999862},{"round":20,"auc":0.958768,"f1":0.511765,"loss":0.019753,"jfi":0.99991},{"round":21,"auc":0.963555,"f1":0.409412,"loss":0.02653,"jfi":0.999887},{"round":22,"auc":0.960746,"f1":0.494318,"loss":0.020627,"jfi":0.999876},{"round":23,"auc":0.959017,"f1":0.56129,"loss":0.017349,"jfi":0.9999},{"round":24,"auc":0.958716,"f1":0.53211,"loss":0.019518,"jfi":0.999913},{"round":25,"auc":0.960612,"f1":0.459103,"loss":0.022349,"jfi":0.999912},{"round":26,"auc":0.956709,"f1":0.510264,"loss":0.019396,"jfi":0.999907},{"round":27,"auc":0.961283,"f1":0.461538,"loss":0.019655,"jfi":0.999883},{"round":28,"auc":0.958446,"f1":0.540373,"loss":0.017979,"jfi":0.999886},{"round":29,"auc":0.963223,"f1":0.456693,"loss":0.022543,"jfi":0.999901},{"round":30,"auc":0.958667,"f1":0.55414,"loss":0.017014,"jfi":0.999903},{"round":31,"auc":0.960992,"f1":0.504348,"loss":0.019532,"jfi":0.999879},{"round":32,"auc":0.954395,"f1":0.597938,"loss":0.015637,"jfi":0.999882},{"round":33,"auc":0.95698,"f1":0.527273,"loss":0.017653,"jfi":0.999899},{"round":34,"auc":0.959271,"f1":0.56129,"loss":0.018576,"jfi":0.99987},{"round":35,"auc":0.959487,"f1":0.542056,"loss":0.018031,"jfi":0.999901},{"round":36,"auc":0.957756,"f1":0.537037,"loss":0.018277,"jfi":0.999877},{"round":37,"auc":0.958136,"f1":0.504348,"loss":0.020689,"jfi":0.999886},{"round":38,"auc":0.957394,"f1":0.587838,"loss":0.017001,"jfi":0.999901},{"round":39,"auc":0.962045,"f1":0.47541,"loss":0.023165,"jfi":0.999881},{"round":40,"auc":0.960053,"f1":0.533742,"loss":0.019381,"jfi":0.9999},{"round":41,"auc":0.958647,"f1":0.495726,"loss":0.020392,"jfi":0.999911},{"round":42,"auc":0.961023,"f1":0.454308,"loss":0.022642,"jfi":0.999892},{"round":43,"auc":0.959849,"f1":0.520958,"loss":0.018967,"jfi":0.999888},{"round":44,"auc":0.955916,"f1":0.573333,"loss":0.018312,"jfi":0.999891},{"round":45,"auc":0.955815,"f1":0.568627,"loss":0.018088,"jfi":0.999895},{"round":46,"auc":0.959149,"f1":0.514793,"loss":0.020692,"jfi":0.999895},{"round":47,"auc":0.959323,"f1":0.527273,"loss":0.019515,"jfi":0.999902},{"round":48,"auc":0.960117,"f1":0.520958,"loss":0.018925,"jfi":0.999895},{"round":49,"auc":0.959591,"f1":0.537037,"loss":0.018433,"jfi":0.999904},{"round":50,"auc":0.955563,"f1":0.505814,"loss":0.020016,"jfi":0.999914},{"round":51,"auc":0.956381,"f1":0.535385,"loss":0.018729,"jfi":0.999907},{"round":52,"auc":0.957722,"f1":0.527273,"loss":0.018698,"jfi":0.999905},{"round":53,"auc":0.956047,"f1":0.528875,"loss":0.018261,"jfi":0.999895},{"round":54,"auc":0.958137,"f1":0.570492,"loss":0.018723,"jfi":0.999874},{"round":55,"auc":0.959196,"f1":0.583893,"loss":0.017857,"jfi":0.999895},{"round":56,"auc":0.959619,"f1":0.595156,"loss":0.016576,"jfi":0.999897},{"round":57,"auc":0.960407,"f1":0.609929,"loss":0.015039,"jfi":0.999893},{"round":58,"auc":0.958819,"f1":0.517857,"loss":0.02013,"jfi":0.999899},{"round":59,"auc":0.962312,"f1":0.469003,"loss":0.022038,"jfi":0.999876},{"round":60,"auc":0.960345,"f1":0.513274,"loss":0.020246,"jfi":0.999891}],"FedAvg_Sparsification":[{"round":1,"auc":0.951229,"f1":0.576159,"loss":0.024388,"jfi":0.999896},{"round":2,"auc":0.954335,"f1":0.583893,"loss":0.016819,"jfi":0.999903},{"round":3,"auc":0.957713,"f1":0.519403,"loss":0.02039,"jfi":0.999891},{"round":4,"auc":0.957771,"f1":0.524096,"loss":0.019028,"jfi":0.999904},{"round":5,"auc":0.957344,"f1":0.570492,"loss":0.016779,"jfi":0.999902},{"round":6,"auc":0.959698,"f1":0.552381,"loss":0.017921,"jfi":0.999898},{"round":7,"auc":0.955186,"f1":0.501441,"loss":0.019053,"jfi":0.999895},{"round":8,"auc":0.956538,"f1":0.562092,"loss":0.01657,"jfi":0.999898},{"round":9,"auc":0.957144,"f1":0.527273,"loss":0.018959,"jfi":0.999864},{"round":10,"auc":0.956925,"f1":0.511765,"loss":0.019022,"jfi":0.999896},{"round":11,"auc":0.958002,"f1":0.530488,"loss":0.018417,"jfi":0.99991},{"round":12,"auc":0.953856,"f1":0.552381,"loss":0.017179,"jfi":0.999897},{"round":13,"auc":0.953258,"f1":0.58194,"loss":0.017421,"jfi":0.999901},{"round":14,"auc":0.958907,"f1":0.471545,"loss":0.02186,"jfi":0.999911},{"round":15,"auc":0.961058,"f1":0.530488,"loss":0.018661,"jfi":0.999915},{"round":16,"auc":0.959495,"f1":0.537037,"loss":0.018789,"jfi":0.999913},{"round":17,"auc":0.957667,"f1":0.51632,"loss":0.018976,"jfi":0.999919},{"round":18,"auc":0.958905,"f1":0.491525,"loss":0.02009,"jfi":0.999911},{"round":19,"auc":0.956745,"f1":0.535385,"loss":0.019147,"jfi":0.99991},{"round":20,"auc":0.954571,"f1":0.639405,"loss":0.01529,"jfi":0.999889},{"round":21,"auc":0.95751,"f1":0.556634,"loss":0.016257,"jfi":0.999881},{"round":22,"auc":0.95945,"f1":0.54717,"loss":0.01848,"jfi":0.999898},{"round":23,"auc":0.956752,"f1":0.651515,"loss":0.015851,"jfi":0.999883},{"round":24,"auc":0.959445,"f1":0.58194,"loss":0.016644,"jfi":0.999883},{"round":25,"auc":0.95746,"f1":0.632353,"loss":0.015892,"jfi":0.999907},{"round":26,"auc":0.962058,"f1":0.583051,"loss":0.015993,"jfi":0.999861},{"round":27,"auc":0.959238,"f1":0.559486,"loss":0.017016,"jfi":0.999907},{"round":28,"auc":0.960937,"f1":0.498567,"loss":0.019696,"jfi":0.999866},{"round":29,"auc":0.957729,"f1":0.563107,"loss":0.017023,"jfi":0.999891},{"round":30,"auc":0.958142,"f1":0.563107,"loss":0.016903,"jfi":0.99989},{"round":31,"auc":0.958767,"f1":0.550633,"loss":0.01806,"jfi":0.9999},{"round":32,"auc":0.96224,"f1":0.548896,"loss":0.017862,"jfi":0.999912},{"round":33,"auc":0.957585,"f1":0.583893,"loss":0.017402,"jfi":0.999903},{"round":34,"auc":0.962165,"f1":0.47027,"loss":0.02104,"jfi":0.999861},{"round":35,"auc":0.960153,"f1":0.479339,"loss":0.020383,"jfi":0.999897},{"round":36,"auc":0.954615,"f1":0.507289,"loss":0.019408,"jfi":0.999899},{"round":37,"auc":0.957952,"f1":0.56129,"loss":0.017742,"jfi":0.999893},{"round":38,"auc":0.952175,"f1":0.520958,"loss":0.018755,"jfi":0.999901},{"round":39,"auc":0.95777,"f1":0.48468,"loss":0.020153,"jfi":0.999908},{"round":40,"auc":0.961571,"f1":0.528875,"loss":0.019754,"jfi":0.999889},{"round":41,"auc":0.956311,"f1":0.578073,"loss":0.016877,"jfi":0.999896},{"round":42,"auc":0.956869,"f1":0.548896,"loss":0.018094,"jfi":0.999903},{"round":43,"auc":0.956381,"f1":0.56129,"loss":0.016288,"jfi":0.999907},{"round":44,"auc":0.95862,"f1":0.537037,"loss":0.018597,"jfi":0.999894},{"round":45,"auc":0.955813,"f1":0.555911,"loss":0.01633,"jfi":0.999877},{"round":46,"auc":0.957267,"f1":0.52568,"loss":0.018631,"jfi":0.999904},{"round":47,"auc":0.953569,"f1":0.494318,"loss":0.020117,"jfi":0.999896},{"round":48,"auc":0.960056,"f1":0.462766,"loss":0.022123,"jfi":0.999906},{"round":49,"auc":0.961542,"f1":0.54717,"loss":0.018069,"jfi":0.999909},{"round":50,"auc":0.959378,"f1":0.54375,"loss":0.017929,"jfi":0.999907},{"round":51,"auc":0.957859,"f1":0.490141,"loss":0.021209,"jfi":0.999922},{"round":52,"auc":0.954819,"f1":0.511765,"loss":0.019665,"jfi":0.999915},{"round":53,"auc":0.956155,"f1":0.5387,"loss":0.01876,"jfi":0.999903},{"round":54,"auc":0.957132,"f1":0.5387,"loss":0.018238,"jfi":0.999903},{"round":55,"auc":0.956035,"f1":0.540373,"loss":0.017012,"jfi":0.999889},{"round":56,"auc":0.960039,"f1":0.486034,"loss":0.020184,"jfi":0.999884},{"round":57,"auc":0.960245,"f1":0.545455,"loss":0.017528,"jfi":0.999896},{"round":58,"auc":0.958318,"f1":0.634686,"loss":0.016769,"jfi":0.9999},{"round":59,"auc":0.958147,"f1":0.58,"loss":0.01707,"jfi":0.99991},{"round":60,"auc":0.954933,"f1":0.570492,"loss":0.017397,"jfi":0.999875}],"FedProx_DP":[{"round":1,"auc":0.952256,"f1":0.550633,"loss":0.024597,"jfi":0.999893},{"round":2,"auc":0.957505,"f1":0.58,"loss":0.016998,"jfi":0.999893},{"round":3,"auc":0.955912,"f1":0.530488,"loss":0.018432,"jfi":0.999903},{"round":4,"auc":0.963004,"f1":0.432836,"loss":0.023538,"jfi":0.999907},{"round":5,"auc":0.962271,"f1":0.540373,"loss":0.018695,"jfi":0.999894},{"round":6,"auc":0.962401,"f1":0.472826,"loss":0.02123,"jfi":0.999885},{"round":7,"auc":0.956952,"f1":0.528875,"loss":0.018665,"jfi":0.999912},{"round":8,"auc":0.960644,"f1":0.494318,"loss":0.021422,"jfi":0.999883},{"round":9,"auc":0.956861,"f1":0.548896,"loss":0.018476,"jfi":0.9999},{"round":10,"auc":0.964084,"f1":0.467742,"loss":0.022691,"jfi":0.999882},{"round":11,"auc":0.957646,"f1":0.522523,"loss":0.018884,"jfi":0.999904},{"round":12,"auc":0.962384,"f1":0.419277,"loss":0.025272,"jfi":0.999899},{"round":13,"auc":0.958051,"f1":0.497143,"loss":0.020381,"jfi":0.999846},{"round":14,"auc":0.958043,"f1":0.522523,"loss":0.020324,"jfi":0.999894},{"round":15,"auc":0.960431,"f1":0.501441,"loss":0.021777,"jfi":0.999915},{"round":16,"auc":0.954809,"f1":0.550633,"loss":0.017477,"jfi":0.999887},{"round":17,"auc":0.951348,"f1":0.54375,"loss":0.016759,"jfi":0.999895},{"round":18,"auc":0.958784,"f1":0.510264,"loss":0.019276,"jfi":0.999905},{"round":19,"auc":0.958269,"f1":0.54717,"loss":0.017211,"jfi":0.999887},{"round":20,"auc":0.960449,"f1":0.52568,"loss":0.018712,"jfi":0.999904},{"round":21,"auc":0.95994,"f1":0.497143,"loss":0.020054,"jfi":0.999905},{"round":22,"auc":0.956942,"f1":0.555911,"loss":0.01697,"jfi":0.999908},{"round":23,"auc":0.95395,"f1":0.535385,"loss":0.0178,"jfi":0.999878},{"round":24,"auc":0.955995,"f1":0.511765,"loss":0.019557,"jfi":0.999887},{"round":25,"auc":0.954906,"f1":0.559486,"loss":0.017911,"jfi":0.999907},{"round":26,"auc":0.960343,"f1":0.47541,"loss":0.02201,"jfi":0.999909},{"round":27,"auc":0.960581,"f1":0.479339,"loss":0.020747,"jfi":0.999906},{"round":28,"auc":0.954998,"f1":0.5387,"loss":0.017812,"jfi":0.999886},{"round":29,"auc":0.959371,"f1":0.545455,"loss":0.017527,"jfi":0.999886},{"round":30,"auc":0.962163,"f1":0.438287,"loss":0.02537,"jfi":0.999912},{"round":31,"auc":0.962712,"f1":0.5,"loss":0.01959,"jfi":0.999912},{"round":32,"auc":0.96196,"f1":0.451948,"loss":0.021635,"jfi":0.99992},{"round":33,"auc":0.961981,"f1":0.459103,"loss":0.021593,"jfi":0.999907},{"round":34,"auc":0.964013,"f1":0.460317,"loss":0.023654,"jfi":0.999871},{"round":35,"auc":0.960401,"f1":0.55414,"loss":0.017517,"jfi":0.999887},{"round":36,"auc":0.954594,"f1":0.572368,"loss":0.016488,"jfi":0.999906},{"round":37,"auc":0.954399,"f1":0.540373,"loss":0.019351,"jfi":0.999891},{"round":38,"auc":0.954783,"f1":0.524096,"loss":0.019174,"jfi":0.9999},{"round":39,"auc":0.957563,"f1":0.568627,"loss":0.016604,"jfi":0.999899},{"round":40,"auc":0.959259,"f1":0.505814,"loss":0.018759,"jfi":0.999883},{"round":41,"auc":0.957098,"f1":0.555911,"loss":0.016843,"jfi":0.999889},{"round":42,"auc":0.958586,"f1":0.557692,"loss":0.016977,"jfi":0.999886},{"round":43,"auc":0.957863,"f1":0.537037,"loss":0.01856,"jfi":0.999913},{"round":44,"auc":0.959145,"f1":0.530488,"loss":0.018359,"jfi":0.999903},{"round":45,"auc":0.954232,"f1":0.537037,"loss":0.019825,"jfi":0.999885},{"round":46,"auc":0.959301,"f1":0.498567,"loss":0.021263,"jfi":0.999896},{"round":47,"auc":0.954838,"f1":0.58,"loss":0.016589,"jfi":0.999888},{"round":48,"auc":0.959109,"f1":0.545455,"loss":0.017902,"jfi":0.999893},{"round":49,"auc":0.960007,"f1":0.481994,"loss":0.02131,"jfi":0.999906},{"round":50,"auc":0.960457,"f1":0.528875,"loss":0.018882,"jfi":0.999914},{"round":51,"auc":0.958388,"f1":0.528875,"loss":0.019119,"jfi":0.999901},{"round":52,"auc":0.957771,"f1":0.535385,"loss":0.018879,"jfi":0.999894},{"round":53,"auc":0.956622,"f1":0.578073,"loss":0.016196,"jfi":0.999907},{"round":54,"auc":0.958488,"f1":0.497143,"loss":0.01941,"jfi":0.999915},{"round":55,"auc":0.957533,"f1":0.52568,"loss":0.01866,"jfi":0.999913},{"round":56,"auc":0.960402,"f1":0.440506,"loss":0.023147,"jfi":0.999903},{"round":57,"auc":0.958711,"f1":0.47541,"loss":0.020913,"jfi":0.999918},{"round":58,"auc":0.955742,"f1":0.559486,"loss":0.018327,"jfi":0.999906},{"round":59,"auc":0.96211,"f1":0.437186,"loss":0.024709,"jfi":0.999911},{"round":60,"auc":0.963399,"f1":0.474114,"loss":0.022451,"jfi":0.999891}],"FedProx_NoDP":[{"round":1,"auc":0.955014,"f1":0.481994,"loss":0.026537,"jfi":0.999903},{"round":2,"auc":0.960226,"f1":0.513274,"loss":0.020072,"jfi":0.999923},{"round":3,"auc":0.962278,"f1":0.505814,"loss":0.021485,"jfi":0.999869},{"round":4,"auc":0.960518,"f1":0.603509,"loss":0.017109,"jfi":0.999905},{"round":5,"auc":0.961872,"f1":0.495726,"loss":0.021246,"jfi":0.999877},{"round":6,"auc":0.961013,"f1":0.540373,"loss":0.017664,"jfi":0.999896},{"round":7,"auc":0.954724,"f1":0.559486,"loss":0.015944,"jfi":0.999886},{"round":8,"auc":0.962636,"f1":0.461538,"loss":0.021736,"jfi":0.999881},{"round":9,"auc":0.962163,"f1":0.522523,"loss":0.018799,"jfi":0.999882},{"round":10,"auc":0.957542,"f1":0.522523,"loss":0.018714,"jfi":0.999906},{"round":11,"auc":0.956643,"f1":0.54717,"loss":0.01716,"jfi":0.999905},{"round":12,"auc":0.956803,"f1":0.55414,"loss":0.017443,"jfi":0.9999},{"round":13,"auc":0.95528,"f1":0.55414,"loss":0.017828,"jfi":0.999894},{"round":14,"auc":0.960839,"f1":0.505814,"loss":0.02189,"jfi":0.999891},{"round":15,"auc":0.958236,"f1":0.555911,"loss":0.018249,"jfi":0.999912},{"round":16,"auc":0.954484,"f1":0.568627,"loss":0.016771,"jfi":0.9999},{"round":17,"auc":0.957129,"f1":0.528875,"loss":0.018687,"jfi":0.999897},{"round":18,"auc":0.957288,"f1":0.519403,"loss":0.017835,"jfi":0.999898},{"round":19,"auc":0.956876,"f1":0.583893,"loss":0.016695,"jfi":0.999894},{"round":20,"auc":0.957868,"f1":0.649057,"loss":0.016099,"jfi":0.99991},{"round":21,"auc":0.960432,"f1":0.53211,"loss":0.019355,"jfi":0.999904},{"round":22,"auc":0.959475,"f1":0.53211,"loss":0.019242,"jfi":0.9999},{"round":23,"auc":0.958674,"f1":0.535385,"loss":0.017653,"jfi":0.999903},{"round":24,"auc":0.955413,"f1":0.533742,"loss":0.018558,"jfi":0.999907},{"round":25,"auc":0.962421,"f1":0.465241,"loss":0.021683,"jfi":0.999903},{"round":26,"auc":0.957037,"f1":0.540373,"loss":0.018793,"jfi":0.999897},{"round":27,"auc":0.960608,"f1":0.511765,"loss":0.021007,"jfi":0.999887},{"round":28,"auc":0.956531,"f1":0.50289,"loss":0.019905,"jfi":0.999909},{"round":29,"auc":0.956551,"f1":0.555911,"loss":0.017554,"jfi":0.999904},{"round":30,"auc":0.961549,"f1":0.514793,"loss":0.021487,"jfi":0.999907},{"round":31,"auc":0.95675,"f1":0.552381,"loss":0.018332,"jfi":0.999907},{"round":32,"auc":0.956357,"f1":0.557692,"loss":0.0176,"jfi":0.999907},{"round":33,"auc":0.958388,"f1":0.576159,"loss":0.017413,"jfi":0.999894},{"round":34,"auc":0.958508,"f1":0.530488,"loss":0.018634,"jfi":0.999901},{"round":35,"auc":0.96394,"f1":0.435,"loss":0.02326,"jfi":0.99991},{"round":36,"auc":0.958159,"f1":0.527273,"loss":0.019162,"jfi":0.999904},{"round":37,"auc":0.954889,"f1":0.501441,"loss":0.019277,"jfi":0.999912},{"round":38,"auc":0.956823,"f1":0.530488,"loss":0.01882,"jfi":0.99991},{"round":39,"auc":0.961586,"f1":0.443878,"loss":0.022982,"jfi":0.999889},{"round":40,"auc":0.961747,"f1":0.51632,"loss":0.018379,"jfi":0.999894},{"round":41,"auc":0.957081,"f1":0.55414,"loss":0.017038,"jfi":0.999893},{"round":42,"auc":0.958938,"f1":0.568627,"loss":0.017219,"jfi":0.999899},{"round":43,"auc":0.958511,"f1":0.555911,"loss":0.018049,"jfi":0.999904},{"round":44,"auc":0.957128,"f1":0.54717,"loss":0.018097,"jfi":0.999893},{"round":45,"auc":0.962749,"f1":0.454308,"loss":0.022961,"jfi":0.999878},{"round":46,"auc":0.960364,"f1":0.55414,"loss":0.017642,"jfi":0.99988},{"round":47,"auc":0.961143,"f1":0.404651,"loss":0.024438,"jfi":0.999871},{"round":48,"auc":0.957298,"f1":0.589831,"loss":0.016225,"jfi":0.999902},{"round":49,"auc":0.963793,"f1":0.42963,"loss":0.022819,"jfi":0.999889},{"round":50,"auc":0.960882,"f1":0.454308,"loss":0.022275,"jfi":0.999891},{"round":51,"auc":0.955873,"f1":0.507289,"loss":0.018234,"jfi":0.999887},{"round":52,"auc":0.958656,"f1":0.461538,"loss":0.021162,"jfi":0.999902},{"round":53,"auc":0.956879,"f1":0.576159,"loss":0.016492,"jfi":0.9999},{"round":54,"auc":0.956961,"f1":0.576159,"loss":0.015741,"jfi":0.999884},{"round":55,"auc":0.956558,"f1":0.555911,"loss":0.017003,"jfi":0.9999},{"round":56,"auc":0.957469,"f1":0.535385,"loss":0.019114,"jfi":0.999863},{"round":57,"auc":0.958658,"f1":0.501441,"loss":0.020254,"jfi":0.999902},{"round":58,"auc":0.963382,"f1":0.442748,"loss":0.023571,"jfi":0.999887},{"round":59,"auc":0.955791,"f1":0.528875,"loss":0.01767,"jfi":0.999903},{"round":60,"auc":0.96013,"f1":0.53211,"loss":0.018288,"jfi":0.9999}],"FedProx_Sparsification":[{"round":1,"auc":0.952148,"f1":0.520958,"loss":0.026311,"jfi":0.9999},{"round":2,"auc":0.961912,"f1":0.634686,"loss":0.014732,"jfi":0.999904},{"round":3,"auc":0.961343,"f1":0.421308,"loss":0.024217,"jfi":0.999914},{"round":4,"auc":0.957805,"f1":0.548896,"loss":0.018531,"jfi":0.999914},{"round":5,"auc":0.959222,"f1":0.557692,"loss":0.017939,"jfi":0.999914},{"round":6,"auc":0.956781,"f1":0.520958,"loss":0.019097,"jfi":0.999889},{"round":7,"auc":0.954706,"f1":0.535385,"loss":0.017994,"jfi":0.999891},{"round":8,"auc":0.955733,"f1":0.533742,"loss":0.019205,"jfi":0.9999},{"round":9,"auc":0.959635,"f1":0.528875,"loss":0.01907,"jfi":0.999901},{"round":10,"auc":0.958734,"f1":0.563107,"loss":0.017209,"jfi":0.999894},{"round":11,"auc":0.959348,"f1":0.524096,"loss":0.018618,"jfi":0.99991},{"round":12,"auc":0.958393,"f1":0.566775,"loss":0.017396,"jfi":0.999887},{"round":13,"auc":0.958211,"f1":0.566775,"loss":0.016958,"jfi":0.999897},{"round":14,"auc":0.95961,"f1":0.56129,"loss":0.017429,"jfi":0.999884},{"round":15,"auc":0.956474,"f1":0.6121,"loss":0.015563,"jfi":0.99989},{"round":16,"auc":0.961693,"f1":0.435,"loss":0.025693,"jfi":0.999903},{"round":17,"auc":0.95825,"f1":0.5,"loss":0.022397,"jfi":0.999903},{"round":18,"auc":0.95973,"f1":0.465241,"loss":0.021626,"jfi":0.999919},{"round":19,"auc":0.964827,"f1":0.402778,"loss":0.025715,"jfi":0.99988},{"round":20,"auc":0.95974,"f1":0.51632,"loss":0.019249,"jfi":0.999912},{"round":21,"auc":0.956371,"f1":0.508772,"loss":0.019686,"jfi":0.999911},{"round":22,"auc":0.955493,"f1":0.559486,"loss":0.017358,"jfi":0.999902},{"round":23,"auc":0.955732,"f1":0.548896,"loss":0.018001,"jfi":0.999889},{"round":24,"auc":0.96258,"f1":0.411348,"loss":0.024765,"jfi":0.999882},{"round":25,"auc":0.959609,"f1":0.58,"loss":0.016125,"jfi":0.999891},{"round":26,"auc":0.958308,"f1":0.566775,"loss":0.016784,"jfi":0.999885},{"round":27,"auc":0.957935,"f1":0.587838,"loss":0.017224,"jfi":0.999879},{"round":28,"auc":0.95941,"f1":0.550633,"loss":0.018002,"jfi":0.999905},{"round":29,"auc":0.958165,"f1":0.537037,"loss":0.017772,"jfi":0.999892},{"round":30,"auc":0.954349,"f1":0.5387,"loss":0.018561,"jfi":0.999898},{"round":31,"auc":0.955618,"f1":0.550633,"loss":0.01731,"jfi":0.999907},{"round":32,"auc":0.957937,"f1":0.456693,"loss":0.021363,"jfi":0.999897},{"round":33,"auc":0.961829,"f1":0.471545,"loss":0.021793,"jfi":0.999912},{"round":34,"auc":0.958165,"f1":0.5387,"loss":0.01828,"jfi":0.999888},{"round":35,"auc":0.964172,"f1":0.447301,"loss":0.023655,"jfi":0.999899},{"round":36,"auc":0.960447,"f1":0.55414,"loss":0.018696,"jfi":0.99991},{"round":37,"auc":0.956086,"f1":0.517857,"loss":0.019602,"jfi":0.999891},{"round":38,"auc":0.956871,"f1":0.568627,"loss":0.018322,"jfi":0.999889},{"round":39,"auc":0.955808,"f1":0.585034,"loss":0.015964,"jfi":0.999899},{"round":40,"auc":0.95969,"f1":0.537037,"loss":0.018693,"jfi":0.99991},{"round":41,"auc":0.956883,"f1":0.491525,"loss":0.020329,"jfi":0.999905},{"round":42,"auc":0.956834,"f1":0.505814,"loss":0.019983,"jfi":0.999908},{"round":43,"auc":0.957651,"f1":0.511765,"loss":0.019741,"jfi":0.999905},{"round":44,"auc":0.959792,"f1":0.517857,"loss":0.019628,"jfi":0.999909},{"round":45,"auc":0.962337,"f1":0.455497,"loss":0.02245,"jfi":0.999902},{"round":46,"auc":0.960854,"f1":0.453125,"loss":0.022713,"jfi":0.999876},{"round":47,"auc":0.958406,"f1":0.545455,"loss":0.017908,"jfi":0.999899},{"round":48,"auc":0.961417,"f1":0.464,"loss":0.022807,"jfi":0.999884},{"round":49,"auc":0.959164,"f1":0.552381,"loss":0.017438,"jfi":0.999914},{"round":50,"auc":0.959406,"f1":0.495726,"loss":0.019378,"jfi":0.999882},{"round":51,"auc":0.959535,"f1":0.54375,"loss":0.018162,"jfi":0.999892},{"round":52,"auc":0.958223,"f1":0.535385,"loss":0.018269,"jfi":0.999912},{"round":53,"auc":0.955381,"f1":0.52568,"loss":0.018198,"jfi":0.999902},{"round":54,"auc":0.960778,"f1":0.48468,"loss":0.021737,"jfi":0.999911},{"round":55,"auc":0.959065,"f1":0.542056,"loss":0.018128,"jfi":0.999899},{"round":56,"auc":0.953977,"f1":0.576159,"loss":0.017114,"jfi":0.999898},{"round":57,"auc":0.957086,"f1":0.511765,"loss":0.019232,"jfi":0.999886},{"round":58,"auc":0.955641,"f1":0.55414,"loss":0.018182,"jfi":0.999908},{"round":59,"auc":0.955195,"f1":0.519403,"loss":0.019831,"jfi":0.999909},{"round":60,"auc":0.957475,"f1":0.51632,"loss":0.019513,"jfi":0.999908}],"PersFL_DP":[{"round":1,"auc":0.951896,"f1":0.535385,"loss":0.025758,"jfi":0.999902},{"round":2,"auc":0.953919,"f1":0.610526,"loss":0.016244,"jfi":0.999899},{"round":3,"auc":0.959061,"f1":0.551282,"loss":0.017033,"jfi":0.999906},{"round":4,"auc":0.958852,"f1":0.55414,"loss":0.018225,"jfi":0.999913},{"round":5,"auc":0.959148,"f1":0.551282,"loss":0.018693,"jfi":0.999898},{"round":6,"auc":0.955948,"f1":0.574257,"loss":0.017835,"jfi":0.999896},{"round":7,"auc":0.958611,"f1":0.548896,"loss":0.018563,"jfi":0.999903},{"round":8,"auc":0.958565,"f1":0.563107,"loss":0.017354,"jfi":0.999896},{"round":9,"auc":0.961913,"f1":0.471545,"loss":0.021783,"jfi":0.999882},{"round":10,"auc":0.962563,"f1":0.407494,"loss":0.025828,"jfi":0.999892},{"round":11,"auc":0.961946,"f1":0.530488,"loss":0.01757,"jfi":0.999906},{"round":12,"auc":0.962166,"f1":0.498567,"loss":0.0208,"jfi":0.999899},{"round":13,"auc":0.956786,"f1":0.528875,"loss":0.020294,"jfi":0.999894},{"round":14,"auc":0.962187,"f1":0.456693,"loss":0.025137,"jfi":0.999872},{"round":15,"auc":0.957245,"f1":0.522523,"loss":0.019219,"jfi":0.999908},{"round":16,"auc":0.960713,"f1":0.467742,"loss":0.021648,"jfi":0.999899},{"round":17,"auc":0.95393,"f1":0.535385,"loss":0.017774,"jfi":0.999908},{"round":18,"auc":0.96173,"f1":0.455497,"loss":0.024617,"jfi":0.999912},{"round":19,"auc":0.95894,"f1":0.486034,"loss":0.021033,"jfi":0.999847},{"round":20,"auc":0.962086,"f1":0.474114,"loss":0.021394,"jfi":0.999915},{"round":21,"auc":0.963043,"f1":0.437186,"loss":0.023564,"jfi":0.999879},{"round":22,"auc":0.956069,"f1":0.570492,"loss":0.015268,"jfi":0.999893},{"round":23,"auc":0.953972,"f1":0.501441,"loss":0.01965,"jfi":0.999906},{"round":24,"auc":0.957388,"f1":0.618705,"loss":0.016963,"jfi":0.999918},{"round":25,"auc":0.962747,"f1":0.457895,"loss":0.022694,"jfi":0.999863},{"round":26,"auc":0.963365,"f1":0.427518,"loss":0.025173,"jfi":0.999873},{"round":27,"auc":0.95877,"f1":0.563107,"loss":0.017093,"jfi":0.999913},{"round":28,"auc":0.961672,"f1":0.50289,"loss":0.022052,"jfi":0.999891},{"round":29,"auc":0.957378,"f1":0.53211,"loss":0.019077,"jfi":0.999897},{"round":30,"auc":0.960013,"f1":0.54717,"loss":0.017989,"jfi":0.999913},{"round":31,"auc":0.955522,"f1":0.520958,"loss":0.019201,"jfi":0.999894},{"round":32,"auc":0.958058,"f1":0.524096,"loss":0.019651,"jfi":0.999895},{"round":33,"auc":0.963413,"f1":0.443878,"loss":0.023704,"jfi":0.999908},{"round":34,"auc":0.964361,"f1":0.459103,"loss":0.023854,"jfi":0.999869},{"round":35,"auc":0.962434,"f1":0.453125,"loss":0.023388,"jfi":0.999913},{"round":36,"auc":0.959113,"f1":0.552381,"loss":0.01801,"jfi":0.999903},{"round":37,"auc":0.961954,"f1":0.497143,"loss":0.020101,"jfi":0.999915},{"round":38,"auc":0.957581,"f1":0.519403,"loss":0.019669,"jfi":0.999895},{"round":39,"auc":0.961484,"f1":0.456693,"loss":0.021278,"jfi":0.999901},{"round":40,"auc":0.963088,"f1":0.435,"loss":0.024356,"jfi":0.999852},{"round":41,"auc":0.962441,"f1":0.564935,"loss":0.017721,"jfi":0.999895},{"round":42,"auc":0.956798,"f1":0.55414,"loss":0.017923,"jfi":0.9999},{"round":43,"auc":0.959687,"f1":0.528875,"loss":0.01919,"jfi":0.999907},{"round":44,"auc":0.955397,"f1":0.545455,"loss":0.018155,"jfi":0.999893},{"round":45,"auc":0.958352,"f1":0.517857,"loss":0.01914,"jfi":0.999906},{"round":46,"auc":0.961793,"f1":0.441624,"loss":0.023354,"jfi":0.999864},{"round":47,"auc":0.963933,"f1":0.42963,"loss":0.026424,"jfi":0.99989},{"round":48,"auc":0.956677,"f1":0.557692,"loss":0.01777,"jfi":0.999901},{"round":49,"auc":0.958574,"f1":0.457895,"loss":0.022631,"jfi":0.999897},{"round":50,"auc":0.958626,"f1":0.528875,"loss":0.019344,"jfi":0.999899},{"round":51,"auc":0.955233,"f1":0.557692,"loss":0.016474,"jfi":0.999899},{"round":52,"auc":0.956491,"f1":0.589041,"loss":0.015896,"jfi":0.999892},{"round":53,"auc":0.959631,"f1":0.528875,"loss":0.018149,"jfi":0.999907},{"round":54,"auc":0.957469,"f1":0.542056,"loss":0.018598,"jfi":0.999897},{"round":55,"auc":0.955444,"f1":0.519403,"loss":0.018361,"jfi":0.999908},{"round":56,"auc":0.955812,"f1":0.54717,"loss":0.017568,"jfi":0.999908},{"round":57,"auc":0.958149,"f1":0.481994,"loss":0.021004,"jfi":0.999905},{"round":58,"auc":0.958645,"f1":0.514793,"loss":0.02035,"jfi":0.999902},{"round":59,"auc":0.958088,"f1":0.54717,"loss":0.019994,"jfi":0.999899},{"round":60,"auc":0.961908,"f1":0.507289,"loss":0.021654,"jfi":0.999902}],"PersFL_NoDP":[{"round":1,"auc":0.953159,"f1":0.550633,"loss":0.025122,"jfi":0.999904},{"round":2,"auc":0.959455,"f1":0.566775,"loss":0.017389,"jfi":0.999903},{"round":3,"auc":0.958427,"f1":0.548896,"loss":0.016984,"jfi":0.999895},{"round":4,"auc":0.954314,"f1":0.559486,"loss":0.016927,"jfi":0.999897},{"round":5,"auc":0.953693,"f1":0.501441,"loss":0.019064,"jfi":0.999902},{"round":6,"auc":0.955995,"f1":0.552381,"loss":0.017059,"jfi":0.999876},{"round":7,"auc":0.958755,"f1":0.54375,"loss":0.017245,"jfi":0.999885},{"round":8,"auc":0.960241,"f1":0.497143,"loss":0.01843,"jfi":0.999896},{"round":9,"auc":0.955619,"f1":0.564935,"loss":0.016569,"jfi":0.999889},{"round":10,"auc":0.957305,"f1":0.54717,"loss":0.018773,"jfi":0.999894},{"round":11,"auc":0.960101,"f1":0.542056,"loss":0.018443,"jfi":0.999917},{"round":12,"auc":0.962017,"f1":0.56129,"loss":0.018056,"jfi":0.999892},{"round":13,"auc":0.959181,"f1":0.656489,"loss":0.015048,"jfi":0.999911},{"round":14,"auc":0.95669,"f1":0.528875,"loss":0.017545,"jfi":0.999907},{"round":15,"auc":0.955149,"f1":0.555911,"loss":0.015729,"jfi":0.999877},{"round":16,"auc":0.953121,"f1":0.548896,"loss":0.016023,"jfi":0.999898},{"round":17,"auc":0.959011,"f1":0.605634,"loss":0.017449,"jfi":0.999905},{"round":18,"auc":0.956648,"f1":0.566775,"loss":0.018129,"jfi":0.999897},{"round":19,"auc":0.95825,"f1":0.572368,"loss":0.016961,"jfi":0.999908},{"round":20,"auc":0.958904,"f1":0.527273,"loss":0.018822,"jfi":0.999901},{"round":21,"auc":0.956019,"f1":0.524096,"loss":0.019693,"jfi":0.999909},{"round":22,"auc":0.959681,"f1":0.5,"loss":0.020069,"jfi":0.999909},{"round":23,"auc":0.961844,"f1":0.457895,"loss":0.023551,"jfi":0.999868},{"round":24,"auc":0.957773,"f1":0.530488,"loss":0.01858,"jfi":0.999918},{"round":25,"auc":0.962196,"f1":0.443878,"loss":0.023898,"jfi":0.999908},{"round":26,"auc":0.962223,"f1":0.522523,"loss":0.020155,"jfi":0.999909},{"round":27,"auc":0.957537,"f1":0.545455,"loss":0.017826,"jfi":0.999907},{"round":28,"auc":0.958976,"f1":0.514793,"loss":0.021295,"jfi":0.999911},{"round":29,"auc":0.956323,"f1":0.54375,"loss":0.018552,"jfi":0.999887},{"round":30,"auc":0.955884,"f1":0.54375,"loss":0.019263,"jfi":0.999846},{"round":31,"auc":0.961583,"f1":0.471545,"loss":0.020761,"jfi":0.999913},{"round":32,"auc":0.962159,"f1":0.447301,"loss":0.022294,"jfi":0.999899},{"round":33,"auc":0.961699,"f1":0.552381,"loss":0.017609,"jfi":0.999902},{"round":34,"auc":0.955127,"f1":0.51632,"loss":0.019227,"jfi":0.999913},{"round":35,"auc":0.956089,"f1":0.548896,"loss":0.017587,"jfi":0.999909},{"round":36,"auc":0.957449,"f1":0.552381,"loss":0.016987,"jfi":0.999904},{"round":37,"auc":0.957119,"f1":0.530488,"loss":0.01667,"jfi":0.999895},{"round":38,"auc":0.953381,"f1":0.572368,"loss":0.016694,"jfi":0.999887},{"round":39,"auc":0.954124,"f1":0.56129,"loss":0.018151,"jfi":0.999893},{"round":40,"auc":0.955412,"f1":0.56129,"loss":0.017876,"jfi":0.9999},{"round":41,"auc":0.962316,"f1":0.460317,"loss":0.02297,"jfi":0.999884},{"round":42,"auc":0.957946,"f1":0.492918,"loss":0.019356,"jfi":0.999896},{"round":43,"auc":0.957795,"f1":0.487395,"loss":0.01914,"jfi":0.999902},{"round":44,"auc":0.957836,"f1":0.540373,"loss":0.018458,"jfi":0.999905},{"round":45,"auc":0.955798,"f1":0.54375,"loss":0.017531,"jfi":0.999904},{"round":46,"auc":0.9613,"f1":0.462766,"loss":0.021664,"jfi":0.9999},{"round":47,"auc":0.957917,"f1":0.520958,"loss":0.019933,"jfi":0.99991},{"round":48,"auc":0.956586,"f1":0.5387,"loss":0.017801,"jfi":0.99991},{"round":49,"auc":0.955207,"f1":0.65625,"loss":0.014145,"jfi":0.999897},{"round":50,"auc":0.959881,"f1":0.508772,"loss":0.020313,"jfi":0.99988},{"round":51,"auc":0.952566,"f1":0.54717,"loss":0.017436,"jfi":0.999881},{"round":52,"auc":0.95959,"f1":0.540373,"loss":0.018948,"jfi":0.999881},{"round":53,"auc":0.960695,"f1":0.58194,"loss":0.018037,"jfi":0.999897},{"round":54,"auc":0.963142,"f1":0.602076,"loss":0.016337,"jfi":0.999914},{"round":55,"auc":0.962353,"f1":0.568627,"loss":0.017808,"jfi":0.99989},{"round":56,"auc":0.958473,"f1":0.542056,"loss":0.018077,"jfi":0.999893},{"round":57,"auc":0.959208,"f1":0.519403,"loss":0.018606,"jfi":0.9999},{"round":58,"auc":0.956386,"f1":0.552381,"loss":0.016794,"jfi":0.999902},{"round":59,"auc":0.960281,"f1":0.52568,"loss":0.017805,"jfi":0.999896},{"round":60,"auc":0.959953,"f1":0.644195,"loss":0.01607,"jfi":0.999899}],"PersFL_Sparsification":[{"round":1,"auc":0.953908,"f1":0.535385,"loss":0.025411,"jfi":0.999892},{"round":2,"auc":0.960869,"f1":0.555911,"loss":0.018808,"jfi":0.999906},{"round":3,"auc":0.959215,"f1":0.519403,"loss":0.018769,"jfi":0.999903},{"round":4,"auc":0.958984,"f1":0.540373,"loss":0.018691,"jfi":0.999892},{"round":5,"auc":0.956666,"f1":0.550633,"loss":0.016918,"jfi":0.999893},{"round":6,"auc":0.961974,"f1":0.457895,"loss":0.023346,"jfi":0.99989},{"round":7,"auc":0.957663,"f1":0.448454,"loss":0.023063,"jfi":0.999893},{"round":8,"auc":0.957178,"f1":0.517857,"loss":0.019103,"jfi":0.999908},{"round":9,"auc":0.956507,"f1":0.537037,"loss":0.017121,"jfi":0.999899},{"round":10,"auc":0.958855,"f1":0.507289,"loss":0.020042,"jfi":0.999904},{"round":11,"auc":0.957898,"f1":0.557692,"loss":0.017909,"jfi":0.999911},{"round":12,"auc":0.957222,"f1":0.54717,"loss":0.017738,"jfi":0.9999},{"round":13,"auc":0.960813,"f1":0.511765,"loss":0.019174,"jfi":0.999895},{"round":14,"auc":0.958252,"f1":0.537037,"loss":0.018904,"jfi":0.999868},{"round":15,"auc":0.956884,"f1":0.550633,"loss":0.017817,"jfi":0.9999},{"round":16,"auc":0.959186,"f1":0.585859,"loss":0.016604,"jfi":0.999861},{"round":17,"auc":0.955265,"f1":0.51632,"loss":0.019139,"jfi":0.999892},{"round":18,"auc":0.956094,"f1":0.522523,"loss":0.019027,"jfi":0.999888},{"round":19,"auc":0.95739,"f1":0.54717,"loss":0.017465,"jfi":0.999873},{"round":20,"auc":0.963715,"f1":0.431762,"loss":0.024137,"jfi":0.999881},{"round":21,"auc":0.962913,"f1":0.498567,"loss":0.021645,"jfi":0.999892},{"round":22,"auc":0.954928,"f1":0.535385,"loss":0.018265,"jfi":0.999901},{"round":23,"auc":0.961445,"f1":0.481994,"loss":0.021432,"jfi":0.999896},{"round":24,"auc":0.957655,"f1":0.53211,"loss":0.018519,"jfi":0.999892},{"round":25,"auc":0.956718,"f1":0.54375,"loss":0.018783,"jfi":0.99989},{"round":26,"auc":0.957696,"f1":0.5387,"loss":0.018636,"jfi":0.9999},{"round":27,"auc":0.955222,"f1":0.537037,"loss":0.018404,"jfi":0.999905},{"round":28,"auc":0.956075,"f1":0.548896,"loss":0.01757,"jfi":0.999883},{"round":29,"auc":0.960752,"f1":0.483333,"loss":0.020327,"jfi":0.999897},{"round":30,"auc":0.961649,"f1":0.446154,"loss":0.023642,"jfi":0.999866},{"round":31,"auc":0.959336,"f1":0.559486,"loss":0.017288,"jfi":0.999897},{"round":32,"auc":0.958349,"f1":0.537037,"loss":0.017954,"jfi":0.999915},{"round":33,"auc":0.957929,"f1":0.603509,"loss":0.016958,"jfi":0.999909},{"round":34,"auc":0.957708,"f1":0.537037,"loss":0.020214,"jfi":0.999909},{"round":35,"auc":0.955269,"f1":0.555911,"loss":0.016895,"jfi":0.999881},{"round":36,"auc":0.959597,"f1":0.5,"loss":0.019724,"jfi":0.999909},{"round":37,"auc":0.958876,"f1":0.480663,"loss":0.021364,"jfi":0.999908},{"round":38,"auc":0.960264,"f1":0.451948,"loss":0.022892,"jfi":0.999893},{"round":39,"auc":0.956145,"f1":0.54375,"loss":0.018244,"jfi":0.999907},{"round":40,"auc":0.957301,"f1":0.47541,"loss":0.021741,"jfi":0.999916},{"round":41,"auc":0.958346,"f1":0.501441,"loss":0.0191,"jfi":0.999906},{"round":42,"auc":0.958455,"f1":0.563107,"loss":0.017621,"jfi":0.999901},{"round":43,"auc":0.958467,"f1":0.56129,"loss":0.017243,"jfi":0.999903},{"round":44,"auc":0.957242,"f1":0.557692,"loss":0.017944,"jfi":0.999902},{"round":45,"auc":0.960632,"f1":0.492918,"loss":0.021491,"jfi":0.999884},{"round":46,"auc":0.963965,"f1":0.433915,"loss":0.022657,"jfi":0.999895},{"round":47,"auc":0.961613,"f1":0.517857,"loss":0.018913,"jfi":0.999885},{"round":48,"auc":0.957388,"f1":0.545455,"loss":0.018049,"jfi":0.9999},{"round":49,"auc":0.956073,"f1":0.559486,"loss":0.017501,"jfi":0.999913},{"round":50,"auc":0.955661,"f1":0.514793,"loss":0.01904,"jfi":0.999912},{"round":51,"auc":0.956874,"f1":0.511765,"loss":0.018167,"jfi":0.999895},{"round":52,"auc":0.957249,"f1":0.583893,"loss":0.015681,"jfi":0.999893},{"round":53,"auc":0.955627,"f1":0.542056,"loss":0.017517,"jfi":0.999901},{"round":54,"auc":0.955322,"f1":0.578073,"loss":0.017581,"jfi":0.999907},{"round":55,"auc":0.954744,"f1":0.530864,"loss":0.017796,"jfi":0.999895},{"round":56,"auc":0.960074,"f1":0.533742,"loss":0.0202,"jfi":0.999909},{"round":57,"auc":0.958372,"f1":0.593857,"loss":0.017008,"jfi":0.999897},{"round":58,"auc":0.957655,"f1":0.568627,"loss":0.017271,"jfi":0.999888},{"round":59,"auc":0.960107,"f1":0.479339,"loss":0.020824,"jfi":0.999874},{"round":60,"auc":0.961862,"f1":0.421308,"loss":0.024518,"jfi":0.999899}]};
+
+const CONFIGS = [
+  {key:'FedAvg_NoDP',algo:'FedAvg',priv:'NoDP',color:'#378ADD',dash:[]},
+  {key:'FedAvg_DP',algo:'FedAvg',priv:'DP',color:'#378ADD',dash:[5,3]},
+  {key:'FedAvg_Sparsification',algo:'FedAvg',priv:'Sparsification',color:'#378ADD',dash:[2,2]},
+  {key:'FedProx_NoDP',algo:'FedProx',priv:'NoDP',color:'#1D9E75',dash:[]},
+  {key:'FedProx_DP',algo:'FedProx',priv:'DP',color:'#1D9E75',dash:[5,3]},
+  {key:'FedProx_Sparsification',algo:'FedProx',priv:'Sparsification',color:'#1D9E75',dash:[2,2]},
+  {key:'PersFL_NoDP',algo:'PersFL',priv:'NoDP',color:'#D4537E',dash:[]},
+  {key:'PersFL_DP',algo:'PersFL',priv:'DP',color:'#D4537E',dash:[5,3]},
+  {key:'PersFL_Sparsification',algo:'PersFL',priv:'Sparsification',color:'#D4537E',dash:[2,2]},
+];
+
+const LABELS = Array.from({length:60},(_,i)=>i+1);
+let currentMetric = 'auc';
+let activeAlgos = new Set(['FedAvg','FedProx','PersFL']);
+let activePrivs = new Set(['NoDP','DP','Sparsification']);
+
+function buildLegend() {
+  const row = document.getElementById('legendRow');
+  row.innerHTML = '';
+  CONFIGS.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'leg-item';
+    const sq = document.createElement('div');
+    sq.className = 'leg-sq';
+    sq.style.background = c.color;
+    if (c.dash.length) sq.style.background = 'none';
+    if (c.dash.length === 2) {
+      sq.style.borderTop = `2px dotted ${c.color}`;
+    } else if (c.dash.length) {
+      sq.style.borderTop = `2px dashed ${c.color}`;
+    } else {
+      sq.style.borderTop = `2px solid ${c.color}`;
+    }
+    item.appendChild(sq);
+    const lbl = document.createElement('span');
+    lbl.textContent = `${c.algo} ${c.priv}`;
+    item.appendChild(lbl);
+    row.appendChild(item);
+  });
+}
+
+let lineChart;
+function buildLineChart() {
+  const ctx = document.getElementById('lineChart').getContext('2d');
+  const datasets = CONFIGS.map(c => ({
+    label: `${c.algo} ${c.priv}`,
+    data: ROUNDS[c.key].map(r => r[currentMetric]),
+    borderColor: c.color,
+    borderWidth: 1.5,
+    borderDash: c.dash,
+    pointRadius: 0,
+    tension: 0.3,
+    hidden: !activeAlgos.has(c.algo) || !activePrivs.has(c.priv),
+  }));
+  const yLabels = {auc:'AUC', f1:'F1 Score', loss:'Loss'};
+  lineChart = new Chart(ctx, {
+    type: 'line',
+    data: { labels: LABELS, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(4)}` }
+      }},
+      scales: {
+        x: { title: { display: true, text: 'Round', font:{size:11}, color:'#888' }, ticks: { maxTicksLimit: 10, font:{size:10} }, grid: { display: false } },
+        y: { title: { display: true, text: yLabels[currentMetric], font:{size:11}, color:'#888' }, ticks: { font:{size:10}, callback: v => v.toFixed(3) }, grid: { color: 'rgba(128,128,128,0.1)' } }
+      }
+    }
+  });
+}
+
+function updateLineChart() {
+  lineChart.data.datasets.forEach((ds, i) => {
+    const c = CONFIGS[i];
+    ds.data = ROUNDS[c.key].map(r => r[currentMetric]);
+    ds.hidden = !activeAlgos.has(c.algo) || !activePrivs.has(c.priv);
+  });
+  const yLabels = {auc:'AUC', f1:'F1 Score', loss:'Loss'};
+  lineChart.options.scales.y.title.text = yLabels[currentMetric];
+  lineChart.update();
+}
+
+function switchMetric(m, btn) {
+  currentMetric = m;
+  document.querySelectorAll('.mbtn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateLineChart();
+}
+
+function toggleFilter(type, val, btn) {
+  const set = type === 'algo' ? activeAlgos : activePrivs;
+  if (set.has(val)) { set.delete(val); btn.classList.remove('on'); }
+  else { set.add(val); btn.classList.add('on'); }
+  updateLineChart();
+}
+
+function buildBarChart() {
+  const ctx = document.getElementById('barChart').getContext('2d');
+  const labels = MASTER.map(d => `${d.algo}\n${d.priv}`);
+  const colors = MASTER.map(d => d.algo==='FedAvg'?'#378ADD': d.algo==='FedProx'?'#1D9E75':'#D4537E');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: MASTER.map(d => d.algo+' '+d.priv),
+      datasets: [{
+        data: MASTER.map(d => d.best_auc),
+        backgroundColor: colors,
+        borderRadius: 3,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: { label: ctx => 'Best AUC: ' + ctx.parsed.y.toFixed(4) }
+      }},
+      scales: {
+        x: { ticks: { font:{size:9}, maxRotation: 30 }, grid: { display: false } },
+        y: { min: 0.960, max: 0.966, ticks: { font:{size:10}, callback: v => v.toFixed(3) }, grid: { color: 'rgba(128,128,128,0.1)' } }
+      }
+    }
+  });
+}
+
+function buildF1Chart() {
+  const ctx = document.getElementById('f1Chart').getContext('2d');
+  const colors = MASTER.map(d => d.algo==='FedAvg'?'#378ADD': d.algo==='FedProx'?'#1D9E75':'#D4537E');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: MASTER.map(d => d.algo+' '+d.priv),
+      datasets: [{
+        data: MASTER.map(d => d.best_f1),
+        backgroundColor: colors,
+        borderRadius: 3,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: { label: ctx => 'Best F1: ' + ctx.parsed.y.toFixed(4) }
+      }},
+      scales: {
+        x: { ticks: { font:{size:9}, maxRotation: 30 }, grid: { display: false } },
+        y: { min: 0.38, ticks: { font:{size:10}, callback: v => v.toFixed(2) }, grid: { color: 'rgba(128,128,128,0.1)' } }
+      }
+    }
+  });
+}
+
+function buildLeaderboard() {
+  const sorted = [...MASTER].sort((a,b) => b.best_auc - a.best_auc);
+  const table = document.getElementById('leaderTable');
+  const algoClass = a => a==='FedAvg'?'pill-blue':a==='FedProx'?'pill-teal':'pill-pink';
+  table.innerHTML = `<thead><tr>
+    <th>#</th><th>Algorithm</th><th>Privacy</th>
+    <th>Best AUC</th><th>Final AUC</th><th>Best F1</th>
+    <th>σ(AUC)</th><th>JFI</th><th>Time (s)</th>
+  </tr></thead><tbody>` + sorted.map((d,i) => `<tr class="${i===0?'top':''}">
+    <td class="rank">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td>
+    <td><span class="pill ${algoClass(d.algo)}">${d.algo}</span></td>
+    <td><span style="font-size:11px;color:var(--color-text-secondary)">${d.priv}</span></td>
+    <td><strong>${d.best_auc.toFixed(4)}</strong></td>
+    <td>${d.final_auc.toFixed(4)}</td>
+    <td>${d.best_f1.toFixed(4)}</td>
+    <td>${d.sigma_auc.toFixed(5)}</td>
+    <td>${d.jfi.toFixed(6)}</td>
+    <td>${d.time.toFixed(1)}</td>
+  </tr>`).join('') + '</tbody>';
+}
+
+buildLegend();
+buildLineChart();
+buildBarChart();
+buildF1Chart();
+buildLeaderboard();
+</script>

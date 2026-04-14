@@ -1,0 +1,27 @@
+{
+  "combination": "PersFL_MLP_Sparsification",
+  "best_round": 2,
+  "best_auc": 0.976061,
+  "best_f1": 0.59434,
+  "final_metrics": {
+    "round": 60,
+    "auc": 0.94832,
+    "f1": 0.678571,
+    "precision": 0.814286,
+    "recall": 0.581633,
+    "ks_stat": 0.837636,
+    "recall_1fpr": 0.806122,
+    "prec_at_k": 0.267606,
+    "sigma_auc": 0.001466,
+    "jfi": 0.999998,
+    "loss": 0.005216,
+    "timestamp": "2026-03-30 16:28:43"
+  },
+  "bank_aucs_final": [
+    0.998501,
+    0.996055,
+    null,
+    0.999128,
+    1.0
+  ]
+}
