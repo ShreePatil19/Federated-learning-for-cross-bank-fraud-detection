@@ -1,0 +1,177 @@
+[{"stream_name":"stderr","time":9.062244986,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.062334052,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.062342459,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.062346616,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":9.882645243,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.882700322,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.882707789,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.882713671,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":25.723448765,"data":"cuML not available — CPU mode\n"}
+,{"stream_name":"stdout","time":25.723571284,"data":"All imports OK\n"}
+,{"stream_name":"stdout","time":25.860332848,"data":"Config OK | WEIGHTS_DIR=weights_fedprox | SEED=42\n"}
+,{"stream_name":"stdout","time":25.987507841,"data":"MLP helpers ready\n"}
+,{"stream_name":"stdout","time":26.027869907,"data":"Client training functions ready\n"}
+,{"stream_name":"stdout","time":26.062165329,"data":"FedProx aggregation ready\n"}
+,{"stream_name":"stdout","time":26.100652943,"data":"FL round functions ready\n"}
+,{"stream_name":"stdout","time":26.156148131,"data":"Metrics ready\n"}
+,{"stream_name":"stdout","time":26.201058857,"data":"FedProx training functions ready\n"}
+,{"stream_name":"stdout","time":26.243590989,"data":"Evaluation function ready\n"}
+,{"stream_name":"stdout","time":26.28949982,"data":"Plotting functions ready\n"}
+,{"stream_name":"stdout","time":26.356241983,"data":"Loading SAML-D dataset...\n"}
+,{"stream_name":"stdout","time":26.356281433,"data":"Loading SAML-D (chunked): /kaggle/input/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml/SAML-D.csv\n"}
+,{"stream_name":"stdout","time":53.488226905,"data":"  9,504,852 rows | fraud: 9,873 (0.104%)\n"}
+,{"stream_name":"stdout","time":106.640446503,"data":"  SAML-D features: (9504852, 10)\n"}
+,{"stream_name":"stdout","time":107.141840853,"data":"Preprocessing done | 1.3m\n"}
+,{"stream_name":"stdout","time":107.141889382,"data":"\n"}
+,{"stream_name":"stdout","time":107.141901243,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":107.141905191,"data":"  FedProx | SAML-D | alpha=0.1 | 4 banks\n"}
+,{"stream_name":"stdout","time":107.141908901,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":115.411287623,"data":"Partition [SAML] 4 banks | alpha=0.1:\n"}
+,{"stream_name":"stdout","time":115.411405469,"data":"  SAML-Bank0          : 2,374,694 txns |   950 fraud (0.040%) | train=650 val=131 test=169 fraud\n"}
+,{"stream_name":"stdout","time":115.411417796,"data":"  SAML-Bank1          : 2,373,745 txns |     1 fraud (0.000%) | train=0 val=1 test=0 fraud\n"}
+,{"stream_name":"stdout","time":115.411424322,"data":"  SAML-Bank2          : 2,382,666 txns | 8,922 fraud (0.374%) | train=6117 val=1277 test=1528 fraud\n"}
+,{"stream_name":"stdout","time":115.411430052,"data":"  SAML-Bank3          : 2,373,747 txns |     0 fraud (0.000%) | train=0 val=0 test=0 fraud\n"}
+,{"stream_name":"stdout","time":115.411436891,"data":"\n"}
+,{"stream_name":"stdout","time":115.411461067,"data":"FedProx MLP training:\n"}
+,{"stream_name":"stdout","time":1174.422634792,"data":"  [FedProx] 20 rounds  5 10 15 20 \n"}
+,{"stream_name":"stdout","time":1174.42282083,"data":"  Weights saved: weights_fedprox/saml_alpha0.1_fedprox_mlp.npz\n"}
+,{"stream_name":"stdout","time":1174.422833125,"data":"\n"}
+,{"stream_name":"stdout","time":1174.422839179,"data":"FedProx LightGBM ensemble:\n"}
+,{"stream_name":"stdout","time":1255.824494358,"data":"  [FedProx-lightgbm] training per-client trees... 2 models trained\n"}
+,{"stream_name":"stdout","time":1255.8245619,"data":"FedProx XGBoost ensemble:\n"}
+,{"stream_name":"stdout","time":1322.849345618,"data":"  [FedProx-xgboost] training per-client trees... 2 models trained\n"}
+,{"stream_name":"stdout","time":1322.849435071,"data":"\n"}
+,{"stream_name":"stdout","time":1322.849443717,"data":"Evaluating...\n"}
+,{"stream_name":"stdout","time":1389.38739726,"data":"\n"}
+,{"stream_name":"stdout","time":1389.387444957,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":1389.387453681,"data":"FedProx — alpha=0.1 — SAML-D · Temporal Split · Dirichlet\n"}
+,{"stream_name":"stdout","time":1389.387461298,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":1389.387467671,"data":"   strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_wf1  client_equity  worst_bank_f1  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud\n"}
+,{"stream_name":"stdout","time":1389.387473879,"data":"fedprox_xgb 0.0477 0.0094 0.0071 0.0029  0.4848       0.1911 0.8089     0.2750   0.4887         0.0043            0.0     0.7375             4                   2              1697\n"}
+,{"stream_name":"stdout","time":1389.387479639,"data":"fedprox_lgb 0.0454 0.0085 0.0068 0.0028  0.4884       0.1722 0.8278     0.2800   0.4931         0.0041            0.0     0.7250             4                   2              1697\n"}
+,{"stream_name":"stdout","time":1389.387491195,"data":"fedprox_mlp 0.0329 0.0322 0.0422 0.0234  0.0907       0.7644 0.2356     0.2175   0.1249         0.0300            0.0     0.6375             4                   2              1697\n"}
+,{"stream_name":"stdout","time":1389.387496256,"data":"\n"}
+,{"stream_name":"stdout","time":1389.387499827,"data":"BEST: fedprox_xgb  AUPRC=0.0477  MCC=0.0094  F2=0.0071\n"}
+,{"stream_name":"stdout","time":1390.604294118,"data":"Saved: weights_fedprox/saml_alpha0.1_fedprox_results.png\n"}
+,{"stream_name":"stdout","time":1390.604337887,"data":"  Done | 22.7m\n"}
+,{"stream_name":"stdout","time":1390.604342819,"data":"\n"}
+,{"stream_name":"stdout","time":1390.604369696,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":1390.604376172,"data":"  FedProx | SAML-D | alpha=0.5 | 4 banks\n"}
+,{"stream_name":"stdout","time":1390.604382388,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":1398.355468636,"data":"Partition [SAML] 4 banks | alpha=0.5:\n"}
+,{"stream_name":"stdout","time":1398.35552252,"data":"  SAML-Bank0          : 2,376,637 txns | 2,893 fraud (0.122%) | train=2007 val=392 test=494 fraud\n"}
+,{"stream_name":"stdout","time":1398.355546308,"data":"  SAML-Bank1          : 2,374,055 txns |   311 fraud (0.013%) | train=209 val=50 test=52 fraud\n"}
+,{"stream_name":"stdout","time":1398.355553767,"data":"  SAML-Bank2          : 2,380,264 txns | 6,520 fraud (0.274%) | train=4454 val=939 test=1127 fraud\n"}
+,{"stream_name":"stdout","time":1398.355560108,"data":"  SAML-Bank3          : 2,373,896 txns |   149 fraud (0.006%) | train=96 val=29 test=24 fraud\n"}
+,{"stream_name":"stdout","time":1398.355584298,"data":"\n"}
+,{"stream_name":"stdout","time":1398.355588743,"data":"FedProx MLP training:\n"}
+,{"stream_name":"stdout","time":6319.92378949,"data":"  [FedProx] 20 rounds  5 10 15 20 \n"}
+,{"stream_name":"stdout","time":6319.923880207,"data":"  Weights saved: weights_fedprox/saml_alpha0.5_fedprox_mlp.npz\n"}
+,{"stream_name":"stdout","time":6319.92388819,"data":"\n"}
+,{"stream_name":"stdout","time":6319.923893736,"data":"FedProx LightGBM ensemble:\n"}
+,{"stream_name":"stdout","time":6488.259862613,"data":"  [FedProx-lightgbm] training per-client trees... 4 models trained\n"}
+,{"stream_name":"stdout","time":6488.259906239,"data":"FedProx XGBoost ensemble:\n"}
+,{"stream_name":"stdout","time":6621.244099607,"data":"  [FedProx-xgboost] training per-client trees... 4 models trained\n"}
+,{"stream_name":"stdout","time":6621.244144818,"data":"\n"}
+,{"stream_name":"stdout","time":6621.244152052,"data":"Evaluating...\n"}
+,{"stream_name":"stdout","time":6745.63813697,"data":"\n"}
+,{"stream_name":"stdout","time":6745.638188788,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":6745.638199099,"data":"FedProx — alpha=0.5 — SAML-D · Temporal Split · Dirichlet\n"}
+,{"stream_name":"stdout","time":6745.638207541,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":6745.638215048,"data":"   strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_wf1  client_equity  worst_bank_f1  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud\n"}
+,{"stream_name":"stdout","time":6745.638225113,"data":"fedprox_lgb 0.0676 0.0113 0.0078 0.0032  0.7807       0.4202 0.5798     0.2800   0.8679         0.0033         0.0002     0.8375             4                   4              1697\n"}
+,{"stream_name":"stdout","time":6745.638237085,"data":"fedprox_xgb 0.0358 0.0114 0.0077 0.0031  0.6637       0.5057 0.4943     0.1275   0.7637         0.0030         0.0001     0.8000             4                   4              1697\n"}
+,{"stream_name":"stdout","time":6745.638242161,"data":"fedprox_mlp 0.0272 0.0373 0.0381 0.0187  0.2512       0.9722 0.0278     0.1550   0.3598         0.0187         0.0012     0.9000             4                   4              1697\n"}
+,{"stream_name":"stdout","time":6745.638266385,"data":"\n"}
+,{"stream_name":"stdout","time":6745.638274703,"data":"BEST: fedprox_lgb  AUPRC=0.0676  MCC=0.0113  F2=0.0078\n"}
+,{"stream_name":"stdout","time":6746.327997233,"data":"Saved: weights_fedprox/saml_alpha0.5_fedprox_results.png\n"}
+,{"stream_name":"stdout","time":6746.328044902,"data":"  Done | 112.0m\n"}
+,{"stream_name":"stdout","time":6746.328049854,"data":"\n"}
+,{"stream_name":"stdout","time":6746.328053572,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":6746.32805741,"data":"  FedProx | SAML-D | alpha=0.05 | 4 banks\n"}
+,{"stream_name":"stdout","time":6746.328061652,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":6754.779931963,"data":"Partition [SAML] 4 banks | alpha=0.05:\n"}
+,{"stream_name":"stdout","time":6754.779994458,"data":"  SAML-Bank0          : 2,373,854 txns |   110 fraud (0.005%) | train=78 val=12 test=20 fraud\n"}
+,{"stream_name":"stdout","time":6754.780003405,"data":"  SAML-Bank1          : 2,373,745 txns |     1 fraud (0.000%) | train=1 val=0 test=0 fraud\n"}
+,{"stream_name":"stdout","time":6754.780010875,"data":"  SAML-Bank2          : 2,383,506 txns | 9,762 fraud (0.410%) | train=6688 val=1397 test=1677 fraud\n"}
+,{"stream_name":"stdout","time":6754.780018155,"data":"  SAML-Bank3          : 2,373,747 txns |     0 fraud (0.000%) | train=0 val=0 test=0 fraud\n"}
+,{"stream_name":"stdout","time":6754.780043831,"data":"\n"}
+,{"stream_name":"stdout","time":6754.780049192,"data":"FedProx MLP training:\n"}
+,{"stream_name":"stdout","time":8389.488490757,"data":"  [FedProx] 20 rounds  5 10 15 20 \n"}
+,{"stream_name":"stdout","time":8389.488579861,"data":"  Weights saved: weights_fedprox/saml_alpha0.05_fedprox_mlp.npz\n"}
+,{"stream_name":"stdout","time":8389.48858722,"data":"\n"}
+,{"stream_name":"stdout","time":8389.488592741,"data":"FedProx LightGBM ensemble:\n"}
+,{"stream_name":"stdout","time":8480.109611304,"data":"  [FedProx-lightgbm] training per-client trees... 3 models trained\n"}
+,{"stream_name":"stdout","time":8480.109652746,"data":"FedProx XGBoost ensemble:\n"}
+,{"stream_name":"stdout","time":8556.13537693,"data":"  [FedProx-xgboost] training per-client trees... 3 models trained\n"}
+,{"stream_name":"stdout","time":8556.135419656,"data":"\n"}
+,{"stream_name":"stdout","time":8556.135426585,"data":"Evaluating...\n"}
+,{"stream_name":"stdout","time":8632.798927403,"data":"\n"}
+,{"stream_name":"stdout","time":8632.798969012,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":8632.798981951,"data":"FedProx — alpha=0.05 — SAML-D · Temporal Split · Dirichlet\n"}
+,{"stream_name":"stdout","time":8632.798987214,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":8632.798991215,"data":"   strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_wf1  client_equity  worst_bank_f1  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud\n"}
+,{"stream_name":"stdout","time":8632.798995383,"data":"fedprox_mlp 0.0418 0.0246 0.0299 0.0179  0.0977       0.9805 0.0195     0.1975   0.0958         0.0290            0.0     0.5750             4                   2              1697\n"}
+,{"stream_name":"stdout","time":8632.798999743,"data":"fedprox_lgb 0.0078 0.0043 0.0071 0.0059  0.0082       0.6352 0.3648     0.0650   0.0107         0.0102            0.0     0.6375             4                   2              1697\n"}
+,{"stream_name":"stdout","time":8632.799008762,"data":"fedprox_xgb 0.0059 0.0060 0.0068 0.0028  0.4485       0.2771 0.7229     0.0075   0.4686         0.0047            0.0     0.4250             4                   2              1697\n"}
+,{"stream_name":"stdout","time":8632.799012971,"data":"\n"}
+,{"stream_name":"stdout","time":8632.799017797,"data":"BEST: fedprox_mlp  AUPRC=0.0418  MCC=0.0246  F2=0.0299\n"}
+,{"stream_name":"stdout","time":8633.398557164,"data":"Saved: weights_fedprox/saml_alpha0.05_fedprox_results.png\n"}
+,{"stream_name":"stdout","time":8633.398596725,"data":"  Done | 143.5m\n"}
+,{"stream_name":"stdout","time":8633.398604138,"data":"\n"}
+,{"stream_name":"stdout","time":8633.398609892,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":8633.398615263,"data":"FEDPROX SWEEP COMPLETE\n"}
+,{"stream_name":"stdout","time":8633.398630568,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":8633.398634724,"data":"Total runtime: 143.5m\n"}
+,{"stream_name":"stdout","time":8633.398638356,"data":"\n"}
+,{"stream_name":"stdout","time":8633.398641829,"data":"Outputs in 'weights_fedprox':\n"}
+,{"stream_name":"stdout","time":8633.398646509,"data":"  fedprox_saml_combined.csv\n"}
+,{"stream_name":"stdout","time":8633.398650232,"data":"  saml_alpha0.05_fedprox_benchmark.csv\n"}
+,{"stream_name":"stdout","time":8633.398655181,"data":"  saml_alpha0.05_fedprox_fl_history.csv\n"}
+,{"stream_name":"stdout","time":8633.398696799,"data":"  saml_alpha0.05_fedprox_mlp.npz\n"}
+,{"stream_name":"stdout","time":8633.398700301,"data":"  saml_alpha0.05_fedprox_results.png\n"}
+,{"stream_name":"stdout","time":8633.398702983,"data":"  saml_alpha0.1_fedprox_benchmark.csv\n"}
+,{"stream_name":"stdout","time":8633.398705892,"data":"  saml_alpha0.1_fedprox_fl_history.csv\n"}
+,{"stream_name":"stdout","time":8633.398708572,"data":"  saml_alpha0.1_fedprox_mlp.npz\n"}
+,{"stream_name":"stdout","time":8633.398711208,"data":"  saml_alpha0.1_fedprox_results.png\n"}
+,{"stream_name":"stdout","time":8633.398713927,"data":"  saml_alpha0.5_fedprox_benchmark.csv\n"}
+,{"stream_name":"stdout","time":8633.398716638,"data":"  saml_alpha0.5_fedprox_fl_history.csv\n"}
+,{"stream_name":"stdout","time":8633.398719914,"data":"  saml_alpha0.5_fedprox_mlp.npz\n"}
+,{"stream_name":"stdout","time":8633.398722503,"data":"  saml_alpha0.5_fedprox_results.png\n"}
+,{"stream_name":"stdout","time":8633.457545566,"data":"FedProx — SAML-D · All Alphas · AUPRC Pivot\n"}
+,{"stream_name":"stdout","time":8633.486065467,"data":"strategy  fedprox_lgb  fedprox_mlp  fedprox_xgb\n"}
+,{"stream_name":"stdout","time":8633.48610635,"data":"alpha                                          \n"}
+,{"stream_name":"stdout","time":8633.486112397,"data":"0.05           0.0078       0.0418       0.0059\n"}
+,{"stream_name":"stdout","time":8633.486124664,"data":"0.10           0.0454       0.0329       0.0477\n"}
+,{"stream_name":"stdout","time":8633.486129213,"data":"0.50           0.0676       0.0272       0.0358\n"}
+,{"stream_name":"stdout","time":8633.486133107,"data":"\n"}
+,{"stream_name":"stdout","time":8633.486137193,"data":"FedProx — SAML-D · All Alphas · MCC Pivot\n"}
+,{"stream_name":"stdout","time":8633.486143204,"data":"strategy  fedprox_lgb  fedprox_mlp  fedprox_xgb\n"}
+,{"stream_name":"stdout","time":8633.486148097,"data":"alpha                                          \n"}
+,{"stream_name":"stdout","time":8633.486152672,"data":"0.05           0.0043       0.0246       0.0060\n"}
+,{"stream_name":"stdout","time":8633.486157483,"data":"0.10           0.0085       0.0322       0.0094\n"}
+,{"stream_name":"stdout","time":8633.486162227,"data":"0.50           0.0113       0.0373       0.0114\n"}
+,{"stream_name":"stdout","time":8633.486167144,"data":"\n"}
+,{"stream_name":"stdout","time":8633.486171418,"data":"FedProx — SAML-D · All Alphas · F2 Pivot\n"}
+,{"stream_name":"stdout","time":8633.486176067,"data":"strategy  fedprox_lgb  fedprox_mlp  fedprox_xgb\n"}
+,{"stream_name":"stdout","time":8633.486180468,"data":"alpha                                          \n"}
+,{"stream_name":"stdout","time":8633.486185243,"data":"0.05           0.0071       0.0299       0.0068\n"}
+,{"stream_name":"stdout","time":8633.486189873,"data":"0.10           0.0068       0.0422       0.0071\n"}
+,{"stream_name":"stdout","time":8633.486194423,"data":"0.50           0.0078       0.0381       0.0077\n"}
+,{"stream_name":"stdout","time":8633.486198757,"data":"\n"}
+,{"stream_name":"stdout","time":8633.486202593,"data":"── Top 3 Combinations by AUPRC ─────────────────────\n"}
+,{"stream_name":"stdout","time":8633.486207083,"data":"   strategy  alpha  auprc    mcc     f2\n"}
+,{"stream_name":"stdout","time":8633.486211087,"data":"fedprox_lgb    0.5 0.0676 0.0113 0.0078\n"}
+,{"stream_name":"stdout","time":8633.486215024,"data":"fedprox_xgb    0.1 0.0477 0.0094 0.0071\n"}
+,{"stream_name":"stdout","time":8633.486219185,"data":"fedprox_lgb    0.1 0.0454 0.0085 0.0068\n"}
+,{"stream_name":"stdout","time":8633.486228501,"data":"\n"}
+,{"stream_name":"stdout","time":8633.486231599,"data":"Final weights are saved in: weights_fedprox\n"}
+,{"stream_name":"stderr","time":8637.875921456,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":8637.875968472,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":8638.084537653,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":8638.084589105,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":8638.852655383,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":8639.260082287,"data":"[NbConvertApp] Writing 66928 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":8642.475001393,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":8643.769695963,"data":"[NbConvertApp] Writing 478386 bytes to __results__.html\n"}
+]

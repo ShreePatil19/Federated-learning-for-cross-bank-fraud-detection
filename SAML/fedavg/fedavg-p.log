@@ -1,0 +1,177 @@
+[{"stream_name":"stderr","time":7.970592944,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.970712044,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.970718324,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.970721934,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":8.651043669,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.651119029,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.651123559,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.651126309,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":21.827316786,"data":"cuML not available — CPU mode\n"}
+,{"stream_name":"stdout","time":21.827418876,"data":"All imports OK\n"}
+,{"stream_name":"stdout","time":21.932512986,"data":"Config OK | WEIGHTS_DIR=weights_fedavg | SEED=42\n"}
+,{"stream_name":"stdout","time":22.025441695,"data":"MLP helpers ready\n"}
+,{"stream_name":"stdout","time":22.055756688,"data":"Client training functions ready\n"}
+,{"stream_name":"stdout","time":22.080093011,"data":"FedAvg aggregation ready\n"}
+,{"stream_name":"stdout","time":22.106916223,"data":"FL round functions ready\n"}
+,{"stream_name":"stdout","time":22.142867617,"data":"Metrics ready\n"}
+,{"stream_name":"stdout","time":22.17431561,"data":"FedAvg training functions ready\n"}
+,{"stream_name":"stdout","time":22.206056193,"data":"Evaluation function ready\n"}
+,{"stream_name":"stdout","time":22.242541597,"data":"Plotting functions ready\n"}
+,{"stream_name":"stdout","time":22.28095879,"data":"Loading SAML-D dataset...\n"}
+,{"stream_name":"stdout","time":22.28101063,"data":"Loading SAML-D (chunked): /kaggle/input/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml/SAML-D.csv\n"}
+,{"stream_name":"stdout","time":40.919522197,"data":"  9,504,852 rows | fraud: 9,873 (0.104%)\n"}
+,{"stream_name":"stdout","time":76.328902258,"data":"  SAML-D features: (9504852, 10)\n"}
+,{"stream_name":"stdout","time":76.881883349,"data":"Preprocessing done | 0.9m\n"}
+,{"stream_name":"stdout","time":76.881927319,"data":"\n"}
+,{"stream_name":"stdout","time":76.881933429,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":76.881939309,"data":"  FedAvg | SAML-D | alpha=0.1 | 4 banks\n"}
+,{"stream_name":"stdout","time":76.881944189,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":84.522521445,"data":"Partition [SAML] 4 banks | alpha=0.1:\n"}
+,{"stream_name":"stdout","time":84.522568335,"data":"  SAML-Bank0          : 2,374,694 txns |   950 fraud (0.040%) | train=650 val=131 test=169 fraud\n"}
+,{"stream_name":"stdout","time":84.522573225,"data":"  SAML-Bank1          : 2,373,745 txns |     1 fraud (0.000%) | train=0 val=1 test=0 fraud\n"}
+,{"stream_name":"stdout","time":84.522576575,"data":"  SAML-Bank2          : 2,382,666 txns | 8,922 fraud (0.374%) | train=6117 val=1277 test=1528 fraud\n"}
+,{"stream_name":"stdout","time":84.522579805,"data":"  SAML-Bank3          : 2,373,747 txns |     0 fraud (0.000%) | train=0 val=0 test=0 fraud\n"}
+,{"stream_name":"stdout","time":84.522583315,"data":"\n"}
+,{"stream_name":"stdout","time":84.522586385,"data":"FedAvg MLP training:\n"}
+,{"stream_name":"stdout","time":469.693493966,"data":"  [FedAvg] 20 rounds  5 10 15 20 \n"}
+,{"stream_name":"stdout","time":469.693543866,"data":"  Weights saved: weights_fedavg/saml_alpha0.1_fedavg_mlp.npz\n"}
+,{"stream_name":"stdout","time":469.693550386,"data":"\n"}
+,{"stream_name":"stdout","time":469.693555755,"data":"FedAvg LightGBM ensemble:\n"}
+,{"stream_name":"stdout","time":528.903319028,"data":"  [FedAvg-lightgbm] training per-client trees... 2 models trained\n"}
+,{"stream_name":"stdout","time":528.903359768,"data":"FedAvg XGBoost ensemble:\n"}
+,{"stream_name":"stdout","time":581.675302271,"data":"  [FedAvg-xgboost] training per-client trees... 2 models trained\n"}
+,{"stream_name":"stdout","time":581.675348421,"data":"\n"}
+,{"stream_name":"stdout","time":581.675353821,"data":"Evaluating...\n"}
+,{"stream_name":"stdout","time":614.264973534,"data":"\n"}
+,{"stream_name":"stdout","time":614.265034343,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":614.265039794,"data":"FedAvg — alpha=0.1 — SAML-D · Temporal Split · Dirichlet\n"}
+,{"stream_name":"stdout","time":614.265044283,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":614.265048154,"data":"  strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_wf1  client_equity  worst_bank_f1  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud\n"}
+,{"stream_name":"stdout","time":614.265051414,"data":"fedavg_xgb 0.0477 0.0094 0.0071 0.0029  0.4848       0.1911 0.8089      0.275   0.4887         0.0043            0.0     0.7375             4                   2              1697\n"}
+,{"stream_name":"stdout","time":614.265062323,"data":"fedavg_lgb 0.0454 0.0085 0.0068 0.0028  0.4884       0.1722 0.8278      0.280   0.4931         0.0041            0.0     0.7250             4                   2              1697\n"}
+,{"stream_name":"stdout","time":614.265067843,"data":"fedavg_mlp 0.0318 0.0322 0.0414 0.0254  0.0822       0.7633 0.2367      0.220   0.1095         0.0275            0.0     0.6125             4                   2              1697\n"}
+,{"stream_name":"stdout","time":614.265073263,"data":"\n"}
+,{"stream_name":"stdout","time":614.265078214,"data":"BEST: fedavg_xgb  AUPRC=0.0477  MCC=0.0094  F2=0.0071\n"}
+,{"stream_name":"stdout","time":615.344194054,"data":"Saved: weights_fedavg/saml_alpha0.1_fedavg_results.png\n"}
+,{"stream_name":"stdout","time":615.344283754,"data":"  Done | 9.9m\n"}
+,{"stream_name":"stdout","time":615.344303824,"data":"\n"}
+,{"stream_name":"stdout","time":615.344311664,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":615.344318424,"data":"  FedAvg | SAML-D | alpha=0.5 | 4 banks\n"}
+,{"stream_name":"stdout","time":615.344324684,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":622.723971257,"data":"Partition [SAML] 4 banks | alpha=0.5:\n"}
+,{"stream_name":"stdout","time":622.724026177,"data":"  SAML-Bank0          : 2,376,637 txns | 2,893 fraud (0.122%) | train=2007 val=392 test=494 fraud\n"}
+,{"stream_name":"stdout","time":622.724034417,"data":"  SAML-Bank1          : 2,374,055 txns |   311 fraud (0.013%) | train=209 val=50 test=52 fraud\n"}
+,{"stream_name":"stdout","time":622.724040026,"data":"  SAML-Bank2          : 2,380,264 txns | 6,520 fraud (0.274%) | train=4454 val=939 test=1127 fraud\n"}
+,{"stream_name":"stdout","time":622.724045397,"data":"  SAML-Bank3          : 2,373,896 txns |   149 fraud (0.006%) | train=96 val=29 test=24 fraud\n"}
+,{"stream_name":"stdout","time":622.724075806,"data":"\n"}
+,{"stream_name":"stdout","time":622.724078406,"data":"FedAvg MLP training:\n"}
+,{"stream_name":"stdout","time":2975.628616214,"data":"  [FedAvg] 20 rounds  5 10 15 20 \n"}
+,{"stream_name":"stdout","time":2975.628670254,"data":"  Weights saved: weights_fedavg/saml_alpha0.5_fedavg_mlp.npz\n"}
+,{"stream_name":"stdout","time":2975.628675834,"data":"\n"}
+,{"stream_name":"stdout","time":2975.628680384,"data":"FedAvg LightGBM ensemble:\n"}
+,{"stream_name":"stdout","time":3104.846132869,"data":"  [FedAvg-lightgbm] training per-client trees... 4 models trained\n"}
+,{"stream_name":"stdout","time":3104.846174359,"data":"FedAvg XGBoost ensemble:\n"}
+,{"stream_name":"stdout","time":3212.728991273,"data":"  [FedAvg-xgboost] training per-client trees... 4 models trained\n"}
+,{"stream_name":"stdout","time":3212.729044703,"data":"\n"}
+,{"stream_name":"stdout","time":3212.729050443,"data":"Evaluating...\n"}
+,{"stream_name":"stdout","time":3278.337025786,"data":"\n"}
+,{"stream_name":"stdout","time":3278.337065215,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":3278.337071455,"data":"FedAvg — alpha=0.5 — SAML-D · Temporal Split · Dirichlet\n"}
+,{"stream_name":"stdout","time":3278.337077366,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":3278.337082326,"data":"  strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_wf1  client_equity  worst_bank_f1  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud\n"}
+,{"stream_name":"stdout","time":3278.337086546,"data":"fedavg_lgb 0.0676 0.0113 0.0078 0.0032  0.7807       0.4202 0.5798     0.2800   0.8679         0.0033         0.0002     0.8375             4                   4              1697\n"}
+,{"stream_name":"stdout","time":3278.337089715,"data":"fedavg_xgb 0.0358 0.0114 0.0077 0.0031  0.6637       0.5057 0.4943     0.1275   0.7637         0.0030         0.0001     0.8000             4                   4              1697\n"}
+,{"stream_name":"stdout","time":3278.337092926,"data":"fedavg_mlp 0.0279 0.0439 0.0438 0.0215  0.2922       0.9729 0.0271     0.1575   0.3309         0.0210         0.0014     0.9000             4                   4              1697\n"}
+,{"stream_name":"stdout","time":3278.337096266,"data":"\n"}
+,{"stream_name":"stdout","time":3278.337099206,"data":"BEST: fedavg_lgb  AUPRC=0.0676  MCC=0.0113  F2=0.0078\n"}
+,{"stream_name":"stdout","time":3278.826131932,"data":"Saved: weights_fedavg/saml_alpha0.5_fedavg_results.png\n"}
+,{"stream_name":"stdout","time":3278.826179162,"data":"  Done | 54.3m\n"}
+,{"stream_name":"stdout","time":3278.826185102,"data":"\n"}
+,{"stream_name":"stdout","time":3278.826190472,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":3278.826195992,"data":"  FedAvg | SAML-D | alpha=0.05 | 4 banks\n"}
+,{"stream_name":"stdout","time":3278.826201192,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":3287.282983799,"data":"Partition [SAML] 4 banks | alpha=0.05:\n"}
+,{"stream_name":"stdout","time":3287.283035399,"data":"  SAML-Bank0          : 2,373,854 txns |   110 fraud (0.005%) | train=78 val=12 test=20 fraud\n"}
+,{"stream_name":"stdout","time":3287.283040849,"data":"  SAML-Bank1          : 2,373,745 txns |     1 fraud (0.000%) | train=1 val=0 test=0 fraud\n"}
+,{"stream_name":"stdout","time":3287.283045539,"data":"  SAML-Bank2          : 2,383,506 txns | 9,762 fraud (0.410%) | train=6688 val=1397 test=1677 fraud\n"}
+,{"stream_name":"stdout","time":3287.283049959,"data":"  SAML-Bank3          : 2,373,747 txns |     0 fraud (0.000%) | train=0 val=0 test=0 fraud\n"}
+,{"stream_name":"stdout","time":3287.283073459,"data":"\n"}
+,{"stream_name":"stdout","time":3287.283076629,"data":"FedAvg MLP training:\n"}
+,{"stream_name":"stdout","time":3906.265943897,"data":"  [FedAvg] 20 rounds  5 10 15 20 \n"}
+,{"stream_name":"stdout","time":3906.266002167,"data":"  Weights saved: weights_fedavg/saml_alpha0.05_fedavg_mlp.npz\n"}
+,{"stream_name":"stdout","time":3906.266008677,"data":"\n"}
+,{"stream_name":"stdout","time":3906.266013987,"data":"FedAvg LightGBM ensemble:\n"}
+,{"stream_name":"stdout","time":3974.627277242,"data":"  [FedAvg-lightgbm] training per-client trees... 3 models trained\n"}
+,{"stream_name":"stdout","time":3974.627320812,"data":"FedAvg XGBoost ensemble:\n"}
+,{"stream_name":"stdout","time":4034.877559217,"data":"  [FedAvg-xgboost] training per-client trees... 3 models trained\n"}
+,{"stream_name":"stdout","time":4034.877609357,"data":"\n"}
+,{"stream_name":"stdout","time":4034.877616177,"data":"Evaluating...\n"}
+,{"stream_name":"stdout","time":4071.698602101,"data":"\n"}
+,{"stream_name":"stdout","time":4071.698644461,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":4071.698650581,"data":"FedAvg — alpha=0.05 — SAML-D · Temporal Split · Dirichlet\n"}
+,{"stream_name":"stdout","time":4071.698657401,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":4071.698663241,"data":"  strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_wf1  client_equity  worst_bank_f1  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud\n"}
+,{"stream_name":"stdout","time":4071.698669421,"data":"fedavg_lgb 0.0078 0.0043 0.0071 0.0059  0.0082       0.6352 0.3648     0.0650   0.0107         0.0102            0.0     0.6375             4                   2              1697\n"}
+,{"stream_name":"stdout","time":4071.698675861,"data":"fedavg_xgb 0.0059 0.0060 0.0068 0.0028  0.4485       0.2771 0.7229     0.0075   0.4686         0.0047            0.0     0.4250             4                   2              1697\n"}
+,{"stream_name":"stdout","time":4071.698681851,"data":"fedavg_mlp 0.0042 0.0164 0.0215 0.0137  0.0572       0.9717 0.0283     0.0075   0.0719         0.0228            0.0     0.5500             4                   2              1697\n"}
+,{"stream_name":"stdout","time":4071.698687461,"data":"\n"}
+,{"stream_name":"stdout","time":4071.698692841,"data":"BEST: fedavg_lgb  AUPRC=0.0078  MCC=0.0043  F2=0.0071\n"}
+,{"stream_name":"stdout","time":4072.13024197,"data":"Saved: weights_fedavg/saml_alpha0.05_fedavg_results.png\n"}
+,{"stream_name":"stdout","time":4072.13029347,"data":"  Done | 67.5m\n"}
+,{"stream_name":"stdout","time":4072.1303002,"data":"\n"}
+,{"stream_name":"stdout","time":4072.13030636,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":4072.13031199,"data":"FEDAVG SWEEP COMPLETE\n"}
+,{"stream_name":"stdout","time":4072.13031738,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":4072.1303225,"data":"Total runtime: 67.5m\n"}
+,{"stream_name":"stdout","time":4072.13032742,"data":"\n"}
+,{"stream_name":"stdout","time":4072.13033208,"data":"Outputs in 'weights_fedavg':\n"}
+,{"stream_name":"stdout","time":4072.13033693,"data":"  fedavg_saml_combined.csv\n"}
+,{"stream_name":"stdout","time":4072.1303421,"data":"  saml_alpha0.05_fedavg_benchmark.csv\n"}
+,{"stream_name":"stdout","time":4072.13034694,"data":"  saml_alpha0.05_fedavg_fl_history.csv\n"}
+,{"stream_name":"stdout","time":4072.13035186,"data":"  saml_alpha0.05_fedavg_mlp.npz\n"}
+,{"stream_name":"stdout","time":4072.13037795,"data":"  saml_alpha0.05_fedavg_results.png\n"}
+,{"stream_name":"stdout","time":4072.1303803,"data":"  saml_alpha0.1_fedavg_benchmark.csv\n"}
+,{"stream_name":"stdout","time":4072.13038233,"data":"  saml_alpha0.1_fedavg_fl_history.csv\n"}
+,{"stream_name":"stdout","time":4072.13038424,"data":"  saml_alpha0.1_fedavg_mlp.npz\n"}
+,{"stream_name":"stdout","time":4072.13038738,"data":"  saml_alpha0.1_fedavg_results.png\n"}
+,{"stream_name":"stdout","time":4072.13039058,"data":"  saml_alpha0.5_fedavg_benchmark.csv\n"}
+,{"stream_name":"stdout","time":4072.130394,"data":"  saml_alpha0.5_fedavg_fl_history.csv\n"}
+,{"stream_name":"stdout","time":4072.13039703,"data":"  saml_alpha0.5_fedavg_mlp.npz\n"}
+,{"stream_name":"stdout","time":4072.13042431,"data":"  saml_alpha0.5_fedavg_results.png\n"}
+,{"stream_name":"stdout","time":4072.167439669,"data":"FedAvg — SAML-D · All Alphas · AUPRC Pivot\n"}
+,{"stream_name":"stdout","time":4072.205764667,"data":"strategy  fedavg_lgb  fedavg_mlp  fedavg_xgb\n"}
+,{"stream_name":"stdout","time":4072.205808587,"data":"alpha                                       \n"}
+,{"stream_name":"stdout","time":4072.205813527,"data":"0.05          0.0078      0.0042      0.0059\n"}
+,{"stream_name":"stdout","time":4072.205817357,"data":"0.10          0.0454      0.0318      0.0477\n"}
+,{"stream_name":"stdout","time":4072.205820747,"data":"0.50          0.0676      0.0279      0.0358\n"}
+,{"stream_name":"stdout","time":4072.205824007,"data":"\n"}
+,{"stream_name":"stdout","time":4072.205827207,"data":"FedAvg — SAML-D · All Alphas · MCC Pivot\n"}
+,{"stream_name":"stdout","time":4072.205831227,"data":"strategy  fedavg_lgb  fedavg_mlp  fedavg_xgb\n"}
+,{"stream_name":"stdout","time":4072.205834457,"data":"alpha                                       \n"}
+,{"stream_name":"stdout","time":4072.205837687,"data":"0.05          0.0043      0.0164      0.0060\n"}
+,{"stream_name":"stdout","time":4072.205841067,"data":"0.10          0.0085      0.0322      0.0094\n"}
+,{"stream_name":"stdout","time":4072.205844487,"data":"0.50          0.0113      0.0439      0.0114\n"}
+,{"stream_name":"stdout","time":4072.205847117,"data":"\n"}
+,{"stream_name":"stdout","time":4072.205848967,"data":"FedAvg — SAML-D · All Alphas · F2 Pivot\n"}
+,{"stream_name":"stdout","time":4072.205850887,"data":"strategy  fedavg_lgb  fedavg_mlp  fedavg_xgb\n"}
+,{"stream_name":"stdout","time":4072.205852767,"data":"alpha                                       \n"}
+,{"stream_name":"stdout","time":4072.205854637,"data":"0.05          0.0071      0.0215      0.0068\n"}
+,{"stream_name":"stdout","time":4072.205856527,"data":"0.10          0.0068      0.0414      0.0071\n"}
+,{"stream_name":"stdout","time":4072.205858457,"data":"0.50          0.0078      0.0438      0.0077\n"}
+,{"stream_name":"stdout","time":4072.205860337,"data":"\n"}
+,{"stream_name":"stdout","time":4072.205862187,"data":"── Top 3 Combinations by AUPRC ─────────────────────\n"}
+,{"stream_name":"stdout","time":4072.205864297,"data":"  strategy  alpha  auprc    mcc     f2\n"}
+,{"stream_name":"stdout","time":4072.205866177,"data":"fedavg_lgb    0.5 0.0676 0.0113 0.0078\n"}
+,{"stream_name":"stdout","time":4072.205868437,"data":"fedavg_xgb    0.1 0.0477 0.0094 0.0071\n"}
+,{"stream_name":"stdout","time":4072.205870287,"data":"fedavg_lgb    0.1 0.0454 0.0085 0.0068\n"}
+,{"stream_name":"stdout","time":4072.205872137,"data":"\n"}
+,{"stream_name":"stdout","time":4072.205874427,"data":"Final weights are saved in: weights_fedavg\n"}
+,{"stream_name":"stderr","time":4076.18888126,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":4076.18894608,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":4076.382559791,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":4076.382605311,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":4077.017249102,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":4077.334357526,"data":"[NbConvertApp] Writing 66150 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":4080.053193889,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":4081.051551782,"data":"[NbConvertApp] Writing 476894 bytes to __results__.html\n"}
+]
