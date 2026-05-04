@@ -1,0 +1,180 @@
+[{"stream_name":"stderr","time":10.992462007,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":10.992554582,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":10.992560374,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":10.992563301,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":12.02611013,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":12.026154296,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":12.026160827,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":12.026165657,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":34.249348613,"data":"cuML not available — CPU mode\n"}
+,{"stream_name":"stdout","time":34.249417117,"data":"All imports OK\n"}
+,{"stream_name":"stdout","time":34.43752547,"data":"Config OK | WEIGHTS_DIR=weights_persfl | SEED=42\n"}
+,{"stream_name":"stdout","time":34.584993013,"data":"MLP helpers ready\n"}
+,{"stream_name":"stdout","time":34.632665572,"data":"Client training functions ready\n"}
+,{"stream_name":"stdout","time":34.678156612,"data":"pFedMe aggregation ready\n"}
+,{"stream_name":"stdout","time":34.726728606,"data":"FL round functions ready\n"}
+,{"stream_name":"stdout","time":34.79257084,"data":"Metrics ready\n"}
+,{"stream_name":"stdout","time":34.852277151,"data":"pFedMe training functions ready\n"}
+,{"stream_name":"stdout","time":34.90399449,"data":"Evaluation function ready\n"}
+,{"stream_name":"stdout","time":34.965740366,"data":"Plotting functions ready\n"}
+,{"stream_name":"stdout","time":35.057089498,"data":"Loading SAML-D dataset...\n"}
+,{"stream_name":"stdout","time":35.057132908,"data":"Loading SAML-D (chunked): /kaggle/input/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml/SAML-D.csv\n"}
+,{"stream_name":"stdout","time":65.547488151,"data":"  9,504,852 rows | fraud: 9,873 (0.104%)\n"}
+,{"stream_name":"stdout","time":125.312928543,"data":"  SAML-D features: (9504852, 10)\n"}
+,{"stream_name":"stdout","time":125.84583004,"data":"Preprocessing done | 1.5m\n"}
+,{"stream_name":"stdout","time":125.845882039,"data":"\n"}
+,{"stream_name":"stdout","time":125.845891627,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":125.845900905,"data":"  PersFl | SAML-D | alpha=0.1 | 4 banks\n"}
+,{"stream_name":"stdout","time":125.84590976,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":135.457631625,"data":"Partition [SAML] 4 banks | alpha=0.1:\n"}
+,{"stream_name":"stdout","time":135.45768537,"data":"  SAML-Bank0          : 2,374,694 txns |   950 fraud (0.040%) | train=650 val=131 test=169 fraud\n"}
+,{"stream_name":"stdout","time":135.457691496,"data":"  SAML-Bank1          : 2,373,745 txns |     1 fraud (0.000%) | train=0 val=1 test=0 fraud\n"}
+,{"stream_name":"stdout","time":135.457695322,"data":"  SAML-Bank2          : 2,382,666 txns | 8,922 fraud (0.374%) | train=6117 val=1277 test=1528 fraud\n"}
+,{"stream_name":"stdout","time":135.457699193,"data":"  SAML-Bank3          : 2,373,747 txns |     0 fraud (0.000%) | train=0 val=0 test=0 fraud\n"}
+,{"stream_name":"stdout","time":135.457703131,"data":"\n"}
+,{"stream_name":"stdout","time":135.457707595,"data":"PersFl MLP training:\n"}
+,{"stream_name":"stdout","time":2613.000818418,"data":"  [pFedMe] 20 rounds  5 10 15 20 \n"}
+,{"stream_name":"stdout","time":2613.000912775,"data":"  Weights saved: weights_persfl/saml_alpha0.1_persfl_mlp.npz\n"}
+,{"stream_name":"stdout","time":2613.000922893,"data":"\n"}
+,{"stream_name":"stdout","time":2613.000933091,"data":"PersFl LightGBM ensemble:\n"}
+,{"stream_name":"stdout","time":2703.745949859,"data":"  [pFedMe-lightgbm] training per-client trees... 2 models trained\n"}
+,{"stream_name":"stdout","time":2703.745990163,"data":"PersFl XGBoost ensemble:\n"}
+,{"stream_name":"stdout","time":2779.703795297,"data":"  [pFedMe-xgboost] training per-client trees... 2 models trained\n"}
+,{"stream_name":"stdout","time":2779.70383718,"data":"\n"}
+,{"stream_name":"stdout","time":2779.703843621,"data":"Evaluating...\n"}
+,{"stream_name":"stdout","time":2869.600596098,"data":"\n"}
+,{"stream_name":"stdout","time":2869.600689156,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":2869.600699264,"data":"PersFl — alpha=0.1 — SAML-D · Temporal Split · Dirichlet\n"}
+,{"stream_name":"stdout","time":2869.600706661,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":2869.600712961,"data":"       strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_wf1  client_equity  worst_bank_f1  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud\n"}
+,{"stream_name":"stdout","time":2869.600720226,"data":"     persfl_xgb 0.0477 0.0094 0.0071 0.0029  0.4848       0.1911 0.8089     0.2750   0.4887         0.0043            0.0     0.7375             4                   2              1697\n"}
+,{"stream_name":"stdout","time":2869.600727354,"data":"     persfl_lgb 0.0454 0.0085 0.0068 0.0028  0.4884       0.1722 0.8278     0.2800   0.4931         0.0041            0.0     0.7250             4                   2              1697\n"}
+,{"stream_name":"stdout","time":2869.600733921,"data":"persfl_personal 0.0205 0.0184 0.0242 0.0141  0.0644       0.7115 0.2885     0.1375   0.0787         0.0217            0.0     0.4750             4                   2              1697\n"}
+,{"stream_name":"stdout","time":2869.600740805,"data":"     persfl_mlp 0.0205 0.0184 0.0242 0.0141  0.0644       0.7115 0.2885     0.1375   0.0787         0.0217            0.0     0.4625             4                   2              1697\n"}
+,{"stream_name":"stdout","time":2869.600747559,"data":"\n"}
+,{"stream_name":"stdout","time":2869.60075359,"data":"BEST: persfl_xgb  AUPRC=0.0477  MCC=0.0094  F2=0.0071\n"}
+,{"stream_name":"stdout","time":2870.500968857,"data":"Saved: weights_persfl/saml_alpha0.1_persfl_results.png\n"}
+,{"stream_name":"stdout","time":2870.501265707,"data":"  Done | 47.3m\n"}
+,{"stream_name":"stdout","time":2870.501278561,"data":"\n"}
+,{"stream_name":"stdout","time":2870.501282834,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":2870.50128673,"data":"  PersFl | SAML-D | alpha=0.5 | 4 banks\n"}
+,{"stream_name":"stdout","time":2870.501290544,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":2880.702905612,"data":"Partition [SAML] 4 banks | alpha=0.5:\n"}
+,{"stream_name":"stdout","time":2880.702954426,"data":"  SAML-Bank0          : 2,376,637 txns | 2,893 fraud (0.122%) | train=2007 val=392 test=494 fraud\n"}
+,{"stream_name":"stdout","time":2880.702961262,"data":"  SAML-Bank1          : 2,374,055 txns |   311 fraud (0.013%) | train=209 val=50 test=52 fraud\n"}
+,{"stream_name":"stdout","time":2880.70296737,"data":"  SAML-Bank2          : 2,380,264 txns | 6,520 fraud (0.274%) | train=4454 val=939 test=1127 fraud\n"}
+,{"stream_name":"stdout","time":2880.702996738,"data":"  SAML-Bank3          : 2,373,896 txns |   149 fraud (0.006%) | train=96 val=29 test=24 fraud\n"}
+,{"stream_name":"stdout","time":2880.703001274,"data":"\n"}
+,{"stream_name":"stdout","time":2880.703005089,"data":"PersFl MLP training:\n"}
+,{"stream_name":"stdout","time":10193.648939929,"data":"  [pFedMe] 20 rounds  5 10 15 20 \n"}
+,{"stream_name":"stdout","time":10193.649030302,"data":"  Weights saved: weights_persfl/saml_alpha0.5_persfl_mlp.npz\n"}
+,{"stream_name":"stdout","time":10193.649041063,"data":"\n"}
+,{"stream_name":"stdout","time":10193.649050547,"data":"PersFl LightGBM ensemble:\n"}
+,{"stream_name":"stdout","time":10385.434048677,"data":"  [pFedMe-lightgbm] training per-client trees... 4 models trained\n"}
+,{"stream_name":"stdout","time":10385.434117203,"data":"PersFl XGBoost ensemble:\n"}
+,{"stream_name":"stdout","time":10524.748035249,"data":"  [pFedMe-xgboost] training per-client trees... 4 models trained\n"}
+,{"stream_name":"stdout","time":10524.748106133,"data":"\n"}
+,{"stream_name":"stdout","time":10524.748114364,"data":"Evaluating...\n"}
+,{"stream_name":"stdout","time":10709.520792891,"data":"\n"}
+,{"stream_name":"stdout","time":10709.520849823,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":10709.520858684,"data":"PersFl — alpha=0.5 — SAML-D · Temporal Split · Dirichlet\n"}
+,{"stream_name":"stdout","time":10709.52086563,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":10709.520876707,"data":"       strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_wf1  client_equity  worst_bank_f1  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud\n"}
+,{"stream_name":"stdout","time":10709.520881542,"data":"     persfl_lgb 0.0676 0.0113 0.0078 0.0032  0.7807       0.4202 0.5798     0.2800   0.8679         0.0033         0.0002     0.8375             4                   4              1697\n"}
+,{"stream_name":"stdout","time":10709.520886102,"data":"     persfl_xgb 0.0358 0.0114 0.0077 0.0031  0.6637       0.5057 0.4943     0.1275   0.7637         0.0030         0.0001     0.8000             4                   4              1697\n"}
+,{"stream_name":"stdout","time":10709.520890535,"data":"     persfl_mlp 0.0208 0.0178 0.0239 0.0126  0.0640       0.9901 0.0099     0.1375   0.0796         0.0139         0.0000     0.7250             4                   4              1697\n"}
+,{"stream_name":"stdout","time":10709.520894863,"data":"persfl_personal 0.0206 0.0203 0.0256 0.0134  0.0912       0.9854 0.0146     0.1350   0.1007         0.0136         0.0000     0.7375             4                   4              1697\n"}
+,{"stream_name":"stdout","time":10709.520899128,"data":"\n"}
+,{"stream_name":"stdout","time":10709.520903013,"data":"BEST: persfl_lgb  AUPRC=0.0676  MCC=0.0113  F2=0.0078\n"}
+,{"stream_name":"stdout","time":10710.418133521,"data":"Saved: weights_persfl/saml_alpha0.5_persfl_results.png\n"}
+,{"stream_name":"stdout","time":10710.418184834,"data":"  Done | 177.9m\n"}
+,{"stream_name":"stdout","time":10710.418190053,"data":"\n"}
+,{"stream_name":"stdout","time":10710.418193809,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":10710.418197591,"data":"  PersFl | SAML-D | alpha=0.05 | 4 banks\n"}
+,{"stream_name":"stdout","time":10710.418201356,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":10721.350183286,"data":"Partition [SAML] 4 banks | alpha=0.05:\n"}
+,{"stream_name":"stdout","time":10721.350233551,"data":"  SAML-Bank0          : 2,373,854 txns |   110 fraud (0.005%) | train=78 val=12 test=20 fraud\n"}
+,{"stream_name":"stdout","time":10721.35026164,"data":"  SAML-Bank1          : 2,373,745 txns |     1 fraud (0.000%) | train=1 val=0 test=0 fraud\n"}
+,{"stream_name":"stdout","time":10721.350266857,"data":"  SAML-Bank2          : 2,383,506 txns | 9,762 fraud (0.410%) | train=6688 val=1397 test=1677 fraud\n"}
+,{"stream_name":"stdout","time":10721.350271464,"data":"  SAML-Bank3          : 2,373,747 txns |     0 fraud (0.000%) | train=0 val=0 test=0 fraud\n"}
+,{"stream_name":"stdout","time":10721.350275493,"data":"\n"}
+,{"stream_name":"stdout","time":10721.350279257,"data":"PersFl MLP training:\n"}
+,{"stream_name":"stdout","time":14009.230558824,"data":"  [pFedMe] 20 rounds  5 10 15 20 \n"}
+,{"stream_name":"stdout","time":14009.230626105,"data":"  Weights saved: weights_persfl/saml_alpha0.05_persfl_mlp.npz\n"}
+,{"stream_name":"stdout","time":14009.230634853,"data":"\n"}
+,{"stream_name":"stdout","time":14009.230640655,"data":"PersFl LightGBM ensemble:\n"}
+,{"stream_name":"stdout","time":14108.910842761,"data":"  [pFedMe-lightgbm] training per-client trees... 3 models trained\n"}
+,{"stream_name":"stdout","time":14108.910884547,"data":"PersFl XGBoost ensemble:\n"}
+,{"stream_name":"stdout","time":14190.923339499,"data":"  [pFedMe-xgboost] training per-client trees... 3 models trained\n"}
+,{"stream_name":"stdout","time":14190.923392284,"data":"\n"}
+,{"stream_name":"stdout","time":14190.923399544,"data":"Evaluating...\n"}
+,{"stream_name":"stdout","time":14300.623381228,"data":"\n"}
+,{"stream_name":"stdout","time":14300.623420462,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":14300.623428119,"data":"PersFl — alpha=0.05 — SAML-D · Temporal Split · Dirichlet\n"}
+,{"stream_name":"stdout","time":14300.623435304,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":14300.623440747,"data":"       strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_wf1  client_equity  worst_bank_f1  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud\n"}
+,{"stream_name":"stdout","time":14300.623446619,"data":"     persfl_mlp 0.0365 0.0147 0.0196 0.0120  0.0696       0.9900 0.0100     0.1375   0.0599         0.0204            0.0     0.4000             4                   2              1697\n"}
+,{"stream_name":"stdout","time":14300.623463407,"data":"persfl_personal 0.0240 0.0146 0.0197 0.0121  0.0569       0.9922 0.0078     0.1350   0.0599         0.0204            0.0     0.6375             4                   2              1697\n"}
+,{"stream_name":"stdout","time":14300.623467816,"data":"     persfl_lgb 0.0078 0.0043 0.0071 0.0059  0.0082       0.6352 0.3648     0.0650   0.0107         0.0102            0.0     0.6375             4                   2              1697\n"}
+,{"stream_name":"stdout","time":14300.6234718,"data":"     persfl_xgb 0.0059 0.0060 0.0068 0.0028  0.4485       0.2771 0.7229     0.0075   0.4686         0.0047            0.0     0.4250             4                   2              1697\n"}
+,{"stream_name":"stdout","time":14300.623475674,"data":"\n"}
+,{"stream_name":"stdout","time":14300.623479466,"data":"BEST: persfl_mlp  AUPRC=0.0365  MCC=0.0147  F2=0.0196\n"}
+,{"stream_name":"stdout","time":14301.340262008,"data":"Saved: weights_persfl/saml_alpha0.05_persfl_results.png\n"}
+,{"stream_name":"stdout","time":14301.340303795,"data":"  Done | 237.8m\n"}
+,{"stream_name":"stdout","time":14301.340310854,"data":"\n"}
+,{"stream_name":"stdout","time":14301.340316099,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":14301.340327686,"data":"PERSFL SWEEP COMPLETE\n"}
+,{"stream_name":"stdout","time":14301.340349952,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":14301.34035305,"data":"Total runtime: 237.8m\n"}
+,{"stream_name":"stdout","time":14301.340355658,"data":"\n"}
+,{"stream_name":"stdout","time":14301.340358316,"data":"Outputs in 'weights_persfl':\n"}
+,{"stream_name":"stdout","time":14301.340360886,"data":"  persfl_saml_combined.csv\n"}
+,{"stream_name":"stdout","time":14301.340363485,"data":"  saml_alpha0.05_persfl_benchmark.csv\n"}
+,{"stream_name":"stdout","time":14301.34036621,"data":"  saml_alpha0.05_persfl_fl_history.csv\n"}
+,{"stream_name":"stdout","time":14301.34036893,"data":"  saml_alpha0.05_persfl_mlp.npz\n"}
+,{"stream_name":"stdout","time":14301.340371519,"data":"  saml_alpha0.05_persfl_results.png\n"}
+,{"stream_name":"stdout","time":14301.34037413,"data":"  saml_alpha0.1_persfl_benchmark.csv\n"}
+,{"stream_name":"stdout","time":14301.34037679,"data":"  saml_alpha0.1_persfl_fl_history.csv\n"}
+,{"stream_name":"stdout","time":14301.340379476,"data":"  saml_alpha0.1_persfl_mlp.npz\n"}
+,{"stream_name":"stdout","time":14301.340382106,"data":"  saml_alpha0.1_persfl_results.png\n"}
+,{"stream_name":"stdout","time":14301.340384688,"data":"  saml_alpha0.5_persfl_benchmark.csv\n"}
+,{"stream_name":"stdout","time":14301.340387367,"data":"  saml_alpha0.5_persfl_fl_history.csv\n"}
+,{"stream_name":"stdout","time":14301.340390048,"data":"  saml_alpha0.5_persfl_mlp.npz\n"}
+,{"stream_name":"stdout","time":14301.340392618,"data":"  saml_alpha0.5_persfl_results.png\n"}
+,{"stream_name":"stdout","time":14301.392900779,"data":"PersFl — SAML-D · All Alphas · AUPRC Pivot\n"}
+,{"stream_name":"stdout","time":14301.517939726,"data":"strategy  persfl_lgb  persfl_mlp  persfl_personal  persfl_xgb\n"}
+,{"stream_name":"stdout","time":14301.517980519,"data":"alpha                                                        \n"}
+,{"stream_name":"stdout","time":14301.517986454,"data":"0.05          0.0078      0.0365           0.0240      0.0059\n"}
+,{"stream_name":"stdout","time":14301.517990658,"data":"0.10          0.0454      0.0205           0.0205      0.0477\n"}
+,{"stream_name":"stdout","time":14301.517994766,"data":"0.50          0.0676      0.0208           0.0206      0.0358\n"}
+,{"stream_name":"stdout","time":14301.517998861,"data":"\n"}
+,{"stream_name":"stdout","time":14301.518002934,"data":"PersFl — SAML-D · All Alphas · MCC Pivot\n"}
+,{"stream_name":"stdout","time":14301.518013786,"data":"strategy  persfl_lgb  persfl_mlp  persfl_personal  persfl_xgb\n"}
+,{"stream_name":"stdout","time":14301.518016609,"data":"alpha                                                        \n"}
+,{"stream_name":"stdout","time":14301.518019485,"data":"0.05          0.0043      0.0147           0.0146      0.0060\n"}
+,{"stream_name":"stdout","time":14301.518022506,"data":"0.10          0.0085      0.0184           0.0184      0.0094\n"}
+,{"stream_name":"stdout","time":14301.518025246,"data":"0.50          0.0113      0.0178           0.0203      0.0114\n"}
+,{"stream_name":"stdout","time":14301.518027964,"data":"\n"}
+,{"stream_name":"stdout","time":14301.518030466,"data":"PersFl — SAML-D · All Alphas · F2 Pivot\n"}
+,{"stream_name":"stdout","time":14301.518033226,"data":"strategy  persfl_lgb  persfl_mlp  persfl_personal  persfl_xgb\n"}
+,{"stream_name":"stdout","time":14301.518035901,"data":"alpha                                                        \n"}
+,{"stream_name":"stdout","time":14301.518038544,"data":"0.05          0.0071      0.0196           0.0197      0.0068\n"}
+,{"stream_name":"stdout","time":14301.518041623,"data":"0.10          0.0068      0.0242           0.0242      0.0071\n"}
+,{"stream_name":"stdout","time":14301.518062151,"data":"0.50          0.0078      0.0239           0.0256      0.0077\n"}
+,{"stream_name":"stdout","time":14301.518065069,"data":"\n"}
+,{"stream_name":"stdout","time":14301.518067594,"data":"── Top 3 Combinations by AUPRC ─────────────────────\n"}
+,{"stream_name":"stdout","time":14301.518070638,"data":"  strategy  alpha  auprc    mcc     f2\n"}
+,{"stream_name":"stdout","time":14301.518073244,"data":"persfl_lgb    0.5 0.0676 0.0113 0.0078\n"}
+,{"stream_name":"stdout","time":14301.518075834,"data":"persfl_xgb    0.1 0.0477 0.0094 0.0071\n"}
+,{"stream_name":"stdout","time":14301.518078441,"data":"persfl_lgb    0.1 0.0454 0.0085 0.0068\n"}
+,{"stream_name":"stdout","time":14301.518081146,"data":"\n"}
+,{"stream_name":"stdout","time":14301.518083709,"data":"Final weights are saved in: weights_persfl\n"}
+,{"stream_name":"stderr","time":14307.993730976,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":14307.993782211,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":14308.254734645,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":14308.254772886,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":14309.16390327,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":14309.594238199,"data":"[NbConvertApp] Writing 70081 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":14313.034223934,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":14314.540027786,"data":"[NbConvertApp] Writing 487404 bytes to __results__.html\n"}
+]

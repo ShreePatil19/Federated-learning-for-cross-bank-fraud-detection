@@ -1,0 +1,177 @@
+[{"stream_name":"stderr","time":8.053765249,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.053821915,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.053829749,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.053834158,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":8.814966682,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.815009863,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.815055316,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.815059393,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":23.157969609,"data":"cuML not available — CPU mode\n"}
+,{"stream_name":"stdout","time":23.158043581,"data":"All imports OK\n"}
+,{"stream_name":"stdout","time":23.286174696,"data":"Config OK | WEIGHTS_DIR=weights_scaffold | SEED=42\n"}
+,{"stream_name":"stdout","time":23.406239503,"data":"MLP helpers ready\n"}
+,{"stream_name":"stdout","time":23.443892308,"data":"Client training functions ready\n"}
+,{"stream_name":"stdout","time":23.479468567,"data":"SCAFFOLD aggregation ready\n"}
+,{"stream_name":"stdout","time":23.51921999,"data":"FL round functions ready\n"}
+,{"stream_name":"stdout","time":23.563174875,"data":"Metrics ready\n"}
+,{"stream_name":"stdout","time":23.601147507,"data":"SCAFFOLD training functions ready\n"}
+,{"stream_name":"stdout","time":23.642350709,"data":"Evaluation function ready\n"}
+,{"stream_name":"stdout","time":23.685488916,"data":"Plotting functions ready\n"}
+,{"stream_name":"stdout","time":23.723998834,"data":"Loading SAML-D dataset...\n"}
+,{"stream_name":"stdout","time":23.76345285,"data":"Loading SAML-D (chunked): /kaggle/input/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml/SAML-D.csv\n"}
+,{"stream_name":"stdout","time":52.786761686,"data":"  9,504,852 rows | fraud: 9,873 (0.104%)\n"}
+,{"stream_name":"stdout","time":104.968122798,"data":"  SAML-D features: (9504852, 10)\n"}
+,{"stream_name":"stdout","time":105.421463311,"data":"Preprocessing done | 1.4m\n"}
+,{"stream_name":"stdout","time":105.421506538,"data":"\n"}
+,{"stream_name":"stdout","time":105.421513064,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":105.42151873,"data":"  SCAFFOLD | SAML-D | alpha=0.1 | 4 banks\n"}
+,{"stream_name":"stdout","time":105.42152419,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":113.474496577,"data":"Partition [SAML] 4 banks | alpha=0.1:\n"}
+,{"stream_name":"stdout","time":113.474544582,"data":"  SAML-Bank0          : 2,374,694 txns |   950 fraud (0.040%) | train=650 val=131 test=169 fraud\n"}
+,{"stream_name":"stdout","time":113.474552822,"data":"  SAML-Bank1          : 2,373,745 txns |     1 fraud (0.000%) | train=0 val=1 test=0 fraud\n"}
+,{"stream_name":"stdout","time":113.474559683,"data":"  SAML-Bank2          : 2,382,666 txns | 8,922 fraud (0.374%) | train=6117 val=1277 test=1528 fraud\n"}
+,{"stream_name":"stdout","time":113.474565323,"data":"  SAML-Bank3          : 2,373,747 txns |     0 fraud (0.000%) | train=0 val=0 test=0 fraud\n"}
+,{"stream_name":"stdout","time":113.474571025,"data":"\n"}
+,{"stream_name":"stdout","time":113.474596937,"data":"SCAFFOLD MLP training:\n"}
+,{"stream_name":"stdout","time":982.094013212,"data":"  [SCAFFOLD] 20 rounds  5 10 15 20 \n"}
+,{"stream_name":"stdout","time":982.094098549,"data":"  Weights saved: weights_scaffold/saml_alpha0.1_scaffold_mlp.npz\n"}
+,{"stream_name":"stdout","time":982.094104133,"data":"\n"}
+,{"stream_name":"stdout","time":982.094108213,"data":"SCAFFOLD LightGBM ensemble:\n"}
+,{"stream_name":"stdout","time":1061.511275074,"data":"  [SCAFFOLD-lightgbm] training per-client trees... 2 models trained\n"}
+,{"stream_name":"stdout","time":1061.511323676,"data":"SCAFFOLD XGBoost ensemble:\n"}
+,{"stream_name":"stdout","time":1126.604815394,"data":"  [SCAFFOLD-xgboost] training per-client trees... 2 models trained\n"}
+,{"stream_name":"stdout","time":1126.604877999,"data":"\n"}
+,{"stream_name":"stdout","time":1126.604884985,"data":"Evaluating...\n"}
+,{"stream_name":"stdout","time":1189.295147346,"data":"\n"}
+,{"stream_name":"stdout","time":1189.295185784,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":1189.295193148,"data":"SCAFFOLD — alpha=0.1 — SAML-D · Temporal Split · Dirichlet\n"}
+,{"stream_name":"stdout","time":1189.295199706,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":1189.295205263,"data":"    strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_wf1  client_equity  worst_bank_f1  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud\n"}
+,{"stream_name":"stdout","time":1189.295218038,"data":"scaffold_xgb 0.0477 0.0094 0.0071 0.0029  0.4848       0.1911 0.8089     0.2750   0.4887         0.0043            0.0     0.7375             4                   2              1697\n"}
+,{"stream_name":"stdout","time":1189.295222858,"data":"scaffold_lgb 0.0454 0.0085 0.0068 0.0028  0.4884       0.1722 0.8278     0.2800   0.4931         0.0041            0.0     0.7250             4                   2              1697\n"}
+,{"stream_name":"stdout","time":1189.295227212,"data":"scaffold_mlp 0.0328 0.0345 0.0406 0.0207  0.1333       0.7489 0.2511     0.2175   0.1608         0.0280            0.0     0.6375             4                   2              1697\n"}
+,{"stream_name":"stdout","time":1189.295231677,"data":"\n"}
+,{"stream_name":"stdout","time":1189.295235669,"data":"BEST: scaffold_xgb  AUPRC=0.0477  MCC=0.0094  F2=0.0071\n"}
+,{"stream_name":"stdout","time":1190.445569056,"data":"Saved: weights_scaffold/saml_alpha0.1_scaffold_results.png\n"}
+,{"stream_name":"stdout","time":1190.445615699,"data":"  Done | 19.4m\n"}
+,{"stream_name":"stdout","time":1190.445620916,"data":"\n"}
+,{"stream_name":"stdout","time":1190.445642557,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":1190.445650588,"data":"  SCAFFOLD | SAML-D | alpha=0.5 | 4 banks\n"}
+,{"stream_name":"stdout","time":1190.445656905,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":1197.800536959,"data":"Partition [SAML] 4 banks | alpha=0.5:\n"}
+,{"stream_name":"stdout","time":1197.800581912,"data":"  SAML-Bank0          : 2,376,637 txns | 2,893 fraud (0.122%) | train=2007 val=392 test=494 fraud\n"}
+,{"stream_name":"stdout","time":1197.800588444,"data":"  SAML-Bank1          : 2,374,055 txns |   311 fraud (0.013%) | train=209 val=50 test=52 fraud\n"}
+,{"stream_name":"stdout","time":1197.8005947,"data":"  SAML-Bank2          : 2,380,264 txns | 6,520 fraud (0.274%) | train=4454 val=939 test=1127 fraud\n"}
+,{"stream_name":"stdout","time":1197.800600345,"data":"  SAML-Bank3          : 2,373,896 txns |   149 fraud (0.006%) | train=96 val=29 test=24 fraud\n"}
+,{"stream_name":"stdout","time":1197.800623041,"data":"\n"}
+,{"stream_name":"stdout","time":1197.800627182,"data":"SCAFFOLD MLP training:\n"}
+,{"stream_name":"stdout","time":5558.354567859,"data":"  [SCAFFOLD] 20 rounds  5 10 15 20 \n"}
+,{"stream_name":"stdout","time":5558.354680856,"data":"  Weights saved: weights_scaffold/saml_alpha0.5_scaffold_mlp.npz\n"}
+,{"stream_name":"stdout","time":5558.354688606,"data":"\n"}
+,{"stream_name":"stdout","time":5558.354694112,"data":"SCAFFOLD LightGBM ensemble:\n"}
+,{"stream_name":"stdout","time":5725.544724539,"data":"  [SCAFFOLD-lightgbm] training per-client trees... 4 models trained\n"}
+,{"stream_name":"stdout","time":5725.544767916,"data":"SCAFFOLD XGBoost ensemble:\n"}
+,{"stream_name":"stdout","time":5858.732276662,"data":"  [SCAFFOLD-xgboost] training per-client trees... 4 models trained\n"}
+,{"stream_name":"stdout","time":5858.732325608,"data":"\n"}
+,{"stream_name":"stdout","time":5858.73233252,"data":"Evaluating...\n"}
+,{"stream_name":"stdout","time":5981.520148385,"data":"\n"}
+,{"stream_name":"stdout","time":5981.52019368,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":5981.520200908,"data":"SCAFFOLD — alpha=0.5 — SAML-D · Temporal Split · Dirichlet\n"}
+,{"stream_name":"stdout","time":5981.520207445,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":5981.520213303,"data":"    strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_wf1  client_equity  worst_bank_f1  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud\n"}
+,{"stream_name":"stdout","time":5981.520219777,"data":"scaffold_lgb 0.0676 0.0113 0.0078 0.0032  0.7807       0.4202 0.5798     0.2800   0.8679         0.0033         0.0002     0.8375             4                   4              1697\n"}
+,{"stream_name":"stdout","time":5981.520225678,"data":"scaffold_mlp 0.0576 0.0433 0.0391 0.0181  0.3549       0.9588 0.0412     0.2150   0.4328         0.0178         0.0010     0.9000             4                   4              1697\n"}
+,{"stream_name":"stdout","time":5981.520231691,"data":"scaffold_xgb 0.0358 0.0114 0.0077 0.0031  0.6637       0.5057 0.4943     0.1275   0.7637         0.0030         0.0001     0.8000             4                   4              1697\n"}
+,{"stream_name":"stdout","time":5981.520243423,"data":"\n"}
+,{"stream_name":"stdout","time":5981.520247861,"data":"BEST: scaffold_lgb  AUPRC=0.0676  MCC=0.0113  F2=0.0078\n"}
+,{"stream_name":"stdout","time":5982.288875498,"data":"Saved: weights_scaffold/saml_alpha0.5_scaffold_results.png\n"}
+,{"stream_name":"stdout","time":5982.28891877,"data":"  Done | 99.3m\n"}
+,{"stream_name":"stdout","time":5982.288927315,"data":"\n"}
+,{"stream_name":"stdout","time":5982.288933018,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":5982.28893857,"data":"  SCAFFOLD | SAML-D | alpha=0.05 | 4 banks\n"}
+,{"stream_name":"stdout","time":5982.288945887,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":5991.33154882,"data":"Partition [SAML] 4 banks | alpha=0.05:\n"}
+,{"stream_name":"stdout","time":5991.331598175,"data":"  SAML-Bank0          : 2,373,854 txns |   110 fraud (0.005%) | train=78 val=12 test=20 fraud\n"}
+,{"stream_name":"stdout","time":5991.331604897,"data":"  SAML-Bank1          : 2,373,745 txns |     1 fraud (0.000%) | train=1 val=0 test=0 fraud\n"}
+,{"stream_name":"stdout","time":5991.331610816,"data":"  SAML-Bank2          : 2,383,506 txns | 9,762 fraud (0.410%) | train=6688 val=1397 test=1677 fraud\n"}
+,{"stream_name":"stdout","time":5991.331633837,"data":"  SAML-Bank3          : 2,373,747 txns |     0 fraud (0.000%) | train=0 val=0 test=0 fraud\n"}
+,{"stream_name":"stdout","time":5991.331638211,"data":"\n"}
+,{"stream_name":"stdout","time":5991.33164203,"data":"SCAFFOLD MLP training:\n"}
+,{"stream_name":"stdout","time":7255.035057671,"data":"  [SCAFFOLD] 20 rounds  5 10 15 20 \n"}
+,{"stream_name":"stdout","time":7255.035110697,"data":"  Weights saved: weights_scaffold/saml_alpha0.05_scaffold_mlp.npz\n"}
+,{"stream_name":"stdout","time":7255.035117479,"data":"\n"}
+,{"stream_name":"stdout","time":7255.035122936,"data":"SCAFFOLD LightGBM ensemble:\n"}
+,{"stream_name":"stdout","time":7343.190181804,"data":"  [SCAFFOLD-lightgbm] training per-client trees... 3 models trained\n"}
+,{"stream_name":"stdout","time":7343.190221083,"data":"SCAFFOLD XGBoost ensemble:\n"}
+,{"stream_name":"stdout","time":7418.123002303,"data":"  [SCAFFOLD-xgboost] training per-client trees... 3 models trained\n"}
+,{"stream_name":"stdout","time":7418.123059083,"data":"\n"}
+,{"stream_name":"stdout","time":7418.123067792,"data":"Evaluating...\n"}
+,{"stream_name":"stdout","time":7489.296939432,"data":"\n"}
+,{"stream_name":"stdout","time":7489.296993054,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":7489.297001262,"data":"SCAFFOLD — alpha=0.05 — SAML-D · Temporal Split · Dirichlet\n"}
+,{"stream_name":"stdout","time":7489.297008197,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":7489.297020457,"data":"    strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_wf1  client_equity  worst_bank_f1  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud\n"}
+,{"stream_name":"stdout","time":7489.297024991,"data":"scaffold_mlp 0.0413 0.0250 0.0295 0.0155  0.1455       0.9790 0.0210     0.1775   0.1501         0.0260            0.0     0.4625             4                   2              1697\n"}
+,{"stream_name":"stdout","time":7489.29702931,"data":"scaffold_lgb 0.0078 0.0043 0.0071 0.0059  0.0082       0.6352 0.3648     0.0650   0.0107         0.0102            0.0     0.6375             4                   2              1697\n"}
+,{"stream_name":"stdout","time":7489.297033331,"data":"scaffold_xgb 0.0059 0.0060 0.0068 0.0028  0.4485       0.2771 0.7229     0.0075   0.4686         0.0047            0.0     0.4250             4                   2              1697\n"}
+,{"stream_name":"stdout","time":7489.29707864,"data":"\n"}
+,{"stream_name":"stdout","time":7489.297086956,"data":"BEST: scaffold_mlp  AUPRC=0.0413  MCC=0.0250  F2=0.0295\n"}
+,{"stream_name":"stdout","time":7489.924229179,"data":"Saved: weights_scaffold/saml_alpha0.05_scaffold_results.png\n"}
+,{"stream_name":"stdout","time":7489.924279919,"data":"  Done | 124.4m\n"}
+,{"stream_name":"stdout","time":7489.924321982,"data":"\n"}
+,{"stream_name":"stdout","time":7489.924328356,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":7489.924334941,"data":"SCAFFOLD SWEEP COMPLETE\n"}
+,{"stream_name":"stdout","time":7489.924340693,"data":"=======================================================\n"}
+,{"stream_name":"stdout","time":7489.924346486,"data":"Total runtime: 124.4m\n"}
+,{"stream_name":"stdout","time":7489.924352389,"data":"\n"}
+,{"stream_name":"stdout","time":7489.924358387,"data":"Outputs in 'weights_scaffold':\n"}
+,{"stream_name":"stdout","time":7489.924363808,"data":"  saml_alpha0.05_scaffold_benchmark.csv\n"}
+,{"stream_name":"stdout","time":7489.924369238,"data":"  saml_alpha0.05_scaffold_fl_history.csv\n"}
+,{"stream_name":"stdout","time":7489.924374669,"data":"  saml_alpha0.05_scaffold_mlp.npz\n"}
+,{"stream_name":"stdout","time":7489.924418933,"data":"  saml_alpha0.05_scaffold_results.png\n"}
+,{"stream_name":"stdout","time":7489.92442635,"data":"  saml_alpha0.1_scaffold_benchmark.csv\n"}
+,{"stream_name":"stdout","time":7489.924430563,"data":"  saml_alpha0.1_scaffold_fl_history.csv\n"}
+,{"stream_name":"stdout","time":7489.924434622,"data":"  saml_alpha0.1_scaffold_mlp.npz\n"}
+,{"stream_name":"stdout","time":7489.924438781,"data":"  saml_alpha0.1_scaffold_results.png\n"}
+,{"stream_name":"stdout","time":7489.92444276,"data":"  saml_alpha0.5_scaffold_benchmark.csv\n"}
+,{"stream_name":"stdout","time":7489.924446899,"data":"  saml_alpha0.5_scaffold_fl_history.csv\n"}
+,{"stream_name":"stdout","time":7489.924450863,"data":"  saml_alpha0.5_scaffold_mlp.npz\n"}
+,{"stream_name":"stdout","time":7489.924454866,"data":"  saml_alpha0.5_scaffold_results.png\n"}
+,{"stream_name":"stdout","time":7489.924458827,"data":"  scaffold_saml_combined.csv\n"}
+,{"stream_name":"stdout","time":7489.977564496,"data":"SCAFFOLD — SAML-D · All Alphas · AUPRC Pivot\n"}
+,{"stream_name":"stdout","time":7490.018365002,"data":"strategy  scaffold_lgb  scaffold_mlp  scaffold_xgb\n"}
+,{"stream_name":"stdout","time":7490.018423719,"data":"alpha                                             \n"}
+,{"stream_name":"stdout","time":7490.018433484,"data":"0.05            0.0078        0.0413        0.0059\n"}
+,{"stream_name":"stdout","time":7490.018438263,"data":"0.10            0.0454        0.0328        0.0477\n"}
+,{"stream_name":"stdout","time":7490.018442587,"data":"0.50            0.0676        0.0576        0.0358\n"}
+,{"stream_name":"stdout","time":7490.018446808,"data":"\n"}
+,{"stream_name":"stdout","time":7490.018451141,"data":"SCAFFOLD — SAML-D · All Alphas · MCC Pivot\n"}
+,{"stream_name":"stdout","time":7490.01845711,"data":"strategy  scaffold_lgb  scaffold_mlp  scaffold_xgb\n"}
+,{"stream_name":"stdout","time":7490.018461159,"data":"alpha                                             \n"}
+,{"stream_name":"stdout","time":7490.018465723,"data":"0.05            0.0043        0.0250        0.0060\n"}
+,{"stream_name":"stdout","time":7490.018469748,"data":"0.10            0.0085        0.0345        0.0094\n"}
+,{"stream_name":"stdout","time":7490.018473687,"data":"0.50            0.0113        0.0433        0.0114\n"}
+,{"stream_name":"stdout","time":7490.018477725,"data":"\n"}
+,{"stream_name":"stdout","time":7490.018481488,"data":"SCAFFOLD — SAML-D · All Alphas · F2 Pivot\n"}
+,{"stream_name":"stdout","time":7490.018485497,"data":"strategy  scaffold_lgb  scaffold_mlp  scaffold_xgb\n"}
+,{"stream_name":"stdout","time":7490.018490398,"data":"alpha                                             \n"}
+,{"stream_name":"stdout","time":7490.018494332,"data":"0.05            0.0071        0.0295        0.0068\n"}
+,{"stream_name":"stdout","time":7490.018498399,"data":"0.10            0.0068        0.0406        0.0071\n"}
+,{"stream_name":"stdout","time":7490.018502724,"data":"0.50            0.0078        0.0391        0.0077\n"}
+,{"stream_name":"stdout","time":7490.018506604,"data":"\n"}
+,{"stream_name":"stdout","time":7490.018510893,"data":"── Top 3 Combinations by AUPRC ─────────────────────\n"}
+,{"stream_name":"stdout","time":7490.018515421,"data":"    strategy  alpha  auprc    mcc     f2\n"}
+,{"stream_name":"stdout","time":7490.018519589,"data":"scaffold_lgb    0.5 0.0676 0.0113 0.0078\n"}
+,{"stream_name":"stdout","time":7490.018523634,"data":"scaffold_mlp    0.5 0.0576 0.0433 0.0391\n"}
+,{"stream_name":"stdout","time":7490.01852868,"data":"scaffold_xgb    0.1 0.0477 0.0094 0.0071\n"}
+,{"stream_name":"stdout","time":7490.018556217,"data":"\n"}
+,{"stream_name":"stdout","time":7490.018560954,"data":"Final weights are saved in: weights_scaffold\n"}
+,{"stream_name":"stderr","time":7494.422341882,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":7494.422425201,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":7494.644482652,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":7494.644522252,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":7495.419588347,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":7495.84800976,"data":"[NbConvertApp] Writing 68756 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":7499.047187153,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":7500.361151664,"data":"[NbConvertApp] Writing 486234 bytes to __results__.html\n"}
+]
