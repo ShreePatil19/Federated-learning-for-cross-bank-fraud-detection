@@ -1,0 +1,92 @@
+[
+  {
+    "title": "A Comprehensive Survey of Mixture-of-Experts: Algorithms, Theory, and Applications",
+    "authors": "Various",
+    "year": 2025,
+    "venue": "arXiv 2025",
+    "arxiv_id": "2503.07137",
+    "url": "https://arxiv.org/abs/2503.07137",
+    "format": "apa7"
+  },
+  {
+    "title": "A Survey on Mixture of Experts in Large Language Models",
+    "authors": "Cai, W. et al.",
+    "year": 2024,
+    "venue": "IEEE TKDE 2025",
+    "arxiv_id": "2407.06204",
+    "url": "https://arxiv.org/abs/2407.06204",
+    "format": "apa7"
+  },
+  {
+    "title": "AdapMoE: Adaptive Sensitivity-based Expert Gating and Management for Efficient MoE Inference",
+    "authors": "Various",
+    "year": 2024,
+    "venue": "arXiv 2024",
+    "arxiv_id": "2408.10284",
+    "url": "https://arxiv.org/abs/2408.10284",
+    "format": "apa7"
+  },
+  {
+    "title": "CryptoMoE: Privacy-Preserving and Scalable Mixture of Experts Inference via Balanced Expert Routing",
+    "authors": "Various",
+    "year": 2025,
+    "venue": "arXiv 2025",
+    "arxiv_id": "2511.01197",
+    "url": "https://arxiv.org/abs/2511.01197",
+    "format": "apa7"
+  },
+  {
+    "title": "Explainable AI for Fraud Detection: An Attention-Based Ensemble of CNNs, GNNs, and A Confidence-Driven Gating Mechanism",
+    "authors": "Hosseini Chagahi, M., Delfan, N., Mohammadi Dashtaki, S., Moshiri, B., Piran, M.J.",
+    "year": 2024,
+    "venue": "arXiv 2024 (q-fin.RM)",
+    "arxiv_id": "2410.09069",
+    "url": "https://arxiv.org/abs/2410.09069",
+    "format": "apa7"
+  },
+  {
+    "title": "Towards Efficient Federated Learning of Networked Mixture-of-Experts for Mobile Edge Computing",
+    "authors": "Gao, S., Zhang, S., Jing, S., Zhang, S., Zhou, X., Wang, Y., Cai, Z.",
+    "year": 2026,
+    "venue": "arXiv 2026",
+    "arxiv_id": "2511.01743",
+    "url": "https://arxiv.org/abs/2511.01743",
+    "format": "apa7"
+  },
+  {
+    "title": "Geometric Routing Enables Causal Expert Control in Mixture of Experts",
+    "authors": "Various",
+    "year": 2026,
+    "venue": "arXiv 2026",
+    "arxiv_id": "2604.14434",
+    "url": "https://arxiv.org/abs/2604.14434",
+    "format": "apa7"
+  },
+  {
+    "title": "MoCaE: Mixture of Calibrated Experts Significantly Improves Object Detection",
+    "authors": "Oksuz, K., Kuzucu, S., Joy, T., Dokania, P.K.",
+    "year": 2023,
+    "venue": "arXiv 2023 / CVPR 2024",
+    "arxiv_id": "2309.14976",
+    "url": "https://arxiv.org/abs/2309.14976",
+    "format": "apa7"
+  },
+  {
+    "title": "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer",
+    "authors": "Shazeer, N., Mirhoseini, A., Maziarz, K., Davis, A., Le, Q., Hinton, G., Dean, J.",
+    "year": 2017,
+    "venue": "ICLR 2017",
+    "arxiv_id": "1701.06538",
+    "url": "https://arxiv.org/abs/1701.06538",
+    "format": "apa7"
+  },
+  {
+    "title": "Routers in Vision Mixture of Experts: An Empirical Study",
+    "authors": "Various",
+    "year": 2024,
+    "venue": "arXiv 2024",
+    "arxiv_id": "2401.15969",
+    "url": "https://arxiv.org/abs/2401.15969",
+    "format": "apa7"
+  }
+]
