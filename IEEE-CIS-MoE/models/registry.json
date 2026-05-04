@@ -1,0 +1,132 @@
+{
+  "fl_fedavg": {
+    "path": "/kaggle/working/models/fl/best_fedavg.pt",
+    "auprc": 0.3397968650547122,
+    "alpha": 0.5
+  },
+  "fl_fedprox": {
+    "path": "/kaggle/working/models/fl/best_fedprox.pt",
+    "auprc": 0.3687328145033296,
+    "alpha": 0.5
+  },
+  "fl_fednova": {
+    "path": "/kaggle/working/models/fl/best_fednova.pt",
+    "auprc": 0.3398048006059405,
+    "alpha": 0.5
+  },
+  "fl_persfl": {
+    "path": "/kaggle/working/models/fl/best_persfl.pt",
+    "auprc": 0.3664982754154713,
+    "alpha": 0.5
+  },
+  "fl_scaffold": {
+    "path": "/kaggle/working/models/fl/best_scaffold.pt",
+    "auprc": 0.3398086392172767,
+    "alpha": 0.5
+  },
+  "fl_fedavgm": {
+    "path": "/kaggle/working/models/fl/best_fedavgm.pt",
+    "auprc": 0.27419397784511396,
+    "alpha": 0.5
+  },
+  "expert_xgb_bank0": {
+    "path": "/kaggle/working/models/experts/best_xgb_bank0.ubj",
+    "auprc": 0.6404207797371843,
+    "alpha": 0.05
+  },
+  "expert_lgbm_bank0": {
+    "path": "/kaggle/working/models/experts/best_lgbm_bank0.txt",
+    "auprc": 0.6367923434821863,
+    "alpha": 0.05
+  },
+  "expert_catboost_bank0": {
+    "path": "/kaggle/working/models/experts/best_catboost_bank0.cbm",
+    "auprc": 0.6470510074301004,
+    "alpha": 0.05
+  },
+  "expert_rf_bank0": {
+    "path": "/kaggle/working/models/experts/best_rf_bank0.pkl",
+    "auprc": 0.5848089251899012,
+    "alpha": 0.05
+  },
+  "expert_lr_bank0": {
+    "path": "/kaggle/working/models/experts/best_lr_bank0.pkl",
+    "auprc": 0.5655850023013614,
+    "alpha": 0.05
+  },
+  "expert_xgb_bank3": {
+    "path": "/kaggle/working/models/experts/best_xgb_bank3.ubj",
+    "auprc": 0.5875527541148272,
+    "alpha": 0.5
+  },
+  "expert_lgbm_bank3": {
+    "path": "/kaggle/working/models/experts/best_lgbm_bank3.txt",
+    "auprc": 0.5846507209393785,
+    "alpha": 0.5
+  },
+  "expert_catboost_bank3": {
+    "path": "/kaggle/working/models/experts/best_catboost_bank3.cbm",
+    "auprc": 0.5804239322917514,
+    "alpha": 0.5
+  },
+  "expert_rf_bank3": {
+    "path": "/kaggle/working/models/experts/best_rf_bank3.pkl",
+    "auprc": 0.5273071165694412,
+    "alpha": 0.5
+  },
+  "expert_lr_bank3": {
+    "path": "/kaggle/working/models/experts/best_lr_bank3.pkl",
+    "auprc": 0.508262491508659,
+    "alpha": 0.5
+  },
+  "expert_xgb_bank1": {
+    "path": "/kaggle/working/models/experts/best_xgb_bank1.ubj",
+    "auprc": 0.36920985251354516,
+    "alpha": 0.5
+  },
+  "expert_lgbm_bank1": {
+    "path": "/kaggle/working/models/experts/best_lgbm_bank1.txt",
+    "auprc": 0.3689342531212576,
+    "alpha": 0.5
+  },
+  "expert_catboost_bank1": {
+    "path": "/kaggle/working/models/experts/best_catboost_bank1.cbm",
+    "auprc": 0.3310561628539499,
+    "alpha": 0.5
+  },
+  "expert_rf_bank1": {
+    "path": "/kaggle/working/models/experts/best_rf_bank1.pkl",
+    "auprc": 0.31619754296617214,
+    "alpha": 0.5
+  },
+  "expert_lr_bank1": {
+    "path": "/kaggle/working/models/experts/best_lr_bank1.pkl",
+    "auprc": 0.2958794858215925,
+    "alpha": 0.5
+  },
+  "expert_xgb_bank2": {
+    "path": "/kaggle/working/models/experts/best_xgb_bank2.ubj",
+    "auprc": 0.01106942518720948,
+    "alpha": 0.5
+  },
+  "expert_lgbm_bank2": {
+    "path": "/kaggle/working/models/experts/best_lgbm_bank2.txt",
+    "auprc": 0.006743719112609667,
+    "alpha": 0.5
+  },
+  "expert_catboost_bank2": {
+    "path": "/kaggle/working/models/experts/best_catboost_bank2.cbm",
+    "auprc": 0.003546481528668108,
+    "alpha": 0.5
+  },
+  "expert_rf_bank2": {
+    "path": "/kaggle/working/models/experts/best_rf_bank2.pkl",
+    "auprc": 0.14582721252256917,
+    "alpha": 0.5
+  },
+  "expert_lr_bank2": {
+    "path": "/kaggle/working/models/experts/best_lr_bank2.pkl",
+    "auprc": 0.003423033050656597,
+    "alpha": 0.5
+  }
+}
