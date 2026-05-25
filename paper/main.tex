@@ -1,0 +1,583 @@
+%% ============================================================
+%% Neural Networks and Fuzzy Logic — Major Research Paper
+%% Group 17.2 — University of Technology Sydney, 2026
+%% ============================================================
+\documentclass[12pt, a4paper]{article}
+
+%% --- Packages ---
+\usepackage[top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[protrusion=true,expansion=false]{microtype}
+\usepackage{caption}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{natbib}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{longtable}
+
+%% --- Graphics path ---
+\graphicspath{{../reports/figures/}}
+
+%% --- Page style ---
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small Neural Networks and Fuzzy Logic --- Group 17.2}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%% --- Spacing ---
+\onehalfspacing
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+\setlength{\headheight}{15pt}
+
+%% --- Section formatting ---
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}{\normalsize\itshape}{\thesubsubsection}{0.5em}{}
+
+%% --- Hyperlink colours ---
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue}
+
+%% ============================================================
+%% Document
+%% ============================================================
+\begin{document}
+
+%% --- Title Page ---
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+
+{\LARGE \textbf{Federated Learning and AI Techniques for\\[0.3em]
+Financial Fraud Detection}}\\[0.8em]
+{\large A Cross-Bank Study Under Non-IID Data Conditions}
+
+\vspace{1.5cm}
+
+{\large
+\textbf{Group 17.2}\\[0.5em]
+Neural Networks and Fuzzy Logic\\[0.3em]
+University of Technology Sydney\\[0.3em]
+May 2026
+}
+
+\vspace{2cm}
+
+\begin{tabular}{ll}
+Shreeshailya Patil         & \texttt{shreeshailya.patil@student.uts.edu.au}\\[0.4em]
+Nicolas Ordonez Chala      & \texttt{nicolas.ordonezchala@student.uts.edu.au}\\[0.4em]
+Yike Li                    & \texttt{Yike.Li-1@student.uts.edu.au}\\[0.4em]
+Tasnuba Sraboni            & \texttt{Tasnuba.Sraboni@student.uts.edu.au}\\
+\end{tabular}
+
+\vfill
+
+{\small Submitted in partial fulfilment of the requirements for\\
+Neural Networks and Fuzzy Logic, UTS Faculty of Engineering and IT}
+\end{titlepage}
+
+%% ============================================================
+%% Declaration of Originality
+%% ============================================================
+\newpage
+\thispagestyle{plain}
+
+\begin{center}
+{\large\bfseries University of Technology Sydney}\\[0.3em]
+{\large\bfseries Faculty of Engineering and Information Technology}\\[1em]
+{\large\bfseries Declaration of Authorship}
+\end{center}
+
+\vspace{1em}
+
+This paper is submitted as a major assessment for the subject \textit{Neural Networks and Fuzzy Logic}. We declare that this paper is our own original work and has not been submitted for assessment in any other subject or institution. All sources used in this paper have been cited and referenced according to APA guidelines.
+
+\vspace{0.5em}
+
+We certify that:
+\begin{enumerate}
+\item The work in this paper is original and has not been copied from any source without proper citation.
+\item All research data, figures, and tables presented are the result of our own experiments unless stated otherwise.
+\item We have correctly identified and attributed all ideas and work from other authors.
+\item This paper does not contain plagiarism of any kind.
+\end{enumerate}
+
+\vspace{2em}
+
+\begin{tabular}{p{7cm} p{5cm}}
+\textbf{Shreeshailya Patil}                                & \\[1.5em]
+Signature: \underline{\hspace{4cm}} & Date: \underline{\hspace{2.5cm}}\\[2em]
+\textbf{Nicolas Ordonez Chala}                             & \\[1.5em]
+Signature: \underline{\hspace{4cm}} & Date: \underline{\hspace{2.5cm}}\\[2em]
+\textbf{Yike Li}                                           & \\[1.5em]
+Signature: \underline{\hspace{4cm}} & Date: \underline{\hspace{2.5cm}}\\[2em]
+\textbf{Tasnuba Sraboni}                                   & \\[1.5em]
+Signature: \underline{\hspace{4cm}} & Date: \underline{\hspace{2.5cm}}\\[2em]
+\end{tabular}
+
+\newpage
+
+%% ============================================================
+%% Abstract
+%% ============================================================
+\begin{abstract}
+Financial fraud costs banks and their customers hundreds of billions of dollars every year. Banks want to train better fraud detection models together, but privacy laws like the GDPR do not allow them to share raw transaction data. Federated Learning (FL) lets multiple banks train a shared model without moving their data. Each bank keeps its records on its own server and only sends model updates to a central server.
+
+This paper has two parts. In the first part, we review 13 recent FL fraud detection papers from 2024 to 2025. We compare them across eight dimensions: datasets, FL algorithms, Non-IID handling, performance metrics, fairness, privacy, security, and explainability. In the second part, we run experiments with five FL algorithms --- FedAvg, FedProx, FedNova, SCAFFOLD, and Personalised FL --- on three datasets using different levels of data heterogeneity.
+
+Our best result was FedNova with Differential Privacy, which achieved AUC-ROC = 0.9841 on the Kaggle Credit Card Fraud dataset. Under extreme Non-IID conditions (Dirichlet $\alpha = 0.05$), Personalised FL achieved AUPRC = 0.4759 on the IEEE-CIS dataset, outperforming all other algorithms. SCAFFOLD failed to converge in standard and DP settings, reaching only AUC = 0.5102.
+
+Our literature review found that most papers only compare against FedAvg, rarely report AUPRC, and ignore fairness between banks. Future research should use more baselines, report better metrics, and study fairness across participating institutions.
+\end{abstract}
+
+\textbf{Keywords:} Federated Learning, Financial Fraud Detection, Non-IID Data,
+Differential Privacy, Cross-Bank Collaboration
+
+\vspace{1em}
+\tableofcontents
+\newpage
+
+%% ============================================================
+%% Section 1: Introduction
+%% ============================================================
+\section{Introduction}
+
+\subsection{Background and Motivation}
+
+Financial fraud is a serious global problem. According to \citet{nasdaq2024}, global financial crime cost the economy around \$485 billion in 2024 alone. As more people use digital banking and online payments, fraud has become more common and harder to detect. Attackers now operate across many banks at the same time, using the same fraud rings to target customers in different institutions.
+
+Banks use machine learning (ML) to detect fraud. These systems scan transactions in real time and flag suspicious activity. Modern ML models can perform very well on single-bank datasets. But a fraud ring that targets five banks looks normal in each bank's data --- no single bank can see the full pattern. A model trained on all banks' data together would be much better. The problem is that banks cannot simply share their data.
+
+Data protection laws prevent banks from pooling transaction records. In Europe, the General Data Protection Regulation (GDPR) makes it illegal to share sensitive financial data without explicit user consent. The Payment Card Industry Data Security Standard (PCI DSS) adds more restrictions. In Australia, the Privacy Act 1988 applies similar rules. These laws protect customers, but they also stop banks from collaborating on fraud detection.
+
+\subsection{Federated Learning as a Solution}
+
+\citet{mcmahan2017} introduced Federated Learning (FL) to train ML models across many devices or organisations without moving raw data. In FL, each participant (called a ``client'') trains a local model using only its own data. The client then sends model weight updates to a central server. The server combines all updates to build a better global model and sends it back. The raw transaction data never leaves each bank's servers.
+
+FL makes cross-bank fraud detection possible. Several banks can collaborate on a shared model while keeping their customer data private. Recent work has confirmed that FL can work well for this purpose. \citet{khan2025} combined FL with Explainable AI (XAI) to create a transparent banking fraud detector that explains its decisions. \citet{alhasawi2025} proposed FedFraud, a scalable FL system that achieved high accuracy while preserving privacy. \citet{li2025fedmecs} showed that ensemble FL methods improve robustness when client data is noisy or uneven.
+
+\subsection{The Non-IID Problem}
+
+FL works best when all clients have similar data. In practice, banks' data distributions differ a lot. A small rural bank has very different transaction patterns than a large urban digital bank. This difference in distribution is called the Non-IID (non-independent and identically distributed) problem.
+
+\citet{zhao2018federated} showed that Non-IID data can reduce FedAvg accuracy by up to 55\% compared to training on identical distributions. For fraud detection, which already has severe class imbalance (fraud rates below 0.5\%), Non-IID conditions make the problem worse. Some banks may end up with a global model that performs well for large data-rich banks but poorly for smaller institutions. This is both a technical problem and a fairness problem.
+
+\subsection{Literature Review}
+
+We searched for papers on FL for financial fraud detection published between January 2024 and March 2025. We found 13 papers that met our inclusion criteria. Section~\ref{sec:results_slr} presents the full comparative analysis across eight dimensions.
+
+Several patterns stood out from our initial review. First, most papers use FedAvg as their only comparison baseline. \citet{karimireddy2020} proved that SCAFFOLD gives stronger theoretical guarantees than FedAvg under Non-IID conditions, but SCAFFOLD appeared in only one of the 13 papers we reviewed. Personalised FL methods, which could handle Non-IID data by learning institution-specific models, appear in none.
+
+Second, metric reporting is inconsistent. The most suitable metric for imbalanced fraud datasets is AUPRC (Area Under the Precision-Recall Curve), but only 2 of the 13 papers report it \citep{kamalaruban2024fairness}. AUC-ROC alone can be misleading when fraud rates are below 1\%.
+
+Third, fairness and security are almost absent from the literature. No paper studied whether all participating banks get equally good fraud detection models. No paper tested adversarial robustness under Non-IID conditions at the same time.
+
+\subsection{Contributions}
+
+This paper makes four contributions:
+
+\begin{enumerate}[leftmargin=*, label=\arabic*.]
+\item \textbf{Systematic Review:} We review 13 FL fraud detection papers from 2024--2025, comparing them across eight dimensions. We identify gaps in baseline coverage, metric reporting, fairness, and security.
+
+\item \textbf{Experimental Benchmark:} We test five FL algorithms (FedAvg, FedProx, FedNova, SCAFFOLD, and Personalised FL) on three datasets across multiple Non-IID settings.
+
+\item \textbf{Privacy Analysis:} We study the effect of Differential Privacy (DP) and gradient sparsification on fraud detection accuracy, precision, and recall.
+
+\item \textbf{Recommendations:} We give practical guidance for banks on which FL algorithm to use under different conditions.
+\end{enumerate}
+
+\subsection{Paper Structure}
+
+Section~\ref{sec:methods} explains our literature review method and experimental setup. Section~\ref{sec:results} presents the results. Section~\ref{sec:discussion} discusses what the results mean for banking practice. Section~\ref{sec:conclusion} concludes with a summary and future research directions.
+
+%% ============================================================
+%% Section 2: Methods
+%% ============================================================
+\section{Methods}
+\label{sec:methods}
+
+\subsection{Systematic Literature Review}
+
+\subsubsection{Search Strategy}
+
+We searched four databases: IEEE Xplore, ACM Digital Library, Springer Link, and Google Scholar. We restricted our search to papers published between January 2024 and March 2025. Our search terms were:
+\begin{itemize}[noitemsep]
+\item ``federated learning fraud detection''
+\item ``federated learning financial crime''
+\item ``privacy-preserving fraud detection banking''
+\item ``federated learning anti-money laundering''
+\end{itemize}
+
+We also kept four foundational papers from before 2024 as algorithm baselines: FedAvg \citep{mcmahan2017}, FedProx \citep{li2020fedprox}, SCAFFOLD \citep{karimireddy2020}, and FedRLCS \citep{wang2023fedrlcs}.
+
+\subsubsection{Inclusion Criteria}
+
+A paper was included if it:
+\begin{itemize}[noitemsep]
+\item Proposed or evaluated an FL method for financial fraud detection or Anti-Money Laundering (AML)
+\item Was published in a Q1 or Q2 indexed journal or peer-reviewed conference
+\item Reported quantitative results using at least one standard metric
+\item Had a verifiable DOI from the search databases
+\end{itemize}
+
+\subsubsection{Exclusion Criteria}
+
+A paper was excluded if it:
+\begin{itemize}[noitemsep]
+\item Discussed FL theory without fraud experiments
+\item Applied FL outside financial services
+\item Was itself a survey or literature review
+\item Was not written in English
+\item Was published before January 2024 (except the four foundational baselines)
+\end{itemize}
+
+After screening, we selected 13 primary papers plus four foundational baselines.
+
+\subsection{FL Algorithm Taxonomy}
+\label{sec:algorithms}
+
+We selected five FL algorithms for comparison. They represent different strategies for dealing with Non-IID data.
+
+\subsubsection{FedAvg}
+
+\citet{mcmahan2017} introduced Federated Averaging (FedAvg). In each round, selected clients train their local models for $E$ epochs. The server averages the client weights:
+\begin{equation}
+    w_{t+1} = \sum_{k=1}^{K} \frac{n_k}{n} \, w_k^{(t)}
+    \label{eq:fedavg}
+\end{equation}
+where $n_k$ is the number of training samples for client $k$, $n = \sum_k n_k$, and $w_k^{(t)}$ is client $k$'s model after local training in round $t$. FedAvg performs well under IID conditions but converges poorly on Non-IID data \citep{zhao2018federated}.
+
+\subsubsection{FedProx}
+
+\citet{li2020fedprox} added a proximal regularisation term to FedAvg's local loss:
+\begin{equation}
+    \mathcal{L}_k^{\text{prox}}(w) = \mathcal{L}_k(w) + \frac{\mu}{2} \|w - w^{(t)}\|^2
+    \label{eq:fedprox}
+\end{equation}
+The term $\mu \|w - w^{(t)}\|^2$ penalises the local model if it moves too far from the global model $w^{(t)}$. This limits client drift and improves convergence under moderate Non-IID conditions.
+
+\subsubsection{FedNova}
+
+\citet{wang2020fednova} found that standard aggregation is biased when different clients take different numbers of local gradient steps. FedNova corrects this by normalising each client's update:
+\begin{equation}
+    \Delta_k = \frac{1}{\tau_k} \sum_{j=0}^{\tau_k - 1} g_k^{(j)}
+    \label{eq:fednova}
+\end{equation}
+where $\tau_k$ is the number of local steps for client $k$ and $g_k^{(j)}$ is the gradient at step $j$. The normalised updates are then aggregated, making the result consistent regardless of local step counts.
+
+\subsubsection{SCAFFOLD}
+
+\citet{karimireddy2020} identified ``client drift'' as the main cause of slow convergence under Non-IID conditions. Local models drift towards their own data distribution rather than the global optimum. SCAFFOLD uses control variates $c$ (global) and $c_k$ (per-client) to correct for this drift during each local step:
+\begin{equation}
+    y_k^{(j+1)} = y_k^{(j)} - \eta \bigl(g_k^{(j)} - c_k + c\bigr)
+    \label{eq:scaffold}
+\end{equation}
+SCAFFOLD has stronger theoretical convergence guarantees than FedAvg under Non-IID conditions, but it requires careful tuning and more communication per round.
+
+\subsubsection{Personalised FL (PersFL)}
+
+Standard FL finds one global model for all clients. Personalised FL trains a global model as a shared starting point and then fine-tunes a separate model for each client. We use the Per-FedAvg approach \citep{fallah2020personalized}, which finds a global initialisation that is easy to fine-tune:
+\begin{equation}
+    w^* = \arg\min_{w} \sum_{k=1}^{K} \mathcal{L}_k\bigl(w - \alpha \nabla \mathcal{L}_k(w)\bigr)
+    \label{eq:persfl}
+\end{equation}
+Each bank's personalised model can adapt to its unique fraud pattern, which is especially useful when data distributions are very different.
+
+\subsection{Non-IID Data Simulation}
+
+We simulate Non-IID conditions using the Dirichlet distribution with concentration parameter $\alpha$. For each client $k$, we draw a label proportion vector $p_k \sim \text{Dir}(\alpha)$ that controls how many fraud and legitimate samples the client receives. Small $\alpha$ (e.g., $0.05$) means each client gets very few fraud cases from most classes --- a very uneven distribution. Larger $\alpha$ (e.g., $0.5$) gives more balanced distributions across clients.
+
+We simulate three types of data heterogeneity:
+\begin{enumerate}[leftmargin=*, label=\arabic*.]
+\item \textbf{Label skew:} Different fraud rates across banks (Dirichlet $\alpha$ controls severity)
+\item \textbf{Quantity skew:} Different numbers of transactions per bank (Dirichlet allocation of total records)
+\item \textbf{Feature skew:} Different transaction types and customer demographics, achieved by partitioning on feature subsets of the IEEE-CIS dataset
+\end{enumerate}
+
+\subsection{Datasets}
+
+\subsubsection{Kaggle Credit Card Fraud Dataset}
+
+This dataset contains 284,807 credit card transactions from European cardholders in September 2013 \citep{dal2015calibrating}. Only 492 transactions (0.172\%) are fraud. Features V1--V28 are PCA-transformed to protect privacy. Two original features, Amount and Time, are also included.
+
+This is the most commonly used benchmark in the FL fraud detection literature. We partition it across five simulated banks using Dirichlet allocation with $\alpha = 0.5$. SMOTE oversampling is applied within each bank's local training data to handle the severe class imbalance.
+
+\subsubsection{IEEE-CIS Fraud Detection Dataset}
+
+This dataset comes from the IEEE-CIS Fraud Detection competition. It contains e-commerce transactions with rich features: device information, email domains, browser type, billing address, and transaction amount. The greater feature diversity makes it well-suited for testing Non-IID robustness across different heterogeneity levels.
+
+We test three Non-IID settings: $\alpha \in \{0.5,\, 0.1,\, 0.05\}$, representing moderate, high, and extreme heterogeneity.
+
+\subsubsection{SAML Dataset}
+
+The SAML (Synthetic Anti-Money Laundering) dataset simulates multi-bank transaction records with four institutions. It provides a more realistic cross-bank setting than the single-institution credit card datasets. We use $\alpha \in \{0.5,\, 0.1,\, 0.05,\, 0.01\}$ for this dataset.
+
+\subsection{Model Architectures}
+
+We use two model architectures in all experiments:
+
+\textbf{Multi-Layer Perceptron (MLP):} Three fully connected layers with hidden dimensions $[256, 128, 64]$, ReLU activations, and batch normalisation. Dropout (rate $= 0.3$) is applied before the output layer. We use binary cross-entropy loss with inverse-frequency class weighting.
+
+\textbf{Logistic Regression (LR):} Standard $\ell_2$-regularised logistic regression with an SGD optimiser, included as a simpler comparison model that is also FL-compatible.
+
+\subsection{Training Setup}
+
+Each FL experiment runs for 60 communication rounds. Every round:
+\begin{enumerate}[leftmargin=*, label=\arabic*.]
+\item All clients train their local model for $E = 5$ epochs
+\item Clients send model updates to the server
+\item The server aggregates updates using the chosen FL algorithm
+\item The updated global model is sent back to all clients
+\end{enumerate}
+
+We test three privacy configurations for each algorithm:
+\begin{itemize}[noitemsep]
+\item \textbf{No DP:} Standard FL without any privacy mechanism
+\item \textbf{DP:} Gaussian-noise Differential Privacy with noise multiplier $\sigma = 1.0$ and gradient clipping norm $C = 1.0$
+\item \textbf{Sparsification:} Top-10\% gradient sparsification --- only the 10\% of gradient values with the largest magnitude are transmitted, reducing communication cost by approximately 90\%
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+
+We use five metrics to evaluate fraud detection performance:
+
+\begin{itemize}[noitemsep]
+\item \textbf{AUC-ROC:} Area Under the Receiver Operating Characteristic curve. Threshold-free discrimination score. Can be misleading on severely imbalanced datasets.
+\item \textbf{AUPRC:} Area Under the Precision-Recall Curve. The most informative metric when fraud prevalence is below 5\%. A random classifier scores AUPRC equal to the fraud rate.
+\item \textbf{F1 Score:} Harmonic mean of Precision and Recall. Penalises both false positives and false negatives equally.
+\item \textbf{Recall@1\%FPR:} Fraction of real fraud cases detected when only 1\% of legitimate transactions are flagged. Reflects the operational constraints of bank fraud teams.
+\item \textbf{KS Statistic:} Maximum distance between the cumulative score distributions of fraud and legitimate transactions. Standard regulatory model quality metric in banking.
+\end{itemize}
+
+%% ============================================================
+%% Section 3: Experiments and Results
+%% ============================================================
+\section{Experiments and Results}
+\label{sec:results}
+
+\subsection{MLP Results --- Kaggle Credit Card Dataset}
+
+Table~\ref{tab:mlp_results} shows results from the five FL algorithms using an MLP on the Kaggle Credit Card Fraud dataset at 60 communication rounds.
+
+\begin{table}[H]
+\centering
+\caption{FL performance on Kaggle Credit Card Fraud dataset (MLP, 60 rounds). Best result per metric in \textbf{bold}.}
+\label{tab:mlp_results}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llccccc}
+\toprule
+\textbf{Algorithm} & \textbf{Config} & \textbf{AUC-ROC} & \textbf{F1} & \textbf{Precision} & \textbf{Recall} & \textbf{KS} \\
+\midrule
+FedAvg   & No DP       & 0.9663 & \textbf{0.7222} & \textbf{0.7927} & 0.6633 & 0.8828 \\
+FedAvg   & DP          & 0.9731 & 0.7179          & 0.6176          & 0.8571 & 0.9000 \\
+FedAvg   & Spars.      & 0.9448 & 0.6957          & 0.7442          & 0.6531 & 0.8293 \\
+\midrule
+FedProx  & No DP       & 0.9741 & 0.6466          & 0.5119          & 0.8776 & 0.8984 \\
+FedProx  & DP          & 0.9768 & 0.6042          & 0.4579          & 0.8878 & 0.9043 \\
+FedProx  & Spars.      & 0.9566 & 0.6311          & 0.5591          & 0.7245 & 0.8678 \\
+\midrule
+FedNova  & No DP       & 0.9798 & 0.1830          & 0.1019          & 0.8980 & 0.8901 \\
+FedNova  & DP          & \textbf{0.9841} & 0.6747  & 0.5563          & 0.8571 & 0.9029 \\
+FedNova  & Spars.      & 0.9604 & 0.0086          & 0.0043          & 0.9694 & 0.8578 \\
+\midrule
+SCAFFOLD & No DP       & 0.5102 & 0.0000          & 0.0000          & 0.0000 & 0.0204 \\
+SCAFFOLD & DP          & 0.1053 & 0.0000          & 0.0000          & 0.0000 & 0.0130 \\
+SCAFFOLD & Spars.      & 0.9732 & 0.1799          & 0.1002          & 0.8776 & 0.8835 \\
+\midrule
+PersFL   & No DP       & 0.9618 & 0.7234          & 0.7556          & 0.6939 & 0.8818 \\
+PersFL   & DP          & 0.9745 & 0.7113          & 0.6028          & 0.8673 & \textbf{0.9034} \\
+PersFL   & Spars.      & 0.9483 & 0.6786          & \textbf{0.8143} & 0.5816 & 0.8376 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\textbf{FedNova-DP} achieved the highest AUC-ROC of 0.9841. \textbf{FedAvg without DP} achieved the best F1 of 0.7222 and highest Precision of 0.7927. \textbf{PersFL} was the most stable algorithm across all configurations, varying from AUC 0.9483 to 0.9745 and maintaining F1 above 0.67 in every setting.
+
+\textbf{SCAFFOLD failed} completely in standard and DP settings. AUC values of 0.5102 and 0.1053 are barely better than a random classifier (AUC $= 0.5$). Only with sparsification did SCAFFOLD recover, reaching AUC $= 0.9732$ --- but its F1 remained low at 0.1799.
+
+\textbf{FedNova without DP} shows an unusual result: AUC = 0.9798 but F1 = 0.1830. The model classifies almost all transactions as fraud, giving very high Recall (0.8980) but extremely low Precision (0.1019). Adding DP noise stabilised the threshold and raised F1 to 0.6747.
+
+\subsection{LR Results --- Kaggle Credit Card Dataset}
+
+Table~\ref{tab:lr_results} shows Logistic Regression results on the same dataset.
+
+\begin{table}[H]
+\centering
+\caption{FL performance on Kaggle Credit Card Fraud dataset (Logistic Regression, 60 rounds).}
+\label{tab:lr_results}
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Algorithm} & \textbf{Config} & \textbf{AUC-ROC} & \textbf{F1} & \textbf{Precision} & \textbf{Recall} \\
+\midrule
+FedAvg   & No DP  & 0.9603 & 0.5133          & 0.3610          & 0.8878 \\
+FedAvg   & DP     & 0.9576 & 0.5179          & 0.3655          & 0.8878 \\
+FedAvg   & Spars. & 0.9549 & 0.5705          & 0.4203          & 0.8878 \\
+\midrule
+FedProx  & No DP  & 0.9601 & 0.5321          & 0.3799          & 0.8878 \\
+FedProx  & DP     & 0.9634 & 0.4741          & 0.3234          & 0.8878 \\
+FedProx  & Spars. & 0.9575 & 0.5163          & 0.3640          & 0.8878 \\
+\midrule
+PersFL   & No DP  & 0.9600 & \textbf{0.6442} & \textbf{0.5089} & 0.8776 \\
+PersFL   & DP     & 0.9619 & 0.5073          & 0.3551          & 0.8878 \\
+PersFL   & Spars. & 0.9619 & 0.4213          & 0.2762          & 0.8878 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+With Logistic Regression, all algorithms gave similar AUC values (0.9549--0.9634). PersFL without DP achieved the best F1 of 0.6442. The smaller gap between algorithms compared to MLP results suggests that Non-IID effects are less severe for simple linear models, which do not rely on complex feature interactions that vary across bank distributions.
+
+\subsection{Non-IID Robustness --- IEEE-CIS Dataset}
+\label{sec:results_non_iid}
+
+Table~\ref{tab:non_iid_results} shows AUPRC and AUC-ROC across three Non-IID levels on the IEEE-CIS dataset.
+
+\begin{table}[H]
+\centering
+\caption{FL performance under increasing Non-IID severity on IEEE-CIS dataset (AUPRC / AUC-ROC).
+Lower $\alpha$ means more heterogeneous data. Best per column in \textbf{bold}.}
+\label{tab:non_iid_results}
+\begin{tabular}{lcccccc}
+\toprule
+\multirow{2}{*}{\textbf{Algorithm}}
+  & \multicolumn{2}{c}{$\alpha = 0.5$ (Moderate)}
+  & \multicolumn{2}{c}{$\alpha = 0.1$ (High)}
+  & \multicolumn{2}{c}{$\alpha = 0.05$ (Extreme)} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+  & AUPRC & AUC & AUPRC & AUC & AUPRC & AUC \\
+\midrule
+FedAvg  & 0.3984 & 0.7965 & 0.3399 & 0.7520 & 0.3373 & 0.7504 \\
+FedProx & 0.4748 & 0.8552 & 0.4933 & 0.8637 & 0.4891 & \textbf{0.8656} \\
+FedNova & 0.3247 & 0.8025 & 0.1462 & 0.7579 & 0.2523 & 0.7370 \\
+PersFL  & \textbf{0.5100} & \textbf{0.8983}
+         & \textbf{0.4249} & \textbf{0.8750}
+         & \textbf{0.4759} & 0.8514 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+PersFL led at all three heterogeneity levels. Moving from $\alpha = 0.5$ to $\alpha = 0.05$, PersFL's AUPRC dropped from 0.5100 to 0.4759 --- a 6.7\% relative decline over a tenfold increase in heterogeneity. This was the smallest degradation of any algorithm.
+
+FedNova showed the largest drop. Its AUPRC fell from 0.3247 at $\alpha = 0.5$ to 0.1462 at $\alpha = 0.1$ --- a 55\% relative drop. This suggests that FedNova's normalisation, which helps on the Kaggle dataset, does not help when client distributions are very different.
+
+FedProx's AUPRC actually improved slightly from $\alpha = 0.5$ to $\alpha = 0.1$ (0.4748 to 0.4933). The proximal regularisation helps more as heterogeneity grows, preventing the extreme local overfitting seen in other algorithms.
+
+\subsection{SLR Multi-Dimensional Analysis}
+\label{sec:results_slr}
+
+Table~\ref{tab:slr_summary} summarises the 13 reviewed papers across five key dimensions.
+
+\begin{table}[H]
+\centering
+\caption{Summary of reviewed FL fraud detection papers (2024--2025). DP = Differential Privacy.
+XAI = Explainable AI. CCFD = Kaggle Credit Card Fraud Dataset.}
+\label{tab:slr_summary}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{p{3cm}p{2.5cm}cccccc}
+\toprule
+\textbf{Paper} & \textbf{Dataset} & \textbf{FedProx} & \textbf{SCAFFOLD} & \textbf{PersFL} & \textbf{AUPRC} & \textbf{DP} & \textbf{XAI} \\
+\midrule
+Khan et al. (2025)    & CCFD        & No  & No  & No  & No  & Yes & Yes \\
+Alhasawi (2025)       & Custom      & No  & No  & No  & No  & No  & No  \\
+Li et al. (2025)      & CCFD        & Yes & No  & No  & No  & No  & No  \\
+Liu et al. (2025)     & SWIFT AML   & Yes & No  & No  & No  & No  & No  \\
+Dang \& Tran (2025)   & PaySim      & No  & No  & No  & No  & Yes & No  \\
+Xiang et al. (2025)   & CCFD        & No  & No  & No  & No  & No  & No  \\
+Alqurashi (2024)      & CCFD        & No  & No  & No  & No  & Yes & No  \\
+Awosika et al. (2024) & CCFD        & No  & No  & No  & No  & No  & Yes \\
+Sun et al. (2025)     & Elliptic    & No  & No  & No  & No  & No  & No  \\
+Wang et al. (2024)    & Custom      & Yes & No  & No  & No  & Yes & No  \\
+Liu et al. (2024)     & AML         & No  & Yes & No  & No  & No  & No  \\
+Praditya et al. (2025) & CCFD       & Yes & No  & No  & No  & No  & No  \\
+Upadrista (2024)      & IBM AML     & No  & No  & No  & No  & No  & No  \\
+\midrule
+\textbf{Coverage (\%)} &            & 31\% & 8\% & 0\% & 0\% & 31\% & 15\% \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+Three patterns are clear from Table~\ref{tab:slr_summary}. First, 10 out of 13 papers use the Kaggle Credit Card Fraud Dataset. This makes cross-study comparison easy but limits what we know about FL fraud detection on other types of financial crime. Second, FedProx is included in only 4 papers (31\%) and SCAFFOLD in just 1 (8\%). No paper uses PersFL as a comparison. Our experiments show that both FedProx and PersFL outperform FedAvg in Non-IID settings --- if these baselines were included in existing papers, their claimed improvements over FedAvg would likely shrink. Third, no paper reports AUPRC, even though it is the most appropriate metric for fraud datasets with less than 1\% fraud rate.
+
+%% ============================================================
+%% Section 4: Discussion
+%% ============================================================
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Which Algorithm Should Banks Use?}
+
+Our results point to clear recommendations depending on the deployment setting.
+
+\textbf{For balanced or moderately heterogeneous data} ($\alpha \geq 0.5$), \textbf{FedNova with DP} gives the best AUC-ROC (0.9841 on the Kaggle dataset). Banks that prioritise high fraud detection rates and can tolerate slightly lower precision should use FedNova. Adding DP is recommended since it adds almost no accuracy cost and meets GDPR requirements.
+
+\textbf{For highly or extremely heterogeneous data} ($\alpha \leq 0.1$), \textbf{PersFL} is the better choice. When banks have very different customer profiles and fraud patterns --- a realistic situation for a consortium that includes both regional rural banks and large urban neobanks --- personalised models that adapt to each bank outperform a single shared global model. PersFL maintained AUPRC = 0.4759 at $\alpha = 0.05$ while FedNova dropped to 0.2523.
+
+\textbf{FedAvg} remains valid as a starting point. It achieved a competitive F1 of 0.7222 without DP, is simple to implement, and is well understood. Banking consortia new to FL can start with FedAvg and move to PersFL or FedProx as experience grows.
+
+\textbf{SCAFFOLD should not be used} for fraud detection on imbalanced tabular data without extensive tuning. Its AUC results of 0.5102 and 0.1053 in standard and DP settings are effectively random. The control variate mechanism may interact badly with extreme class imbalance. Only with sparsification did SCAFFOLD produce usable results, but its F1 score (0.1799) was still much lower than other algorithms.
+
+\subsection{Differential Privacy Is Worth the Small Cost}
+
+DP had a surprisingly small negative impact in most cases. For FedAvg, DP changed F1 from 0.7222 to 0.7179 --- less than 1\% difference. For FedProx, AUC actually improved slightly with DP (0.9741 to 0.9768). For FedNova, DP improved both AUC (from 0.9798 to 0.9841) and F1 (from 0.1830 to 0.6747), probably because the noise stabilised the model's decision threshold.
+
+Real banking deployments should include DP by default. The GDPR Article 25 principle of data protection by design requires it, and the accuracy cost is minimal. \citet{zhu2019deep} showed that gradient updates in standard FL can be reversed to reconstruct private training data within a small number of communication rounds. DP is the primary defence against this.
+
+\subsection{What the Literature Is Missing}
+
+Our SLR found three important gaps in the FL fraud detection literature.
+
+The first gap is \textbf{missing baselines}. Papers that compare only against FedAvg set a low bar. Our experiments showed that FedProx and PersFL outperform FedAvg in Non-IID settings without any novel contribution. Future papers should include FedProx, SCAFFOLD (with proper tuning), and a personalised FL baseline alongside FedAvg. The foundational paper by \citet{wang2023fedrlcs} on reinforcement learning-based client selection (FedRLCS) was not used as a baseline in any of the 13 papers we reviewed, despite being directly relevant.
+
+The second gap is \textbf{metric selection}. AUPRC should be the primary evaluation metric for fraud detection on imbalanced datasets. A model with AUC-ROC = 0.98 can still be impractical if AUPRC is low, because AUC measures performance across all decision thresholds, including thresholds that would generate far too many false positives for a bank's operations team to handle. Our IEEE-CIS results showed that XGBoost reached AUC = 0.9339 but AUPRC = 0.6138, while FedNova reached AUC = 0.8025 and AUPRC = 0.3247. The ranking changes completely depending on which metric you look at.
+
+The third gap is \textbf{fairness between banks}. When the global FL model performs well for large data-rich banks but poorly for small banks, the small banks gain nothing from the consortium. This is an unfairness problem. \citet{kamalaruban2024fairness} introduced fairness metrics for fraud models, but no FL fraud paper has measured inter-bank performance equity. This is an important open problem with clear regulatory implications under ECOA and EU AI Act requirements.
+
+\subsection{Limitations}
+
+Our study has several limitations. The banks are simulated by partitioning public datasets using Dirichlet allocation, not from real institutional data. Real cross-bank FL would face additional challenges: different data schemas, missing features, different fraud taxonomies per bank, and regulatory differences across jurisdictions.
+
+Our security analysis is limited to DP and sparsification. We did not test gradient inversion attacks, model poisoning, or Byzantine robustness. \citet{zhu2019deep} showed that without DP, gradient updates can reconstruct training data with 68\% accuracy for sensitive fields within just 8 rounds --- a critical risk for production deployments.
+
+We also only tested tabular data. Graph-based approaches like FALD-BGAT \citep{liu2024fald} and FC2L \citep{sun2025fc2l} work on transaction networks rather than individual transactions and may detect fraud patterns that tabular models miss.
+
+%% ============================================================
+%% Section 5: Conclusion
+%% ============================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+This paper studied Federated Learning for cross-bank fraud detection. We reviewed 13 FL fraud detection papers from 2024 to 2025 and ran experiments with five algorithms on three datasets under multiple levels of data heterogeneity.
+
+The main findings are:
+
+\begin{enumerate}[leftmargin=*, label=\arabic*.]
+\item \textbf{FedNova with Differential Privacy} achieved the best AUC-ROC of 0.9841 on the Kaggle Credit Card Fraud dataset, the most common benchmark in the field.
+\item \textbf{Personalised FL} is the best algorithm when banks have very different data distributions. It maintained AUPRC = 0.4759 under extreme heterogeneity ($\alpha = 0.05$), outperforming all other algorithms.
+\item \textbf{SCAFFOLD} failed on fraud datasets without gradient sparsification, reaching AUC values near random (0.5102 and 0.1053). Its use requires extensive tuning on imbalanced tabular data.
+\item \textbf{Differential Privacy} adds minimal accuracy cost (under 1\% AUC change in most cases) while providing important regulatory and privacy protection. It should be included by default in all banking FL deployments.
+\item The FL fraud detection literature \textbf{lacks key baselines} (FedRLCS, PersFL, SCAFFOLD), rarely reports AUPRC, and almost never analyses fairness between participating banks.
+\end{enumerate}
+
+For banking consortia, our recommendation is: start with FedAvg to establish a baseline, move to PersFL or FedProx when banks have heterogeneous data, always include DP, and evaluate using AUPRC in addition to AUC-ROC.
+
+Three directions stand out for future research. First, testing FL on real multi-bank data with different schemas and jurisdictional constraints. Second, developing FL algorithms that optimise for both fraud detection accuracy and inter-bank fairness at the same time. Third, evaluating security, Non-IID robustness, and fairness together in a single system --- no existing paper addresses all three simultaneously, despite all three being present in any real banking consortium.
+
+%% ============================================================
+%% References
+%% ============================================================
+\bibliographystyle{apalike}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,109 @@
+\begin{thebibliography}{}
+
+\bibitem[Alhasawi, 2025]{alhasawi2025}
+Alhasawi, Y. (2025).
+\newblock A federated approach to scalable and trustworthy financial fraud
+  detection ({FedFraud}).
+\newblock {\em Security and Privacy}.
+
+\bibitem[Fallah et~al., 2020]{fallah2020personalized}
+Fallah, A., Mokhtari, A., and Ozdaglar, A. (2020).
+\newblock Personalized federated learning with theoretical guarantees: A
+  model-agnostic meta-learning approach.
+\newblock In {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  volume~33, pages 9143--9154.
+
+\bibitem[Kamalaruban et~al., 2024]{kamalaruban2024fairness}
+Kamalaruban, P. et~al. (2024).
+\newblock Evaluating fairness in transaction fraud models: Fairness metrics,
+  bias audits, and challenges.
+\newblock In {\em Proceedings of the 5th {ACM} International Conference on {AI}
+  in Finance ({ICAIF} 2024)}, pages 555--563.
+
+\bibitem[Karimireddy et~al., 2020]{karimireddy2020}
+Karimireddy, S.~J., Kale, S., Mohri, M., Reddi, S., Stich, S., and Suresh,
+  A.~T. (2020).
+\newblock {SCAFFOLD}: Stochastic controlled averaging for federated learning.
+\newblock In {\em Proceedings of the 37th International Conference on Machine
+  Learning (ICML)}, volume 119 of {\em Proceedings of Machine Learning
+  Research}, pages 5132--5143.
+
+\bibitem[Khan et~al., 2025]{khan2025}
+Khan, M.~A., Aljunaid, S.~K., Almheiri, S.~J., and Dawood, H. (2025).
+\newblock Secure and transparent banking: Explainable {AI}-driven federated
+  learning model for financial fraud detection.
+\newblock {\em Journal of Risk and Financial Management}, 18(4):179.
+
+\bibitem[Li et~al., 2020]{li2020fedprox}
+Li, T., Sahu, A.~K., Zaheer, M., Sanjabi, M., Talwalkar, A., and Smith, V.
+  (2020).
+\newblock Federated optimization in heterogeneous networks ({FedProx}).
+\newblock In {\em Proceedings of the 3rd Conference on Machine Learning and
+  Systems (MLSys)}, volume~2, pages 429--450.
+
+\bibitem[Li et~al., 2025]{li2025fedmecs}
+Li, X. et~al. (2025).
+\newblock A federated learning-based approach for robust and accurate financial
+  fraud detection ({FedMEcs}).
+\newblock In {\em Proceedings of the ACM Conference on Artificial Intelligence
+  for Data Foundations (AIDF 2025)}.
+
+\bibitem[Liu et~al., 2024]{liu2024fald}
+Liu, W. et~al. (2024).
+\newblock A federated anti-money laundering detection model with bidirectional
+  graph attention network ({FALD-BGAT}).
+\newblock In {\em Intelligent Computing Theories and Application (ICIC 2024)},
+  volume 14879 of {\em Lecture Notes in Computer Science}. Springer.
+
+\bibitem[McMahan et~al., 2017]{mcmahan2017}
+McMahan, B., Moore, E., Ramage, D., Hampson, S., and {Ag\"{u}era y Arcas}, B.
+  (2017).
+\newblock Communication-efficient learning of deep networks from decentralized
+  data.
+\newblock In {\em Proceedings of the 20th International Conference on
+  Artificial Intelligence and Statistics (AISTATS)}, volume~54 of {\em
+  Proceedings of Machine Learning Research}, pages 1273--1282.
+
+\bibitem[{Nasdaq Verafin}, 2024]{nasdaq2024}
+{Nasdaq Verafin} (2024).
+\newblock Nasdaq verafin 2024 global financial crime report.
+\newblock Technical report, Nasdaq.
+
+\bibitem[Pozzolo et~al., 2015]{dal2015calibrating}
+Pozzolo, A.~D., Caelen, O., Johnson, R.~A., and Bontempi, G. (2015).
+\newblock Calibrating probability with undersampling for unbalanced
+  classification.
+\newblock In {\em 2015 {IEEE} Symposium Series on Computational Intelligence
+  ({SSCI})}.
+
+\bibitem[Sun et~al., 2025]{sun2025fc2l}
+Sun, F. et~al. (2025).
+\newblock {FC2L}: Hybrid federated continual graph contrastive learning for
+  evolving money laundering threats.
+\newblock {\em Data Mining and Knowledge Discovery}.
+
+\bibitem[Wang et~al., 2020]{wang2020fednova}
+Wang, J., Liu, Q., Liang, H., Joshi, G., and Poor, H.~V. (2020).
+\newblock Tackling the objective inconsistency problem in heterogeneous
+  federated optimization ({FedNova}).
+\newblock In {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  volume~33, pages 7611--7623.
+
+\bibitem[Wang et~al., 2023]{wang2023fedrlcs}
+Wang, X. et~al. (2023).
+\newblock An optimization method for non-{IID} federated learning based on deep
+  reinforcement learning ({FedRLCS}).
+\newblock {\em Electronics}, 12(22):4632.
+
+\bibitem[Zhao et~al., 2018]{zhao2018federated}
+Zhao, Y., Li, M., Lai, L., Suda, N., Civin, D., and Chandra, V. (2018).
+\newblock Federated learning with non-{IID} data.
+\newblock {\em arXiv preprint arXiv:1806.00582}.
+
+\bibitem[Zhu et~al., 2019]{zhu2019deep}
+Zhu, L., Liu, Z., and Han, S. (2019).
+\newblock Deep leakage from gradients.
+\newblock In {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  volume~32.
+
+\end{thebibliography}
