@@ -38,6 +38,11 @@ All datasets are gitignored. Download from the linked sources and place in `data
 │   ├── federated_learning.py     #   FraudDetectorMLP, FederatedClient, FederatedServer
 │   └── data_utils.py             #   Data loading, EDA, Dirichlet partitioning
 │
+├── triage/                       # Decision layer: auto-clear / flag / defer-to-human
+│   ├── core.py                   #   calibration, federated conformal, cost rule, defer
+│   ├── integration.py            #   capture sweep probabilities -> npz -> triage results
+│   └── experiment.py             #   standalone compact-expert sweep (resumable)
+│
 ├── notebooks/
 │   ├── FL_algorithms/            # One notebook per FL algorithm (ULB dataset)
 │   │   ├── fedavg_logistic_regression.ipynb
@@ -117,6 +122,18 @@ python main.py --synthetic
 ```
 
 For the Streamlit demo dashboard, see [reports/dashboards/moe_fl_streamlit/README.md](reports/dashboards/moe_fl_streamlit/README.md).
+
+## Triage Decision Layer
+
+On top of the scored experts, `triage/` turns per-bank probabilities into an **action** —
+auto-clear / flag-for-SAR / defer-to-human — via per-expert calibration, a per-bank
+conformal miss-rate guarantee, a cost-optimal flag threshold, and a budgeted defer rule.
+The GROUP-A sweep notebook captures expert probabilities per combo (no retraining); the
+decision layer runs over the captures. See [triage/README.md](triage/README.md).
+
+```bash
+python -m triage.experiment --dataset synthetic --quick   # 1-minute smoke test
+```
 
 ## FL Algorithms Benchmarked
 
