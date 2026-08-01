@@ -86,6 +86,7 @@ All datasets are gitignored. Download from the linked sources and place in `data
 │   └── persfl.ipynb
 │
 ├── scripts/                      # Training scripts
+│   ├── kaggle/                   #   GROUP-A sweep as 12h-session Kaggle scripts (one per dataset)
 │   ├── v1/                       #   Original
 │   ├── v2/                       #   Updated
 │   └── v3/                       #   Report generation
@@ -122,6 +123,17 @@ python main.py --synthetic
 ```
 
 For the Streamlit demo dashboard, see [reports/dashboards/moe_fl_streamlit/README.md](reports/dashboards/moe_fl_streamlit/README.md).
+
+## Reproducing the GROUP-A Sweep on Kaggle
+
+The canonical multi-seed sweep does not fit Kaggle's 12 h session cap in one go
+(~42 h of GPU compute). [`scripts/kaggle/`](scripts/kaggle/README.md) ships
+directly runnable scripts — one per dataset plus per-seed part scripts that each
+finish inside ONE session — with order-independent partitioning (Fix E), automatic
+session resume/merging, and a time-budget guard. Paste a script into a kernel,
+attach its dataset, enable GPU, run; parts can run in parallel on separate
+accounts, and the last part run with its siblings attached emits the full
+multi-seed package. Sanity checklist: [`RERUN_CHECKLIST.md`](RERUN_CHECKLIST.md).
 
 ## Triage Decision Layer
 
