@@ -528,15 +528,75 @@ RESUME_DIR       = 'auto'            # 'auto' | None | path | list of paths
 
 '''
 
+# ---------------------------------------------------------------- notebook twins
+# Each script is also emitted as an .ipynb with the canonical notebook's
+# markdown/code cell structure, for Kaggle's File -> Import Notebook flow.
+CODE_CELLS = [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29]
+
+def _nb_code(src):
+    return {"cell_type": "code", "metadata": {}, "execution_count": None,
+            "outputs": [], "source": src.rstrip('\n').splitlines(keepends=True)}
+
+def _nb_md(src):
+    return {"cell_type": "markdown", "metadata": {},
+            "source": src.rstrip('\n').splitlines(keepends=True)}
+
+def make_notebook(spec, config_src):
+    plan_md = '\n'.join(f"> {line}" for line in spec['plan'])
+    header_md = f"""# GROUP-A alpha sweep — {spec['ds']}, seeds {spec['seeds']}
+
+Generated twin of `scripts/kaggle/{spec['fname']}` — do **not** edit by hand except the
+CONFIG cell below; regenerate with `scripts/kaggle/generate_from_notebook.py`.
+Canonical merged pipeline (PR #17: triage capture + eval fixes) + Fix E
+order-independent partitioning + multi-mount session resume/merging + a session
+time-budget guard sized to Kaggle's 12 h cap.
+
+**Attach**: `{ATTACH[spec['ds']]}` &nbsp;·&nbsp; **Accelerator**: GPU (mandatory) &nbsp;·&nbsp; internet may stay off
+
+{plan_md}
+
+Resume/merge: attach any previous session outputs of THIS dataset as extra inputs and
+Run All — finished cells are skipped, sibling seed-part outputs are merged into the
+final package (`RESUME_DIR='auto'`). Optionally attach the repo as a dataset so the
+triage decision layer runs here; otherwise run it locally on the `probs_*.npz` outputs.
+Full instructions: `scripts/kaggle/README.md`."""
+    cells = [_nb_md(header_md), _nb_code(config_src), _nb_code(PROLOGUE.strip('\n'))]
+    for i in CODE_CELLS:
+        cells.append(_nb_md(cell(i - 1)))                    # the section's markdown cell
+        cells.append(_nb_code(bodies.get(i, cell(i))))       # the (patched) code cell
+    cells.append(_nb_md('## Session verdict + resume instructions'))
+    cells.append(_nb_code(EPILOGUE.strip('\n')))
+    return {"nbformat": 4, "nbformat_minor": 4,
+            "metadata": {"kernelspec": {"display_name": "Python 3",
+                                        "language": "python", "name": "python3"},
+                         "language_info": {"name": "python"}},
+            "cells": cells}
+
 os.makedirs(OUTDIR, exist_ok=True)
 for spec in SCRIPTS:
     path = os.path.join(OUTDIR, spec['fname'])
     seeds_lit = str(spec['seeds'])
     plan = '\n'.join(f"#   {line}" for line in spec['plan'])
+    header = HEADER.format(ds=spec['ds'], seeds=seeds_lit,
+                           seed_pad=' ' * max(0, len('[42, 0, 1, 2, 3]') - len(seeds_lit)),
+                           attach=ATTACH[spec['ds']], plan=plan)
     with open(path, 'w') as f:
-        f.write(HEADER.format(ds=spec['ds'], seeds=seeds_lit,
-                              seed_pad=' ' * max(0, len('[42, 0, 1, 2, 3]') - len(seeds_lit)),
-                              attach=ATTACH[spec['ds']], plan=plan) + SHARED_BODY)
+        f.write(header + SHARED_BODY)
     py_compile.compile(path, doraise=True)
     print(f'wrote + compiled {path}  ({os.path.getsize(path):,} B)')
+
+    seed_pad = ' ' * max(0, len('[42, 0, 1, 2, 3]') - len(seeds_lit))
+    config_src = (
+        "# ─ CONFIG — the only cell to edit ─\n"
+        f"ONLY_DATASET     = '{spec['ds']}'\n"
+        f"SEEDS            = {seeds_lit}{seed_pad}  # this notebook's seed chunk (canonical full\n"
+        "                                     # list: [42, 0, 1, 2, 3]; Fix E keeps chunks canonical)\n"
+        "SESSION_BUDGET_H = 10.5              # stop starting new cells after this many hours\n"
+        "RESUME_DIR       = 'auto'            # 'auto' | None | path | list of paths")
+    nb_path = path[:-3] + '.ipynb'
+    nb_json = make_notebook(spec, config_src)
+    with open(nb_path, 'w', encoding='utf-8') as f:
+        json.dump(nb_json, f, ensure_ascii=False, indent=1)
+    json.load(open(nb_path))          # round-trip validity check
+    print(f'wrote + validated {nb_path}  ({os.path.getsize(nb_path):,} B)')
 print('OK')

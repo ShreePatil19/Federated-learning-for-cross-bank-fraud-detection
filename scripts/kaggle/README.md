@@ -54,14 +54,21 @@ parts' outputs: it merges them and emits the complete all-seed package.
   the budget guard splits the work and each rerun (with the previous output
   attached) continues where it stopped.
 
-## Running a script
+## Running on Kaggle
 
-1. Kaggle → **Create → New Notebook**, delete the starter cell, paste the whole
-   script into a single cell (a Script-type kernel works too).
-2. **Add Input** → the dataset for that script. **Accelerator = GPU** (the script
+Every script has an `.ipynb` twin (same code, split into the canonical
+notebook's cells) — that is the easiest path:
+
+1. Kaggle → **Create → New Notebook → File → Import Notebook** → upload the
+   `.ipynb` (or point the GitHub tab at this repo's copy).
+2. **Add Input** → the dataset for that script. **Accelerator = GPU** (the run
    aborts immediately with a clear message if GPU is off — a CPU run cannot
    finish in one session). Internet can stay off.
 3. **Save Version → Save & Run All (Commit)**.
+
+Alternatively paste the `.py` into a single notebook cell or a Script-type
+kernel — the two flavors are generated from the same sources and produce
+byte-identical outputs.
 
 ## Continuing / merging sessions
 
@@ -124,9 +131,11 @@ Consequences, same as the `split_sweeps/` notebooks:
 ## Editing the scripts
 
 Each script is `CONFIG` (per-script, a few lines) + a **shared body that is
-byte-identical across every `sweep_*.py`**. Never patch one file alone:
+byte-identical across every `sweep_*.py`**, and each `.ipynb` twin is generated
+from the same sources. Never patch one file alone (the only hand edit that makes
+sense on Kaggle is the CONFIG cell):
 
-- regenerate them all from the canonical notebook:
+- regenerate everything from the canonical notebook:
   `python3 scripts/kaggle/generate_from_notebook.py`
   (every patch it applies is an exact-match assertion, so upstream notebook
   drift fails the build instead of producing silently-wrong scripts);
