@@ -127,11 +127,13 @@ For the Streamlit demo dashboard, see [reports/dashboards/moe_fl_streamlit/READM
 ## Reproducing the GROUP-A Sweep on Kaggle
 
 The canonical multi-seed sweep does not fit Kaggle's 12 h session cap in one go
-(~42 h of GPU compute). [`scripts/kaggle/`](scripts/kaggle/README.md) ships one
-directly runnable script per dataset (ULB / SAML / IBM) with order-independent
-partitioning (Fix E), automatic session resume, and a time-budget guard — paste a
-script into a kernel, attach its dataset, enable GPU, run; rerun with the previous
-output attached to continue. Sanity checklist: [`RERUN_CHECKLIST.md`](RERUN_CHECKLIST.md).
+(~42 h of GPU compute). [`scripts/kaggle/`](scripts/kaggle/README.md) ships
+directly runnable scripts — one per dataset plus per-seed part scripts that each
+finish inside ONE session — with order-independent partitioning (Fix E), automatic
+session resume/merging, and a time-budget guard. Paste a script into a kernel,
+attach its dataset, enable GPU, run; parts can run in parallel on separate
+accounts, and the last part run with its siblings attached emits the full
+multi-seed package. Sanity checklist: [`RERUN_CHECKLIST.md`](RERUN_CHECKLIST.md).
 
 ## Triage Decision Layer
 

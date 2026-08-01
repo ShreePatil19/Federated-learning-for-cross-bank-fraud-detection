@@ -1,33 +1,40 @@
 #!/usr/bin/env python3
 # ============================================================================
-# GROUP-A alpha sweep on Kaggle — IBM only (parallel-safe, resumable)
+# GROUP-A alpha sweep on Kaggle — IBM, seeds [42, 0, 1, 2, 3] (parallel-safe, resumable)
 #
 # Single-file version of the canonical merged notebook
 #   notebooks/MOE_experiments/seed_runs/moe-fl-per-dataset-alpha-sweep-GROUP-A.ipynb
 # (PR #17: triage probability capture + eval fixes) restricted to one dataset
 # with PR #16's Fix E order-independent partitioning and session resume, plus a
-# session time-budget guard sized to Kaggle's 12 h cap.
+# session time-budget guard sized to Kaggle's 12 h cap. Fix E makes every
+# (seed, dataset, alpha) cell canonical regardless of run order, so seed chunks
+# run independently — even in parallel on separate accounts.
 #
 # Run on Kaggle: create a new Script (or one-cell `%run`) kernel, paste this
 # file, attach the input dataset below, Accelerator = GPU, then Save & Run All.
 #   attach : ealtman2019/ibm-transactions-for-anti-money-laundering-aml  (HI-Small_Trans.csv)
-#   cost   : ~4.0 h per seed -> 5 seeds is ~20 h = TWO sessions
-#   sessions needed: 2 (the budget guard stops after ~2 seeds; rerun to finish)
+#   cost   : ~4.0 h/seed -> ~20 h total. TWO ways to run:
+#     serial   - run this script 2-3 times (budget guard splits it;
+#                attach previous output each time).
+#     parallel - run sweep_IBM_part1/2/3.py on separate accounts; the
+#                LAST part run with the other outputs attached emits the
+#                full package, or run THIS script with all three attached.
 #
-# If a session stops at the budget: attach that session's output as a Dataset
-# input of a fresh session and run this same script again, unchanged —
-# finished (seed, alpha) cells are detected and skipped (RESUME_DIR='auto').
+# Resuming/merging: attach any previous session outputs of THIS dataset as
+# Dataset inputs and run unchanged — finished (seed, alpha) cells are skipped,
+# and sibling seed-part outputs are merged into this session's final package
+# (RESUME_DIR='auto' finds every mount).
 # Full instructions + sanity checklist: scripts/kaggle/README.md
 # ============================================================================
 
 # ─────────── CONFIG — the only per-script block; body below is shared ───────────
 ONLY_DATASET     = 'IBM'
-SEEDS            = [42, 0, 1, 2, 3]  # canonical rerun seeds; the budget guard
-                                     # decides how many fit in this session
+SEEDS            = [42, 0, 1, 2, 3]  # this script's seed chunk (canonical full list:
+                                     # [42, 0, 1, 2, 3]; Fix E keeps chunks canonical)
 SESSION_BUDGET_H = 10.5              # stop starting new cells after this many hours
-RESUME_DIR       = 'auto'            # 'auto' | None | '/kaggle/input/<mount>'
+RESUME_DIR       = 'auto'            # 'auto' | None | path | list of paths
 
-# ==== SHARED PIPELINE — byte-identical across sweep_ULB/SAML/IBM.py; edit all three together (see check_shared_sync.sh) ====
+# ==== SHARED PIPELINE — byte-identical across every sweep_*.py; regenerate all together (see check_shared_sync.sh) ====
 
 import os, sys, subprocess
 
@@ -216,37 +223,17 @@ def _cell_rng_seed(seed, ds_name, alpha):
     return (seed * 100003 + int(round(float(alpha) * 1000)) * 97
             + sum(ord(_ch) for _ch in ds_name)) % (2**31 - 1)
 
-def _resume_has(tag, seed):
-    if not RESUME_DIR or not os.path.isdir(RESUME_DIR):
-        return False
-    return os.path.exists(os.path.join(RESUME_DIR, f"{tag}_seed{seed}_benchmark.csv"))
-
-def _resume_load(tag, seed):
-    for suf in ("benchmark", "fl_history"):
-        p = os.path.join(RESUME_DIR, f"{tag}_seed{seed}_{suf}.csv")
-        if os.path.exists(p):
-            _sh_r.copy(p, os.path.join(OUT, f"{tag}_seed{seed}_{suf}.csv"))
-            _sh_r.copy(p, os.path.join(OUT, f"{tag}_{suf}.csv"))
-    # carry the triage probability capture forward so the final session's
-    # triage layer covers cells computed in earlier sessions too
-    _npz = f"probs_{tag}_seed{seed}.npz"
-    _p = os.path.join(RESUME_DIR, _npz)
-    if os.path.exists(_p):
-        _sh_r.copy(_p, os.path.join(OUT, _npz))
-    elif globals().get('CAPTURE_PROBS', True):
-        print(f"    [triage] NOTE: {_npz} not in RESUME_DIR — that cell has no capture")
-    return pd.read_csv(os.path.join(OUT, f"{tag}_seed{seed}_benchmark.csv"))
-
 def _autodetect_resume():
-    """Find a previous session's output mounted under INPUT_DIR.
+    """Find previous-session outputs mounted under INPUT_DIR (ALL of them —
+    sibling seed-part outputs can be attached together and are merged).
     A mount qualifies if it holds this dataset's per-cell benchmark CSVs.
     Mounts whose root has a triage/ dir are the REPO checkout, not a results
     mount — excluded so the pre-Fix-E preview results committed under
     results/ can never be resumed from."""
     if not os.path.isdir(INPUT_DIR):
-        return None
+        return []
     _pat = tuple(f"{d.lower()}_alpha" for d in DATASETS)
-    hits = {}
+    hits = []
     for root, _dirs, files in os.walk(INPUT_DIR):
         rel = os.path.relpath(root, INPUT_DIR)
         mount = os.path.join(INPUT_DIR, rel.split(os.sep)[0]) if rel != '.' else INPUT_DIR
@@ -255,17 +242,100 @@ def _autodetect_resume():
         n = sum(1 for f in files
                 if f.startswith(_pat) and '_seed' in f and f.endswith('_benchmark.csv'))
         if n:
-            hits[root] = n
-    if not hits:
-        return None
-    best = max(hits, key=hits.get)
-    if len(hits) > 1:
-        print(f"NOTE: several mounts look resumable ({sorted(hits)}) — using {best}")
-    return best
+            hits.append(root)
+    return sorted(hits)
 
+# RESUME_DIR accepts 'auto' | None | one path | a list of paths.
 if RESUME_DIR == 'auto':
-    RESUME_DIR = _autodetect_resume()
-print(f"RESUME_DIR = {RESUME_DIR or 'None (fresh run)'}")
+    RESUME_DIRS = _autodetect_resume()
+elif not RESUME_DIR:
+    RESUME_DIRS = []
+elif isinstance(RESUME_DIR, str):
+    RESUME_DIRS = [RESUME_DIR]
+else:
+    RESUME_DIRS = list(RESUME_DIR)
+print(f"RESUME_DIRS = {RESUME_DIRS or 'none (fresh run)'}")
+
+def _resume_find(fname):
+    """First attached mount holding fname, else None."""
+    for _d in RESUME_DIRS:
+        _p = os.path.join(_d, fname)
+        if os.path.exists(_p):
+            return _p
+    return None
+
+def _resume_has(tag, seed):
+    return _resume_find(f"{tag}_seed{seed}_benchmark.csv") is not None
+
+def _resume_load(tag, seed):
+    for suf in ("benchmark", "fl_history"):
+        p = _resume_find(f"{tag}_seed{seed}_{suf}.csv")
+        if p:
+            _sh_r.copy(p, os.path.join(OUT, f"{tag}_seed{seed}_{suf}.csv"))
+            _sh_r.copy(p, os.path.join(OUT, f"{tag}_{suf}.csv"))
+    # carry the triage probability capture forward so the final session's
+    # triage layer covers cells computed in earlier sessions too
+    _npz = f"probs_{tag}_seed{seed}.npz"
+    _p = _resume_find(_npz)
+    if _p:
+        _sh_r.copy(_p, os.path.join(OUT, _npz))
+    elif globals().get('CAPTURE_PROBS', True):
+        print(f"    [triage] NOTE: {_npz} not in any resume mount — that cell has no capture")
+    return pd.read_csv(os.path.join(OUT, f"{tag}_seed{seed}_benchmark.csv"))
+
+def _aggregate_sibling_outputs():
+    """Pull OTHER seeds' finished cells of THIS dataset from the attached
+    mounts into OUT, so the last seed-part run with its sibling parts attached
+    emits the complete multi-seed package (A2 comparison, A3, A4 and triage
+    over every seed). Sibling seeds are discovered from per-cell filenames,
+    which are dataset-prefixed, so another dataset's mount is never mixed in."""
+    import re as _re_agg
+    _ds = ONLY_DATASET
+    _cell_pat = _re_agg.compile(
+        _re_agg.escape(_ds.lower()) + r'_alpha[\d.]+_seed(\d+)_benchmark\.csv$')
+    _sib_seeds = set()
+    for _d2 in RESUME_DIRS:
+        if not os.path.isdir(_d2):
+            continue
+        for _f in os.listdir(_d2):
+            _m = _cell_pat.match(_f)
+            if _m and int(_m.group(1)) not in SEEDS:
+                _sib_seeds.add(int(_m.group(1)))
+    if not _sib_seeds:
+        return
+    _carried = []
+    for _s in sorted(_sib_seeds):
+        for _a in ALPHAS:
+            _t = f"{_ds.lower()}_alpha{_a}"
+            for _fn in (f"{_t}_seed{_s}_benchmark.csv",
+                        f"{_t}_seed{_s}_fl_history.csv",
+                        f"probs_{_t}_seed{_s}.npz"):
+                _p = _resume_find(_fn)
+                if _p and not os.path.exists(os.path.join(OUT, _fn)):
+                    _sh_r.copy(_p, os.path.join(OUT, _fn))
+        _cmb = f"all_benchmarks_combined_seed{_s}.csv"
+        _p = _resume_find(_cmb)
+        if _p and not os.path.exists(os.path.join(OUT, _cmb)):
+            try:  # only carry a combined CSV that is really THIS dataset's
+                if set(pd.read_csv(_p, usecols=['dataset'])['dataset'].unique()) <= set(DATASETS):
+                    _sh_r.copy(_p, os.path.join(OUT, _cmb))
+                    _carried.append(_s)
+                else:
+                    print(f"[AGGREGATE] skipped {_cmb}: belongs to another dataset")
+            except Exception as _agg_err:
+                print(f"[AGGREGATE] skipped {_cmb}: {_agg_err}")
+        elif _p is None:
+            print(f"[AGGREGATE] sibling seed {_s} is incomplete in the mounts "
+                  "(no combined CSV) — its finished cells were still carried; "
+                  "finish via the full-seed script with everything attached")
+    print(f"\n[AGGREGATE] carried sibling seed cells for seeds {sorted(_sib_seeds)}")
+    import glob as _glob_agg
+    _seed_csvs = sorted(_glob_agg.glob(f"{OUT}/all_benchmarks_combined_seed*.csv"))
+    if _carried and _seed_csvs:
+        pd.concat([pd.read_csv(_f) for _f in _seed_csvs], ignore_index=True).to_csv(
+            f"{OUT}/all_benchmarks_combined.csv", index=False)
+        print(f"[AGGREGATE] rebuilt all_benchmarks_combined.csv "
+              f"from {len(_seed_csvs)} per-seed CSVs")
 
 def _resume_report():
     todo = [(s, d, a) for s in SEEDS for d in DATASETS for a in ALPHAS
@@ -1390,11 +1460,14 @@ import os, random as _random
 if LOG_GATE_WEIGHTS and os.path.exists(GATE_LOG_PATH):
     os.remove(GATE_LOG_PATH)
     print(f"Cleared old {GATE_LOG_PATH}")
-if LOG_GATE_WEIGHTS and RESUME_DIR:
-    _prev_log = os.path.join(RESUME_DIR, os.path.basename(GATE_LOG_PATH))
-    if os.path.exists(_prev_log):
-        _sh_r.copy(_prev_log, GATE_LOG_PATH)
-        print(f"Seeded gate log from previous session: {_prev_log}")
+if LOG_GATE_WEIGHTS and RESUME_DIRS:
+    with open(GATE_LOG_PATH, 'a', encoding='utf-8') as _out_log:
+        for _d in RESUME_DIRS:
+            _prev_log = os.path.join(_d, os.path.basename(GATE_LOG_PATH))
+            if os.path.exists(_prev_log):
+                with open(_prev_log, 'r', encoding='utf-8') as _in_log:
+                    _out_log.write(_in_log.read())
+                print(f"Seeded gate log from: {_prev_log}")
 
 _master_results = []
 _resume_report()
@@ -1577,6 +1650,10 @@ for _SEED in SEEDS:
     for f in sorted(os.listdir(OUT)):
         if f.endswith(('.csv', '.png')):
             print(f"  {f}")
+
+# merge sibling seed-part outputs attached to this session (no-op otherwise);
+# A3 below re-globs the per-seed CSVs, so carried seeds enter the statistics
+_aggregate_sibling_outputs()
 
 # ================================================================
 # A3 - if multi-seed, write the master concatenated CSV

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ============================================================================
-# GROUP-A alpha sweep on Kaggle — ULB, seeds [42, 0, 1, 2, 3] (parallel-safe, resumable)
+# GROUP-A alpha sweep on Kaggle — SAML, seeds [2, 3] (parallel-safe, resumable)
 #
 # Single-file version of the canonical merged notebook
 #   notebooks/MOE_experiments/seed_runs/moe-fl-per-dataset-alpha-sweep-GROUP-A.ipynb
@@ -12,8 +12,11 @@
 #
 # Run on Kaggle: create a new Script (or one-cell `%run`) kernel, paste this
 # file, attach the input dataset below, Accelerator = GPU, then Save & Run All.
-#   attach : mlg-ulb/creditcardfraud  (creditcard.csv)
-#   cost   : ~1.2 h/seed -> all 5 seeds in ONE session (~6 h). No parts needed.
+#   attach : berkanoztas/synthetic-transaction-monitoring-dataset-aml  (SAML-D.csv)
+#   cost   : seeds [2,3] x ~3.2 h = ~6.4 h -> ONE session, guaranteed.
+#   part 2/2 - run in parallel with sweep_SAML_part1.py (other account).
+#   If you run this part LAST, attach part1 output and this session
+#   emits the complete 5-seed package.
 #
 # Resuming/merging: attach any previous session outputs of THIS dataset as
 # Dataset inputs and run unchanged — finished (seed, alpha) cells are skipped,
@@ -23,8 +26,8 @@
 # ============================================================================
 
 # ─────────── CONFIG — the only per-script block; body below is shared ───────────
-ONLY_DATASET     = 'ULB'
-SEEDS            = [42, 0, 1, 2, 3]  # this script's seed chunk (canonical full list:
+ONLY_DATASET     = 'SAML'
+SEEDS            = [2, 3]            # this script's seed chunk (canonical full list:
                                      # [42, 0, 1, 2, 3]; Fix E keeps chunks canonical)
 SESSION_BUDGET_H = 10.5              # stop starting new cells after this many hours
 RESUME_DIR       = 'auto'            # 'auto' | None | path | list of paths

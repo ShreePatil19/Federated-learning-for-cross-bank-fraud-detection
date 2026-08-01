@@ -5,8 +5,9 @@ Single-file, directly runnable versions of the canonical GROUP-A notebook
 i.e. the merged PR #17 pipeline: triage probability capture + evaluation fixes),
 with PR #16's split machinery applied on top:
 
-- **one dataset per script** — the three run in parallel on separate Kaggle
-  accounts (each account has ~30 GPU-hours/week, so one dataset per account fits);
+- **one dataset per script, plus per-seed part scripts** — datasets and seed
+  chunks run in parallel on separate Kaggle accounts (each account has
+  ~30 GPU-hours/week); every `_partN.py` is guaranteed to finish in ONE session;
 - **Fix E order-independent partitioning** — every `(seed, dataset, alpha)` cell
   partitions identically no matter what ran before it, which is what makes the
   split and the resume canonical (verified byte-identical: seed 42 run alone
@@ -17,32 +18,58 @@ with PR #16's split machinery applied on top:
   cells once `SESSION_BUDGET_H` (default 10.5 h) is reached, so Kaggle's 12 h
   cap never kills a session mid-cell and nothing is lost.
 
-| Script | Attach (Kaggle dataset) | Measured cost | Sessions |
+| Script | Seeds | Measured cost | Fits one session? |
 |---|---|---|---|
-| `sweep_ULB.py` | `mlg-ulb/creditcardfraud` (`creditcard.csv`) | ~1.2 h/seed → ~6 h | 1 |
-| `sweep_SAML.py` | `berkanoztas/synthetic-transaction-monitoring-dataset-aml` (`SAML-D.csv`) | ~3.2 h/seed → ~16 h | 2 |
-| `sweep_IBM.py` | `ealtman2019/ibm-transactions-for-anti-money-laundering-aml` (`HI-Small_Trans.csv`) | ~4.0 h/seed → ~20 h | 2 |
+| `sweep_ULB.py` | 42,0,1,2,3 | ~1.2 h/seed → ~6 h | **yes** |
+| `sweep_SAML.py` | 42,0,1,2,3 | ~16 h | no — 2 sessions via resume, or use the parts |
+| `sweep_SAML_part1.py` | 42,0,1 | ~9.6 h | **yes** |
+| `sweep_SAML_part2.py` | 2,3 | ~6.4 h | **yes** |
+| `sweep_IBM.py` | 42,0,1,2,3 | ~20 h | no — 2–3 sessions via resume, or use the parts |
+| `sweep_IBM_part1.py` | 42,0 | ~8 h | **yes** |
+| `sweep_IBM_part2.py` | 1,2 | ~8 h | **yes** |
+| `sweep_IBM_part3.py` | 3 | ~4 h | **yes** |
+
+Attach per dataset: ULB → `mlg-ulb/creditcardfraud` (`creditcard.csv`);
+SAML → `berkanoztas/synthetic-transaction-monitoring-dataset-aml` (`SAML-D.csv`);
+IBM → `ealtman2019/ibm-transactions-for-anti-money-laundering-aml` (`HI-Small_Trans.csv`).
 
 Costs are measured (gate-log timestamps of a real run, PR #16), not estimates.
-Every script carries the full canonical seed list `[42, 0, 1, 2, 3]`; the
-budget guard decides how many seeds fit into the current session, so the
-scripts run unchanged in every session.
+Fix E makes every `(seed, dataset, alpha)` cell canonical regardless of run
+order, so the seed chunks are fully independent — run them **in parallel on
+separate accounts**. Whichever part runs **last** should attach the sibling
+parts' outputs: it merges them and emits the complete all-seed package.
 
-## First session
+## Recommended plans
+
+- **ULB** — run `sweep_ULB.py`, done in one ~6 h session.
+- **SAML** — `part1` and `part2` in parallel on two accounts. Then either
+  (a) attach part1's output when you start part2 *after* part1 finished —
+  part2 emits the full package; or (b) if they ran simultaneously, run
+  `sweep_SAML.py` afterwards with both outputs attached — everything resumes
+  instantly and it finishes with A2 + full-seed A3/A4/triage in ~1 h.
+- **IBM** — `part1` ∥ `part2` first (~8 h each), then `part3` (~4 h) with both
+  outputs attached: part3 computes seed 3 and emits the full package.
+  Wall clock ≈ 12 h instead of ~20 h serial.
+- No parts, one account: just run `sweep_SAML.py` / `sweep_IBM.py` repeatedly —
+  the budget guard splits the work and each rerun (with the previous output
+  attached) continues where it stopped.
+
+## Running a script
 
 1. Kaggle → **Create → New Notebook**, delete the starter cell, paste the whole
    script into a single cell (a Script-type kernel works too).
-2. **Add Input** → the dataset from the table. **Accelerator = GPU** (the script
+2. **Add Input** → the dataset for that script. **Accelerator = GPU** (the script
    aborts immediately with a clear message if GPU is off — a CPU run cannot
    finish in one session). Internet can stay off.
 3. **Save Version → Save & Run All (Commit)**.
 
-## Later sessions (SAML / IBM)
+## Continuing / merging sessions
 
-1. In a fresh session of the same script: **Add Input → Your Work → the previous
-   session's notebook** (its Output mounts under `/kaggle/input/`). Uploading the
-   output folder as a Dataset works the same.
-2. Run the same script, unchanged. `RESUME_DIR = 'auto'` finds the mount and
+1. In a fresh session: **Add Input → Your Work → the previous session(s)**
+   (their Outputs mount under `/kaggle/input/`). Uploading an output folder as
+   a Dataset works the same. Multiple mounts are fine — attach every sibling
+   part you have.
+2. Run the script, unchanged. `RESUME_DIR = 'auto'` finds all mounts and
    prints the plan before spending GPU time:
 
    ```
@@ -51,13 +78,14 @@ scripts run unchanged in every session.
        ...
    ```
 
-   Finished cells are skipped (including the expensive dataset load when a whole
-   seed is cached), the `probs_*.npz` triage captures and the gate-weight log are
-   carried forward, and the remaining seeds run. The **final session's output is
-   the complete package** — A1 gate diagnostic, A2 centralised baseline, A3
-   multi-seed statistics, A4 cost curves and the triage layer all computed over
-   every seed. (A2 is skipped in budget-stopped sessions on purpose; it reruns
-   in the final session.)
+   Finished cells of THIS script's seeds are skipped (including the expensive
+   dataset load when a whole seed is cached); finished cells of OTHER seeds
+   found in the mounts are merged in at the end (`[AGGREGATE]` lines). The
+   `probs_*.npz` triage captures and the gate-weight log are carried forward
+   both ways, so the **final session's output is the complete package** — A1
+   gate diagnostic, A2 centralised baseline, A3 multi-seed statistics, A4 cost
+   curves and the triage layer computed over every seed. (A2 is skipped in
+   budget-stopped sessions on purpose; it reruns in the final session.)
 
 Auto-detection ignores any mount whose root contains a `triage/` directory —
 that is the repo checkout itself, whose committed `results/` must never be
@@ -96,9 +124,9 @@ Consequences, same as the `split_sweeps/` notebooks:
 ## Editing the scripts
 
 Each script is `CONFIG` (per-script, a few lines) + a **shared body that is
-byte-identical across the three files**. Never patch one file alone:
+byte-identical across every `sweep_*.py`**. Never patch one file alone:
 
-- regenerate all three from the canonical notebook:
+- regenerate them all from the canonical notebook:
   `python3 scripts/kaggle/generate_from_notebook.py`
   (every patch it applies is an exact-match assertion, so upstream notebook
   drift fails the build instead of producing silently-wrong scripts);
