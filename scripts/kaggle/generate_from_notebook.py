@@ -226,6 +226,24 @@ c5 = cell(5)
 c5 = patch(c5, "nrows=DATASETS['SAML']['rows']",
            "nrows=DATASETS.get('SAML', {'rows': None})['rows']", label='saml rows cap')
 c5 = patch(c5, "os.walk('/kaggle/input')", "os.walk(INPUT_DIR)", count=3, label='finder walks')
+c5 = patch(c5, """    for root, _, files in os.walk(INPUT_DIR):
+        for f in files:
+            if f.endswith('.csv') and 'SAML' in f.upper():
+                return os.path.join(root, f)
+    return None""",
+"""    for root, _, files in os.walk(INPUT_DIR):
+        for f in files:
+            if f == 'SAML-D.csv':
+                return os.path.join(root, f)
+    # substring fallback last: our own output CSVs (saml_alpha*_benchmark.csv)
+    # also contain 'SAML', so an exact-name hit must win over this
+    for root, _, files in os.walk(INPUT_DIR):
+        for f in files:
+            if f.endswith('.csv') and 'SAML' in f.upper() and '_benchmark' not in f \\
+               and '_fl_history' not in f:
+                return os.path.join(root, f)
+    return None""",
+label='saml walk hardening')
 c5 = patch(c5, "        '/kaggle/input/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml/SAML-D.csv',\n        '/kaggle/input/synthetic-transaction-monitoring-dataset-aml/SAML-D.csv',",
            "        f'{INPUT_DIR}/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml/SAML-D.csv',\n        f'{INPUT_DIR}/synthetic-transaction-monitoring-dataset-aml/SAML-D.csv',",
            label='saml candidates')

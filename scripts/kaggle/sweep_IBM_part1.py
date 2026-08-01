@@ -360,7 +360,14 @@ def find_saml():
         if os.path.exists(p): return p
     for root, _, files in os.walk(INPUT_DIR):
         for f in files:
-            if f.endswith('.csv') and 'SAML' in f.upper():
+            if f == 'SAML-D.csv':
+                return os.path.join(root, f)
+    # substring fallback last: our own output CSVs (saml_alpha*_benchmark.csv)
+    # also contain 'SAML', so an exact-name hit must win over this
+    for root, _, files in os.walk(INPUT_DIR):
+        for f in files:
+            if f.endswith('.csv') and 'SAML' in f.upper() and '_benchmark' not in f \
+               and '_fl_history' not in f:
                 return os.path.join(root, f)
     return None
 
