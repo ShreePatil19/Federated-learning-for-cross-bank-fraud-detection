@@ -1,0 +1,886 @@
+7.9s 1 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+7.9s 2 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+7.9s 3 0.00s - to python to disable frozen modules.
+7.9s 4 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+8.5s 5 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+8.5s 6 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+8.5s 7 0.00s - to python to disable frozen modules.
+8.5s 8 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+25.3s 9 cuml.accel installed — sklearn MLP on GPU
+29.3s 10 All imports OK
+29.3s 11 CatBoost available: True
+29.3s 12 RESUME_DIRS = none (fresh run)
+30.0s 13 [SAML] 0 cached, 9 to compute (of 9)  ~9.6h
+30.0s 14 WARNING: RESUME_DIR not found (auto) - nothing will be skipped
+30.0s 15 TODO  seed=42  SAML  alpha=0.05
+30.0s 16 TODO  seed=42  SAML  alpha=0.1
+30.0s 17 TODO  seed=42  SAML  alpha=0.5
+30.0s 18 TODO  seed=0   SAML  alpha=0.05
+30.0s 19 TODO  seed=0   SAML  alpha=0.1
+30.0s 20 TODO  seed=0   SAML  alpha=0.5
+30.0s 21 TODO  seed=1   SAML  alpha=0.05
+30.0s 22 TODO  seed=1   SAML  alpha=0.1
+30.0s 23 TODO  seed=1   SAML  alpha=0.5
+30.0s 24 
+30.0s 25 ######################################################################
+30.0s 26 ###  SEED = 42
+30.0s 27 ######################################################################
+33.6s 28 
+33.6s 29 ############################################################
+33.6s 30 DATASET: SAML
+33.6s 31 ############################################################
+33.6s 32 Loading SAML-D: /kaggle/input/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml/SAML-D.csv
+54.7s 33 9,504,852 rows | fraud: 9,873 (0.104%)
+102.3s 34 SAML-D features: (9504852, 10)  (no typ_enc, no sl/rl_enc; temporal split enabled)
+102.7s 35 Preprocessing done | 1.2m
+102.7s 36 
+102.7s 37 ============================================================
+102.7s 38 SAML | alpha=0.05 | 4 banks
+102.7s 39 ============================================================
+109.8s 40 
+109.8s 41 Partition [SAML] — 4 banks | Dirichlet alpha=0.05 | temporal split:
+109.8s 42 SAML-Bank0          :  2,383,613 txns |  9,869 fraud (0.414%) | train=6764 val=1410 test=1695 fraud
+109.8s 43 SAML-Bank1          :  2,373,747 txns |      3 fraud (0.000%) | train=1 val=0 test=2 fraud
+109.8s 44 SAML-Bank2          :  2,373,745 txns |      1 fraud (0.000%) | train=1 val=0 test=0 fraud
+109.8s 45 SAML-Bank3          :  2,373,747 txns |      0 fraud (0.000%) | train=0 val=0 test=0 fraud
+109.8s 46 NOTE: SAML-Bank2 has 0 fraud in test — will report specificity/FPR instead of recall/AUPRC
+109.8s 47 NOTE: SAML-Bank3 has 0 fraud in test — will report specificity/FPR instead of recall/AUPRC
+109.8s 48 
+109.8s 49 FL training:
+893.7s 50 [FEDAVG] 20 rounds  5 10 15 20
+1557.6s 51 [FEDPROX] 20 rounds  5 10 15 20
+2334.7s 52 [FEDNOVA] 20 rounds  5 10 15 20
+3079.3s 53 [PERSFL] 20 rounds  5 10 15 20
+3079.5s 54 
+3079.5s 55 Local experts (XGB cuda + LGBM cpu + CatBoost gpu)...
+3084.2s 56 SAML-Bank0           XGB     : F1=0.0309  AUPRC=0.1185
+3117.1s 57 SAML-Bank0           LGBM    : F1=0.0329  AUPRC=0.1192
+3235.0s 58 SAML-Bank0           CATBOOST: F1=0.0316  AUPRC=0.1221
+3236.3s 59 SAML-Bank1           XGB     : F1=0.0000  AUPRC=0.0000
+3243.0s 60 SAML-Bank1           LGBM    : F1=0.0000  AUPRC=0.0000
+3289.8s 61 SAML-Bank1           CATBOOST: F1=0.0000  AUPRC=0.0000
+3291.2s 62 SAML-Bank2           XGB     : (no test fraud) Specificity=0.9547 FPR=0.0453 FP=16147
+3299.2s 63 SAML-Bank2           LGBM    : (no test fraud) Specificity=0.9751 FPR=0.0249 FP=8857
+3346.7s 64 SAML-Bank2           CATBOOST: (no test fraud) Specificity=0.9997 FPR=0.0003 FP=103
+3346.7s 65 SAML-Bank3           SKIPPED: no fraud in training set
+3346.7s 66 
+3346.7s 67 Evaluating all models + MoE gates...
+3376.5s 68 [triage] captured expert probs -> probs_saml_alpha0.05_seed42.npz
+3553.7s 69 
+3553.7s 70 ======================================================================
+3553.7s 71 SAML (alpha=0.05) BENCHMARK — Temporal Split, Dirichlet (4 Banks)
+3553.7s 72 All banks included. Fraud metrics=0 for banks with no test fraud.
+3553.7s 73 ======================================================================
+3553.7s 74 strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_coverage  typ_wf1  client_equity  worst_bank_f1  collab_gain  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud
+3553.7s 75 catboost 0.0305 0.0278 0.0373 0.0220  0.0695       0.7437 0.2563     0.2500        0.1429   0.0848         0.0381            0.0          NaN     0.5875             4                   2              1697
+3553.7s 76 lgbm 0.0298 0.0290 0.0388 0.0230  0.0718       0.7369 0.2631     0.2500        0.1429   0.0880         0.0398            0.0          NaN     0.5875             4                   2              1697
+3553.7s 77 xgb 0.0296 0.0285 0.0374 0.0221  0.3195       0.6076 0.3924     0.2500        0.1902   0.0875         0.0382            0.0          NaN     0.5875             4                   2              1697
+3553.7s 78 moe_typology_aware 0.0155 0.0191 0.0242 0.0118  0.0816       0.9850 0.0150     0.2000        0.1161   0.0729         0.0204            0.0      -0.0112     0.5250             4                   2              1697
+3553.7s 79 moe_performance 0.0103 0.0280 0.0376 0.0241  0.0599       0.9955 0.0045     0.0425        0.1518   0.0731         0.0418            0.0       0.0011     0.5500             4                   2              1697
+3553.7s 80 moe_static 0.0074 0.0246 0.0323 0.0172  0.0780       0.9907 0.0093     0.0275        0.1518   0.0982         0.0298            0.0      -0.0058     0.5000             4                   2              1697
+3553.7s 81 persfl 0.0071 0.0137 0.0147 0.0064  0.1158       0.9586 0.0414     0.0750        0.1518   0.1456         0.0111            0.0      -0.0166     0.5250             4                   2              1697
+3553.7s 82 moe_confidence 0.0060 0.0223 0.0268 0.0128  0.0988       0.9832 0.0168     0.0275        0.1518   0.1237         0.0222            0.0      -0.0102     0.4625             4                   2              1697
+3553.7s 83 fedavg 0.0037 0.0160 0.0187 0.0084  0.0969       0.9679 0.0321     0.0200        0.1339   0.1195         0.0146            0.0      -0.0145     0.3875             4                   2              1697
+3553.7s 84 fedprox 0.0028 0.0147 0.0179 0.0081  0.0872       0.9759 0.0241     0.0100        0.1339   0.1137         0.0141            0.0      -0.0148     0.4000             4                   2              1697
+3553.7s 85 fednova 0.0019 0.0000 0.0000 0.0000  0.0000       1.0000 0.0000     0.0050        0.0000   0.0000         0.0000            0.0      -0.0230     0.5000             4                   2              1697
+3553.7s 86 
+3553.7s 87 BEST (AUPRC):
+3553.7s 88 catboost                   AUPRC=0.0305  MCC=0.0278  F2=0.0373  banks_with_fraud=2/4
+3554.7s 89 Saved: /kaggle/working/saml_alpha0.05_benchmark_results.png
+3555.0s 90 
+3555.0s 91 SAML alpha=0.05 done | 58.8m
+3555.0s 92 
+3555.0s 93 ============================================================
+3555.0s 94 SAML | alpha=0.1 | 4 banks
+3555.0s 95 ============================================================
+3561.8s 96 
+3561.8s 97 Partition [SAML] — 4 banks | Dirichlet alpha=0.1 | temporal split:
+3561.8s 98 SAML-Bank0          :  2,383,270 txns |  9,526 fraud (0.400%) | train=6529 val=1360 test=1637 fraud
+3561.8s 99 SAML-Bank1          :  2,374,089 txns |    345 fraud (0.015%) | train=235 val=50 test=60 fraud
+3561.8s 100 SAML-Bank2          :  2,373,745 txns |      1 fraud (0.000%) | train=1 val=0 test=0 fraud
+3561.8s 101 SAML-Bank3          :  2,373,748 txns |      1 fraud (0.000%) | train=1 val=0 test=0 fraud
+3561.8s 102 NOTE: SAML-Bank2 has 0 fraud in test — will report specificity/FPR instead of recall/AUPRC
+3561.8s 103 NOTE: SAML-Bank3 has 0 fraud in test — will report specificity/FPR instead of recall/AUPRC
+3561.8s 104 
+3561.8s 105 FL training:
+4454.9s 106 [FEDAVG] 20 rounds  5 10 15 20
+5263.8s 107 [FEDPROX] 20 rounds  5 10 15 20
+6163.4s 108 [FEDNOVA] 20 rounds  5 10 15 20
+7095.5s 109 [PERSFL] 20 rounds  5 10 15 20
+7095.7s 110 
+7095.7s 111 Local experts (XGB cuda + LGBM cpu + CatBoost gpu)...
+7099.8s 112 SAML-Bank0           XGB     : F1=0.0298  AUPRC=0.1234
+7131.3s 113 SAML-Bank0           LGBM    : F1=0.0326  AUPRC=0.1245
+7249.7s 114 SAML-Bank0           CATBOOST: F1=0.0307  AUPRC=0.1173
+7253.7s 115 SAML-Bank1           XGB     : F1=0.0009  AUPRC=0.0349
+7284.9s 116 SAML-Bank1           LGBM    : F1=0.0009  AUPRC=0.0348
+7400.2s 117 SAML-Bank1           CATBOOST: F1=0.0009  AUPRC=0.0346
+7401.5s 118 SAML-Bank2           XGB     : (no test fraud) Specificity=0.9021 FPR=0.0979 FP=34849
+7409.5s 119 SAML-Bank2           LGBM    : (no test fraud) Specificity=0.9940 FPR=0.0060 FP=2145
+7455.4s 120 SAML-Bank2           CATBOOST: (no test fraud) Specificity=0.9997 FPR=0.0003 FP=105
+7456.7s 121 SAML-Bank3           XGB     : (no test fraud) Specificity=0.9960 FPR=0.0040 FP=1433
+7463.2s 122 SAML-Bank3           LGBM    : (no test fraud) Specificity=0.9844 FPR=0.0156 FP=5572
+7509.6s 123 SAML-Bank3           CATBOOST: (no test fraud) Specificity=0.9997 FPR=0.0003 FP=123
+7509.6s 124 
+7509.6s 125 Evaluating all models + MoE gates...
+7538.5s 126 [triage] captured expert probs -> probs_saml_alpha0.1_seed42.npz
+7741.1s 127 
+7741.1s 128 ======================================================================
+7741.1s 129 SAML (alpha=0.1) BENCHMARK — Temporal Split, Dirichlet (4 Banks)
+7741.1s 130 All banks included. Fraud metrics=0 for banks with no test fraud.
+7741.1s 131 ======================================================================
+7741.1s 132 strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_coverage  typ_wf1  client_equity  worst_bank_f1  collab_gain  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud
+7741.1s 133 moe_typology_aware 0.0520 0.0558 0.0626 0.0523  0.0793       0.9951 0.0049     0.2625        0.1756   0.1027         0.0524            0.0       0.0235     0.6500             4                   2              1697
+7741.1s 134 lgbm 0.0398 0.0333 0.0419 0.0241  0.1008       0.9872 0.0128     0.2550        0.1845   0.1195         0.0384            0.0          NaN     0.6875             4                   2              1697
+7741.1s 135 xgb 0.0396 0.0325 0.0395 0.0284  0.0776       0.9696 0.0304     0.2550        0.1756   0.0953         0.0467            0.0          NaN     0.7000             4                   2              1697
+7741.1s 136 catboost 0.0380 0.0323 0.0399 0.0224  0.1100       0.9911 0.0089     0.2550        0.2039   0.1339         0.0357            0.0          NaN     0.6875             4                   2              1697
+7741.1s 137 persfl 0.0362 0.0303 0.0392 0.0224  0.0857       0.9913 0.0087     0.2550        0.1830   0.0940         0.0354            0.0      -0.0064     0.6750             4                   2              1697
+7741.1s 138 fedprox 0.0359 0.0318 0.0409 0.0291  0.0580       0.9499 0.0501     0.2550        0.1637   0.0551         0.0424            0.0       0.0003     0.6750             4                   2              1697
+7741.1s 139 moe_performance 0.0344 0.0376 0.0449 0.0348  0.0603       0.9951 0.0049     0.2550        0.1533   0.0580         0.0403            0.0       0.0060     0.6500             4                   2              1697
+7741.1s 140 fedavg 0.0325 0.0336 0.0389 0.0341  0.0430       0.9614 0.0386     0.2450        0.1354   0.0423         0.0460            0.0       0.0053     0.6750             4                   2              1697
+7741.1s 141 moe_static 0.0322 0.0307 0.0399 0.0278  0.0583       0.9952 0.0048     0.2450        0.1533   0.0550         0.0442            0.0      -0.0010     0.6500             4                   2              1697
+7741.1s 142 moe_confidence 0.0274 0.0313 0.0401 0.0289  0.0558       0.9952 0.0048     0.2275        0.1533   0.0537         0.0409            0.0       0.0001     0.6375             4                   2              1697
+7741.1s 143 fednova 0.0146 0.0192 0.0256 0.0187  0.0341       0.9913 0.0087     0.1700        0.1161   0.0339         0.0324            0.0      -0.0101     0.6000             4                   2              1697
+7741.1s 144 
+7741.1s 145 BEST (AUPRC):
+7741.1s 146 moe_typology_aware         AUPRC=0.0520  MCC=0.0558  F2=0.0626  banks_with_fraud=2/4
+7742.0s 147 Saved: /kaggle/working/saml_alpha0.1_benchmark_results.png
+7742.4s 148 
+7742.4s 149 SAML alpha=0.1 done | 128.5m
+7742.4s 150 
+7742.4s 151 ============================================================
+7742.4s 152 SAML | alpha=0.5 | 4 banks
+7742.4s 153 ============================================================
+7749.0s 154 
+7749.0s 155 Partition [SAML] — 4 banks | Dirichlet alpha=0.5 | temporal split:
+7749.0s 156 SAML-Bank0          :  2,378,088 txns |  4,344 fraud (0.183%) | train=2974 val=631 test=739 fraud
+7749.0s 157 SAML-Bank1          :  2,373,960 txns |    216 fraud (0.009%) | train=154 val=27 test=35 fraud
+7749.0s 158 SAML-Bank2          :  2,376,926 txns |  3,182 fraud (0.134%) | train=2182 val=457 test=543 fraud
+7749.0s 159 SAML-Bank3          :  2,375,878 txns |  2,131 fraud (0.090%) | train=1454 val=297 test=380 fraud
+7749.0s 160 
+7749.0s 161 FL training:
+9053.0s 162 [FEDAVG] 20 rounds  5 10 15 20
+10138.7s 163 [FEDPROX] 20 rounds  5 10 15 20
+11437.2s 164 [FEDNOVA] 20 rounds  5 10 15 20
+12719.7s 165 [PERSFL] 20 rounds  5 10 15 20
+12719.9s 166 
+12719.9s 167 Local experts (XGB cuda + LGBM cpu + CatBoost gpu)...
+12724.0s 168 SAML-Bank0           XGB     : F1=0.0137  AUPRC=0.0916
+12754.5s 169 SAML-Bank0           LGBM    : F1=0.0147  AUPRC=0.0926
+12872.6s 170 SAML-Bank0           CATBOOST: F1=0.0138  AUPRC=0.0965
+12876.6s 171 SAML-Bank1           XGB     : F1=0.0006  AUPRC=0.1434
+12911.1s 172 SAML-Bank1           LGBM    : F1=0.0006  AUPRC=0.1451
+13026.8s 173 SAML-Bank1           CATBOOST: F1=0.0006  AUPRC=0.0578
+13030.9s 174 SAML-Bank2           XGB     : F1=0.0090  AUPRC=0.0955
+13063.1s 175 SAML-Bank2           LGBM    : F1=0.0111  AUPRC=0.0930
+13181.4s 176 SAML-Bank2           CATBOOST: F1=0.0091  AUPRC=0.0996
+13185.3s 177 SAML-Bank3           XGB     : F1=0.0061  AUPRC=0.0717
+13216.5s 178 SAML-Bank3           LGBM    : F1=0.0069  AUPRC=0.0721
+13333.9s 179 SAML-Bank3           CATBOOST: F1=0.0061  AUPRC=0.0671
+13333.9s 180 
+13333.9s 181 Evaluating all models + MoE gates...
+13387.1s 182 [triage] captured expert probs -> probs_saml_alpha0.5_seed42.npz
+13781.2s 183 
+13781.2s 184 ======================================================================
+13781.2s 185 SAML (alpha=0.5) BENCHMARK — Temporal Split, Dirichlet (4 Banks)
+13781.2s 186 All banks included. Fraud metrics=0 for banks with no test fraud.
+13781.2s 187 ======================================================================
+13781.2s 188 strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_coverage  typ_wf1  client_equity  worst_bank_f1  collab_gain  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud
+13781.2s 189 moe_typology_aware 0.1048 0.0649 0.0779 0.0453  0.1982       0.9929 0.0071     0.3300        0.3791   0.2488         0.0221         0.0102       0.0071     0.9000             4                   4              1697
+13781.2s 190 moe_performance 0.1033 0.0587 0.0692 0.0380  0.1981       0.9898 0.0102     0.3250        0.3767   0.2211         0.0185         0.0079      -0.0001     0.8875             4                   4              1697
+13781.2s 191 moe_static 0.1030 0.0590 0.0690 0.0377  0.2055       0.9895 0.0105     0.3250        0.3880   0.2488         0.0183         0.0080      -0.0004     0.8875             4                   4              1697
+13781.2s 192 moe_confidence 0.1029 0.0589 0.0688 0.0375  0.2059       0.9895 0.0105     0.3250        0.3880   0.2493         0.0182         0.0079      -0.0006     0.8875             4                   4              1697
+13781.2s 193 fednova 0.1019 0.0567 0.0660 0.0358  0.2162       0.9889 0.0111     0.3425        0.3994   0.2655         0.0202         0.0050      -0.0023     0.9000             4                   4              1697
+13781.2s 194 persfl 0.1015 0.0528 0.0585 0.0292  0.2610       0.9779 0.0221     0.3375        0.4244   0.3421         0.0176         0.0018      -0.0089     0.9000             4                   4              1697
+13781.2s 195 fedavg 0.1013 0.0563 0.0655 0.0352  0.2071       0.9884 0.0116     0.3375        0.3692   0.2539         0.0184         0.0059      -0.0029     0.8875             4                   4              1697
+13781.2s 196 fedprox 0.1010 0.0541 0.0605 0.0308  0.2525       0.9817 0.0183     0.3225        0.4173   0.2919         0.0177         0.0026      -0.0073     0.8750             4                   4              1697
+13781.2s 197 lgbm 0.1007 0.0549 0.0664 0.0381  0.1786       0.9917 0.0083     0.3225        0.3585   0.2039         0.0208         0.0056          NaN     0.9000             4                   4              1697
+13781.2s 198 xgb 0.1006 0.0499 0.0593 0.0322  0.1854       0.9889 0.0111     0.3225        0.3609   0.2362         0.0187         0.0039          NaN     0.9000             4                   4              1697
+13781.2s 199 catboost 0.0803 0.0509 0.0612 0.0331  0.1795       0.9886 0.0114     0.3250        0.3973   0.2466         0.0200         0.0029          NaN     0.9000             4                   4              1697
+13781.2s 200 
+13781.2s 201 BEST (AUPRC):
+13781.2s 202 moe_typology_aware         AUPRC=0.1048  MCC=0.0649  F2=0.0779  banks_with_fraud=4/4
+13782.5s 203 Saved: /kaggle/working/saml_alpha0.5_benchmark_results.png
+13782.7s 204 
+13782.7s 205 SAML alpha=0.5 done | 229.2m
+13782.7s 206 
+13782.7s 207 SAML — all alphas complete | 229.2m
+13782.7s 208 
+13782.7s 209 ======================================================================
+13782.7s 210 CONSOLIDATED — ALL DATASETS × ALL ALPHAS
+13782.7s 211 ======================================================================
+13782.7s 212 
+13782.7s 213 AUPRC pivot (dataset × alpha × strategy):
+13782.7s 214 strategy       catboost  fedavg  fednova  fedprox    lgbm  moe_confidence  moe_performance  moe_static  moe_typology_aware  persfl     xgb
+13782.7s 215 dataset alpha
+13782.7s 216 SAML    0.05     0.0305  0.0037   0.0019   0.0028  0.0298          0.0060           0.0103      0.0074              0.0155  0.0071  0.0296
+13782.7s 217 0.10     0.0380  0.0325   0.0146   0.0359  0.0398          0.0274           0.0344      0.0322              0.0520  0.0362  0.0396
+13782.7s 218 0.50     0.0803  0.1013   0.1019   0.1010  0.1007          0.1029           0.1033      0.1030              0.1048  0.1015  0.1006
+13782.7s 219 
+13782.7s 220 MCC pivot (dataset × alpha × strategy):
+13782.7s 221 strategy       catboost  fedavg  fednova  fedprox    lgbm  moe_confidence  moe_performance  moe_static  moe_typology_aware  persfl     xgb
+13782.7s 222 dataset alpha
+13782.7s 223 SAML    0.05     0.0278  0.0160   0.0000   0.0147  0.0290          0.0223           0.0280      0.0246              0.0191  0.0137  0.0285
+13782.7s 224 0.10     0.0323  0.0336   0.0192   0.0318  0.0333          0.0313           0.0376      0.0307              0.0558  0.0303  0.0325
+13782.7s 225 0.50     0.0509  0.0563   0.0567   0.0541  0.0549          0.0589           0.0587      0.0590              0.0649  0.0528  0.0499
+13782.7s 226 
+13782.7s 227 ============================================================
+13782.7s 228 ALL RUNS COMPLETE
+13782.7s 229 ============================================================
+13782.7s 230 Total runtime: 229.2m
+13782.7s 231 
+13782.7s 232 Outputs:
+13782.7s 233 all_benchmarks_combined.csv
+13782.7s 234 all_benchmarks_combined_seed42.csv
+13782.7s 235 saml_alpha0.05_benchmark.csv
+13782.7s 236 saml_alpha0.05_benchmark_results.png
+13782.7s 237 saml_alpha0.05_fl_history.csv
+13782.7s 238 saml_alpha0.05_seed42_benchmark.csv
+13782.7s 239 saml_alpha0.05_seed42_fl_history.csv
+13782.7s 240 saml_alpha0.1_benchmark.csv
+13782.7s 241 saml_alpha0.1_benchmark_results.png
+13782.7s 242 saml_alpha0.1_fl_history.csv
+13782.7s 243 saml_alpha0.1_seed42_benchmark.csv
+13782.7s 244 saml_alpha0.1_seed42_fl_history.csv
+13782.7s 245 saml_alpha0.5_benchmark.csv
+13782.7s 246 saml_alpha0.5_benchmark_results.png
+13782.7s 247 saml_alpha0.5_fl_history.csv
+13782.7s 248 saml_alpha0.5_seed42_benchmark.csv
+13782.7s 249 saml_alpha0.5_seed42_fl_history.csv
+13782.7s 250 
+13782.7s 251 ######################################################################
+13782.7s 252 ###  SEED = 0
+13782.7s 253 ######################################################################
+13782.7s 254 
+13782.7s 255 ############################################################
+13782.7s 256 DATASET: SAML
+13782.7s 257 ############################################################
+13782.7s 258 Loading SAML-D: /kaggle/input/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml/SAML-D.csv
+13800.4s 259 9,504,852 rows | fraud: 9,873 (0.104%)
+13847.5s 260 SAML-D features: (9504852, 10)  (no typ_enc, no sl/rl_enc; temporal split enabled)
+13847.9s 261 Preprocessing done | 230.3m
+13847.9s 262 
+13847.9s 263 ============================================================
+13847.9s 264 SAML | alpha=0.05 | 4 banks
+13847.9s 265 ============================================================
+13854.7s 266 
+13854.7s 267 Partition [SAML] — 4 banks | Dirichlet alpha=0.05 | temporal split:
+13854.7s 268 SAML-Bank0          :  2,373,745 txns |      1 fraud (0.000%) | train=0 val=0 test=1 fraud
+13854.7s 269 SAML-Bank1          :  2,373,744 txns |      0 fraud (0.000%) | train=0 val=0 test=0 fraud
+13854.7s 270 SAML-Bank2          :  2,383,616 txns |  9,872 fraud (0.414%) | train=6764 val=1409 test=1699 fraud
+13854.7s 271 SAML-Bank3          :  2,373,747 txns |      0 fraud (0.000%) | train=0 val=0 test=0 fraud
+13854.7s 272 NOTE: SAML-Bank1 has 0 fraud in test — will report specificity/FPR instead of recall/AUPRC
+13854.7s 273 NOTE: SAML-Bank3 has 0 fraud in test — will report specificity/FPR instead of recall/AUPRC
+13854.7s 274 
+13854.7s 275 FL training:
+14678.9s 276 [FEDAVG] 20 rounds  5 10 15 20
+15360.7s 277 [FEDPROX] 20 rounds  5 10 15 20
+16289.1s 278 [FEDNOVA] 20 rounds  5 10 15 20
+17081.6s 279 [PERSFL] 20 rounds  5 10 15 20
+17081.8s 280 
+17081.8s 281 Local experts (XGB cuda + LGBM cpu + CatBoost gpu)...
+17081.8s 282 SAML-Bank0           SKIPPED: no fraud in training set
+17081.8s 283 SAML-Bank1           SKIPPED: no fraud in training set
+17085.9s 284 SAML-Bank2           XGB     : F1=0.0310  AUPRC=0.1202
+17117.7s 285 SAML-Bank2           LGBM    : F1=0.0329  AUPRC=0.1238
+17234.5s 286 SAML-Bank2           CATBOOST: F1=0.0310  AUPRC=0.1206
+17234.5s 287 SAML-Bank3           SKIPPED: no fraud in training set
+17234.7s 288 
+17234.7s 289 Evaluating all models + MoE gates...
+17265.4s 290 [triage] captured expert probs -> probs_saml_alpha0.05_seed0.npz
+17444.5s 291 
+17444.5s 292 ======================================================================
+17444.5s 293 SAML (alpha=0.05) BENCHMARK — Temporal Split, Dirichlet (4 Banks)
+17444.5s 294 All banks included. Fraud metrics=0 for banks with no test fraud.
+17444.5s 295 ======================================================================
+17444.5s 296 strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_coverage  typ_wf1  client_equity  worst_bank_f1  collab_gain  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud
+17444.5s 297 lgbm 0.0309 0.0292 0.0391 0.0234  0.3206       0.2443 0.7557     0.2500        0.1637   0.0857         0.0405            0.0          NaN     0.5875             4                   2              1700
+17444.5s 298 xgb 0.0301 0.0288 0.0368 0.0276  0.2974       0.2473 0.7527     0.2500        0.1458   0.0613         0.0478            0.0          NaN     0.6000             4                   2              1700
+17444.5s 299 catboost 0.0301 0.0279 0.0374 0.0220  0.3199       0.2440 0.7560     0.2500        0.1726   0.0859         0.0382            0.0          NaN     0.5875             4                   2              1700
+17444.5s 300 moe_performance 0.0294 0.0287 0.0383 0.0221  0.0747       0.9935 0.0065     0.2475        0.1518   0.0902         0.0382            0.0      -0.0055     0.5750             4                   2              1700
+17444.5s 301 moe_static 0.0248 0.0265 0.0341 0.0179  0.0868       0.9900 0.0100     0.2325        0.1518   0.1024         0.0309            0.0      -0.0098     0.4750             4                   2              1700
+17444.5s 302 moe_confidence 0.0244 0.0270 0.0363 0.0234  0.0575       0.9956 0.0044     0.2325        0.1250   0.0667         0.0405            0.0      -0.0042     0.4500             4                   2              1700
+17444.5s 303 moe_typology_aware 0.0070 0.0114 0.0169 0.0087  0.0447       0.9892 0.0108     0.0725        0.0982   0.0533         0.0151            0.0      -0.0189     0.5625             4                   2              1700
+17444.5s 304 fedavg 0.0023 0.0000 0.0000 0.0000  0.0000       1.0000 0.0000     0.0125        0.0000   0.0000         0.0000            0.0      -0.0276     0.5000             4                   2              1700
+17444.5s 305 fednova 0.0020 0.0000 0.0000 0.0000  0.0000       1.0000 0.0000     0.0175        0.0000   0.0000         0.0000            0.0      -0.0276     0.5000             4                   2              1700
+17444.5s 306 fedprox 0.0019 0.0000 0.0000 0.0000  0.0000       1.0000 0.0000     0.0200        0.0000   0.0000         0.0000            0.0      -0.0276     0.5000             4                   2              1700
+17444.5s 307 persfl 0.0018 0.0116 0.0113 0.0047  0.1536       0.9240 0.0760     0.0050        0.1518   0.1723         0.0082            0.0      -0.0229     0.4500             4                   2              1700
+17444.5s 308 
+17444.5s 309 BEST (AUPRC):
+17444.5s 310 lgbm                       AUPRC=0.0309  MCC=0.0292  F2=0.0391  banks_with_fraud=2/4
+17445.3s 311 Saved: /kaggle/working/saml_alpha0.05_benchmark_results.png
+17445.7s 312 
+17445.7s 313 SAML alpha=0.05 done | 290.3m
+17445.7s 314 
+17445.7s 315 ============================================================
+17445.7s 316 SAML | alpha=0.1 | 4 banks
+17445.7s 317 ============================================================
+17452.2s 318 
+17452.2s 319 Partition [SAML] — 4 banks | Dirichlet alpha=0.1 | temporal split:
+17452.2s 320 SAML-Bank0          :  2,373,745 txns |      1 fraud (0.000%) | train=0 val=0 test=1 fraud
+17452.2s 321 SAML-Bank1          :  2,375,448 txns |  1,704 fraud (0.072%) | train=1178 val=248 test=278 fraud
+17452.2s 322 SAML-Bank2          :  2,373,758 txns |     14 fraud (0.001%) | train=10 val=4 test=0 fraud
+17452.2s 323 SAML-Bank3          :  2,381,901 txns |  8,154 fraud (0.342%) | train=5578 val=1159 test=1417 fraud
+17452.2s 324 NOTE: SAML-Bank2 has 0 fraud in test — will report specificity/FPR instead of recall/AUPRC
+17452.2s 325 
+17452.2s 326 FL training:
+18621.4s 327 [FEDAVG] 20 rounds  5 10 15 20
+19588.5s 328 [FEDPROX] 20 rounds  5 10 15 20
+20752.5s 329 [FEDNOVA] 20 rounds  5 10 15 20
+21845.7s 330 [PERSFL] 20 rounds  5 10 15 20
+21845.9s 331 
+21845.9s 332 Local experts (XGB cuda + LGBM cpu + CatBoost gpu)...
+21845.9s 333 SAML-Bank0           SKIPPED: no fraud in training set
+21849.9s 334 SAML-Bank1           XGB     : F1=0.0049  AUPRC=0.0885
+21882.1s 335 SAML-Bank1           LGBM    : F1=0.0058  AUPRC=0.0829
+21998.6s 336 SAML-Bank1           CATBOOST: F1=0.0051  AUPRC=0.0791
+22002.4s 337 SAML-Bank2           XGB     : (no test fraud) Specificity=0.9478 FPR=0.0522 FP=18589
+22031.0s 338 SAML-Bank2           LGBM    : (no test fraud) Specificity=0.9514 FPR=0.0486 FP=17294
+22128.3s 339 SAML-Bank2           CATBOOST: (no test fraud) Specificity=0.9523 FPR=0.0477 FP=16986
+22132.6s 340 SAML-Bank3           XGB     : F1=0.0259  AUPRC=0.1127
+22164.7s 341 SAML-Bank3           LGBM    : F1=0.0281  AUPRC=0.1146
+22282.1s 342 SAML-Bank3           CATBOOST: F1=0.0261  AUPRC=0.1114
+22282.1s 343 
+22282.1s 344 Evaluating all models + MoE gates...
+22312.5s 345 [triage] captured expert probs -> probs_saml_alpha0.1_seed0.npz
+22551.6s 346 
+22551.6s 347 ======================================================================
+22551.6s 348 SAML (alpha=0.1) BENCHMARK — Temporal Split, Dirichlet (4 Banks)
+22551.6s 349 All banks included. Fraud metrics=0 for banks with no test fraud.
+22551.6s 350 ======================================================================
+22551.6s 351 strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_coverage  typ_wf1  client_equity  worst_bank_f1  collab_gain  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud
+22551.6s 352 xgb 0.0503 0.0359 0.0440 0.0235  0.3699       0.7402 0.2598     0.3125        0.2708   0.1479         0.0296            0.0          NaN     0.7875             4                   3              1696
+22551.6s 353 lgbm 0.0494 0.0410 0.0507 0.0274  0.3774       0.7415 0.2585     0.3025        0.2530   0.1476         0.0321            0.0          NaN     0.7875             4                   3              1696
+22551.6s 354 catboost 0.0476 0.0376 0.0457 0.0244  0.3763       0.7400 0.2600     0.3025        0.2619   0.1515         0.0306            0.0          NaN     0.7875             4                   3              1696
+22551.6s 355 moe_typology_aware 0.0313 0.0525 0.0596 0.0395  0.3678       0.9861 0.0139     0.2375        0.2173   0.1139         0.0394            0.0       0.0121     0.7500             4                   3              1696
+22551.6s 356 persfl 0.0182 0.0342 0.0404 0.0207  0.1333       0.9067 0.0933     0.1375        0.2500   0.1573         0.0272            0.0      -0.0067     0.6500             4                   3              1696
+22551.6s 357 moe_performance 0.0152 0.0343 0.0366 0.0185  0.3830       0.9801 0.0199     0.0950        0.2798   0.1557         0.0238            0.0      -0.0090     0.7125             4                   3              1696
+22551.6s 358 moe_static 0.0146 0.0267 0.0313 0.0171  0.3283       0.9850 0.0150     0.0950        0.2083   0.0946         0.0231            0.0      -0.0104     0.7000             4                   3              1696
+22551.6s 359 moe_confidence 0.0140 0.0241 0.0282 0.0157  0.3181       0.9863 0.0137     0.0925        0.1815   0.0825         0.0205            0.0      -0.0118     0.7125             4                   3              1696
+22551.6s 360 fednova 0.0122 0.0274 0.0303 0.0152  0.3669       0.9536 0.0464     0.0850        0.2887   0.1469         0.0198            0.0      -0.0122     0.6000             4                   3              1696
+22551.6s 361 fedavg 0.0120 0.0209 0.0267 0.0156  0.3029       0.9676 0.0324     0.0775        0.1815   0.0657         0.0203            0.0      -0.0118     0.7000             4                   3              1696
+22551.6s 362 fedprox 0.0109 0.0199 0.0228 0.0120  0.3397       0.9568 0.0432     0.0725        0.2262   0.0995         0.0162            0.0      -0.0155     0.6750             4                   3              1696
+22551.6s 363 
+22551.6s 364 BEST (AUPRC):
+22551.6s 365 xgb                        AUPRC=0.0503  MCC=0.0359  F2=0.0440  banks_with_fraud=3/4
+22552.4s 366 Saved: /kaggle/working/saml_alpha0.1_benchmark_results.png
+22552.8s 367 
+22552.8s 368 SAML alpha=0.1 done | 375.4m
+22552.8s 369 
+22552.8s 370 ============================================================
+22552.8s 371 SAML | alpha=0.5 | 4 banks
+22552.8s 372 ============================================================
+22559.4s 373 
+22559.4s 374 Partition [SAML] — 4 banks | Dirichlet alpha=0.5 | temporal split:
+22559.4s 375 SAML-Bank0          :  2,374,780 txns |  1,036 fraud (0.044%) | train=722 val=144 test=170 fraud
+22559.4s 376 SAML-Bank1          :  2,381,671 txns |  7,927 fraud (0.333%) | train=5415 val=1150 test=1362 fraud
+22559.4s 377 SAML-Bank2          :  2,374,643 txns |    899 fraud (0.038%) | train=619 val=118 test=162 fraud
+22559.4s 378 SAML-Bank3          :  2,373,758 txns |     11 fraud (0.000%) | train=9 val=0 test=2 fraud
+22559.4s 379 
+22559.4s 380 FL training:
+23900.9s 381 [FEDAVG] 20 rounds  5 10 15 20
+25108.5s 382 [FEDPROX] 20 rounds  5 10 15 20
+26501.2s 383 [FEDNOVA] 20 rounds  5 10 15 20
+27901.9s 384 [PERSFL] 20 rounds  5 10 15 20
+27902.1s 385 
+27902.1s 386 Local experts (XGB cuda + LGBM cpu + CatBoost gpu)...
+27906.2s 387 SAML-Bank0           XGB     : F1=0.0028  AUPRC=0.0906
+27941.2s 388 SAML-Bank0           LGBM    : F1=0.0033  AUPRC=0.0861
+28063.6s 389 SAML-Bank0           CATBOOST: F1=0.0028  AUPRC=0.0916
+28067.8s 390 SAML-Bank1           XGB     : F1=0.0248  AUPRC=0.1052
+28098.8s 391 SAML-Bank1           LGBM    : F1=0.0271  AUPRC=0.1095
+28223.3s 392 SAML-Bank1           CATBOOST: F1=0.0246  AUPRC=0.1071
+28227.5s 393 SAML-Bank2           XGB     : F1=0.0025  AUPRC=0.0770
+28261.8s 394 SAML-Bank2           LGBM    : F1=0.0029  AUPRC=0.0689
+28385.8s 395 SAML-Bank2           CATBOOST: F1=0.0026  AUPRC=0.0867
+28390.2s 396 SAML-Bank3           XGB     : F1=0.0000  AUPRC=0.0000
+28426.5s 397 SAML-Bank3           LGBM    : F1=0.0000  AUPRC=0.0000
+28531.4s 398 SAML-Bank3           CATBOOST: F1=0.0000  AUPRC=0.0000
+28531.4s 399 
+28531.4s 400 Evaluating all models + MoE gates...
+28591.1s 401 [triage] captured expert probs -> probs_saml_alpha0.5_seed0.npz
+28998.8s 402 
+28998.8s 403 ======================================================================
+28998.8s 404 SAML (alpha=0.5) BENCHMARK — Temporal Split, Dirichlet (4 Banks)
+28998.8s 405 All banks included. Fraud metrics=0 for banks with no test fraud.
+28998.8s 406 ======================================================================
+28998.8s 407 strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_coverage  typ_wf1  client_equity  worst_bank_f1  collab_gain  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud
+28998.8s 408 catboost 0.0714 0.0409 0.0482 0.0250  0.1497       0.9838 0.0162     0.3175        0.2698   0.1634         0.0271         0.0000          NaN     0.7875             4                   4              1696
+28998.8s 409 xgb 0.0682 0.0409 0.0476 0.0251  0.1527       0.9821 0.0179     0.3125        0.2788   0.1682         0.0285         0.0000          NaN     0.7875             4                   4              1696
+28998.8s 410 lgbm 0.0661 0.0435 0.0523 0.0279  0.1462       0.9851 0.0149     0.3200        0.2609   0.1559         0.0297         0.0000          NaN     0.7875             4                   4              1696
+28998.8s 411 moe_typology_aware 0.0514 0.0497 0.0633 0.0428  0.0996       0.9897 0.0103     0.1975        0.2063   0.1102         0.0283         0.0000       0.0148     0.7750             4                   4              1696
+28998.8s 412 persfl 0.0433 0.0380 0.0465 0.0247  0.1309       0.9805 0.0195     0.2450        0.2520   0.1412         0.0237         0.0000      -0.0033     0.7625             4                   4              1696
+28998.8s 413 moe_performance 0.0326 0.0345 0.0446 0.0268  0.0909       0.9880 0.0120     0.1350        0.1981   0.0870         0.0267         0.0000      -0.0011     0.7625             4                   4              1696
+28998.8s 414 moe_static 0.0322 0.0364 0.0447 0.0266  0.1134       0.9864 0.0136     0.1350        0.2073   0.1033         0.0267         0.0000      -0.0013     0.7500             4                   4              1696
+28998.8s 415 moe_confidence 0.0319 0.0380 0.0495 0.0333  0.0763       0.9907 0.0093     0.1300        0.1885   0.0775         0.0251         0.0000       0.0054     0.7750             4                   4              1696
+28998.8s 416 fednova 0.0309 0.0334 0.0424 0.0251  0.2087       0.9765 0.0235     0.1300        0.2448   0.0922         0.0247         0.0001      -0.0028     0.7500             4                   4              1696
+28998.8s 417 fedavg 0.0303 0.0335 0.0416 0.0241  0.2184       0.9708 0.0292     0.1300        0.2173   0.0926         0.0260         0.0001      -0.0038     0.7625             4                   4              1696
+28998.8s 418 fedprox 0.0294 0.0310 0.0341 0.0168  0.2658       0.9564 0.0436     0.1250        0.2712   0.1546         0.0195         0.0001      -0.0111     0.7000             4                   4              1696
+28998.8s 419 
+28998.8s 420 BEST (AUPRC):
+28998.8s 421 catboost                   AUPRC=0.0714  MCC=0.0409  F2=0.0482  banks_with_fraud=4/4
+29000.1s 422 Saved: /kaggle/working/saml_alpha0.5_benchmark_results.png
+29000.3s 423 
+29000.3s 424 SAML alpha=0.5 done | 482.8m
+29000.3s 425 
+29000.3s 426 SAML — all alphas complete | 482.8m
+29000.3s 427 
+29000.3s 428 ======================================================================
+29000.3s 429 CONSOLIDATED — ALL DATASETS × ALL ALPHAS
+29000.3s 430 ======================================================================
+29000.3s 431 
+29000.3s 432 AUPRC pivot (dataset × alpha × strategy):
+29000.3s 433 strategy       catboost  fedavg  fednova  fedprox    lgbm  moe_confidence  moe_performance  moe_static  moe_typology_aware  persfl     xgb
+29000.3s 434 dataset alpha
+29000.3s 435 SAML    0.05     0.0301  0.0023   0.0020   0.0019  0.0309          0.0244           0.0294      0.0248              0.0070  0.0018  0.0301
+29000.3s 436 0.10     0.0476  0.0120   0.0122   0.0109  0.0494          0.0140           0.0152      0.0146              0.0313  0.0182  0.0503
+29000.3s 437 0.50     0.0714  0.0303   0.0309   0.0294  0.0661          0.0319           0.0326      0.0322              0.0514  0.0433  0.0682
+29000.3s 438 
+29000.3s 439 MCC pivot (dataset × alpha × strategy):
+29000.3s 440 strategy       catboost  fedavg  fednova  fedprox    lgbm  moe_confidence  moe_performance  moe_static  moe_typology_aware  persfl     xgb
+29000.3s 441 dataset alpha
+29000.3s 442 SAML    0.05     0.0279  0.0000   0.0000   0.0000  0.0292          0.0270           0.0287      0.0265              0.0114  0.0116  0.0288
+29000.3s 443 0.10     0.0376  0.0209   0.0274   0.0199  0.0410          0.0241           0.0343      0.0267              0.0525  0.0342  0.0359
+29000.3s 444 0.50     0.0409  0.0335   0.0334   0.0310  0.0435          0.0380           0.0345      0.0364              0.0497  0.0380  0.0409
+29000.3s 445 
+29000.3s 446 ============================================================
+29000.3s 447 ALL RUNS COMPLETE
+29000.3s 448 ============================================================
+29000.3s 449 Total runtime: 482.8m
+29000.3s 450 
+29000.3s 451 Outputs:
+29000.3s 452 all_benchmarks_combined.csv
+29000.3s 453 all_benchmarks_combined_seed0.csv
+29000.3s 454 all_benchmarks_combined_seed42.csv
+29000.3s 455 saml_alpha0.05_benchmark.csv
+29000.3s 456 saml_alpha0.05_benchmark_results.png
+29000.3s 457 saml_alpha0.05_fl_history.csv
+29000.3s 458 saml_alpha0.05_seed0_benchmark.csv
+29000.3s 459 saml_alpha0.05_seed0_fl_history.csv
+29000.3s 460 saml_alpha0.05_seed42_benchmark.csv
+29000.3s 461 saml_alpha0.05_seed42_fl_history.csv
+29000.3s 462 saml_alpha0.1_benchmark.csv
+29000.3s 463 saml_alpha0.1_benchmark_results.png
+29000.3s 464 saml_alpha0.1_fl_history.csv
+29000.3s 465 saml_alpha0.1_seed0_benchmark.csv
+29000.3s 466 saml_alpha0.1_seed0_fl_history.csv
+29000.3s 467 saml_alpha0.1_seed42_benchmark.csv
+29000.3s 468 saml_alpha0.1_seed42_fl_history.csv
+29000.3s 469 saml_alpha0.5_benchmark.csv
+29000.3s 470 saml_alpha0.5_benchmark_results.png
+29000.3s 471 saml_alpha0.5_fl_history.csv
+29000.3s 472 saml_alpha0.5_seed0_benchmark.csv
+29000.3s 473 saml_alpha0.5_seed0_fl_history.csv
+29000.3s 474 saml_alpha0.5_seed42_benchmark.csv
+29000.3s 475 saml_alpha0.5_seed42_fl_history.csv
+29000.3s 476 
+29000.3s 477 ######################################################################
+29000.3s 478 ###  SEED = 1
+29000.3s 479 ######################################################################
+29000.3s 480 
+29000.3s 481 ############################################################
+29000.3s 482 DATASET: SAML
+29000.3s 483 ############################################################
+29000.3s 484 Loading SAML-D: /kaggle/input/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml/SAML-D.csv
+29019.4s 485 9,504,852 rows | fraud: 9,873 (0.104%)
+29072.3s 486 SAML-D features: (9504852, 10)  (no typ_enc, no sl/rl_enc; temporal split enabled)
+29072.6s 487 Preprocessing done | 484.0m
+29072.6s 488 
+29072.6s 489 ============================================================
+29072.6s 490 SAML | alpha=0.05 | 4 banks
+29072.6s 491 ============================================================
+29079.4s 492 
+29079.4s 493 Partition [SAML] — 4 banks | Dirichlet alpha=0.05 | temporal split:
+29079.4s 494 SAML-Bank0          :  2,373,745 txns |      1 fraud (0.000%) | train=1 val=0 test=0 fraud
+29079.4s 495 SAML-Bank1          :  2,383,616 txns |  9,872 fraud (0.414%) | train=6765 val=1411 test=1696 fraud
+29079.4s 496 SAML-Bank2          :  2,373,744 txns |      0 fraud (0.000%) | train=0 val=0 test=0 fraud
+29079.4s 497 SAML-Bank3          :  2,373,747 txns |      0 fraud (0.000%) | train=0 val=0 test=0 fraud
+29079.4s 498 NOTE: SAML-Bank0 has 0 fraud in test — will report specificity/FPR instead of recall/AUPRC
+29079.4s 499 NOTE: SAML-Bank2 has 0 fraud in test — will report specificity/FPR instead of recall/AUPRC
+29079.4s 500 NOTE: SAML-Bank3 has 0 fraud in test — will report specificity/FPR instead of recall/AUPRC
+29079.4s 501 
+29079.4s 502 FL training:
+29879.0s 503 [FEDAVG] 20 rounds  5 10 15 20
+30593.3s 504 [FEDPROX] 20 rounds  5 10 15 20
+31460.2s 505 [FEDNOVA] 20 rounds  5 10 15 20
+32216.2s 506 [PERSFL] 20 rounds  5 10 15 20
+32216.4s 507 
+32216.4s 508 Local experts (XGB cuda + LGBM cpu + CatBoost gpu)...
+32217.7s 509 SAML-Bank0           XGB     : (no test fraud) Specificity=0.9960 FPR=0.0040 FP=1407
+32225.2s 510 SAML-Bank0           LGBM    : (no test fraud) Specificity=0.9967 FPR=0.0033 FP=1162
+32274.5s 511 SAML-Bank0           CATBOOST: (no test fraud) Specificity=0.9997 FPR=0.0003 FP=105
+32278.8s 512 SAML-Bank1           XGB     : F1=0.0308  AUPRC=0.1201
+32309.5s 513 SAML-Bank1           LGBM    : F1=0.0332  AUPRC=0.1225
+32433.1s 514 SAML-Bank1           CATBOOST: F1=0.0314  AUPRC=0.1201
+32433.1s 515 SAML-Bank2           SKIPPED: no fraud in training set
+32433.1s 516 SAML-Bank3           SKIPPED: no fraud in training set
+32433.1s 517 
+32433.1s 518 Evaluating all models + MoE gates...
+32459.3s 519 [triage] captured expert probs -> probs_saml_alpha0.05_seed1.npz
+32610.8s 520 
+32610.8s 521 ======================================================================
+32610.8s 522 SAML (alpha=0.05) BENCHMARK — Temporal Split, Dirichlet (4 Banks)
+32610.8s 523 All banks included. Fraud metrics=0 for banks with no test fraud.
+32610.8s 524 ======================================================================
+32610.8s 525 strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_coverage  typ_wf1  client_equity  worst_bank_f1  collab_gain  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud
+32610.8s 526 lgbm 0.0306 0.0286 0.0383 0.0230  0.0693       0.4935 0.5065     0.2500        0.1429   0.0863         0.0398            0.0          NaN     0.5875             4                   1              1696
+32610.8s 527 xgb 0.0300 0.0287 0.0368 0.0276  0.0472       0.4964 0.5036     0.2500        0.1339   0.0604         0.0478            0.0          NaN     0.6000             4                   1              1696
+32610.8s 528 catboost 0.0300 0.0284 0.0365 0.0272  0.0473       0.4972 0.5028     0.2500        0.1250   0.0606         0.0471            0.0          NaN     0.6000             4                   1              1696
+32610.8s 529 moe_typology_aware 0.0206 0.0271 0.0325 0.0158  0.1091       0.9852 0.0148     0.2400        0.1339   0.1128         0.0274            0.0      -0.0114     0.5125             4                   1              1696
+32610.8s 530 moe_performance 0.0099 0.0284 0.0381 0.0236  0.0644       0.9950 0.0050     0.0300        0.1429   0.0743         0.0410            0.0      -0.0035     0.5375             4                   1              1696
+32610.8s 531 moe_static 0.0086 0.0270 0.0357 0.0198  0.0767       0.9923 0.0077     0.0125        0.1518   0.0909         0.0344            0.0      -0.0073     0.4875             4                   1              1696
+32610.8s 532 moe_confidence 0.0075 0.0266 0.0358 0.0235  0.0550       0.9958 0.0042     0.0050        0.1339   0.0468         0.0406            0.0      -0.0037     0.4625             4                   1              1696
+32610.8s 533 fedavg 0.0034 0.0145 0.0196 0.0096  0.0632       0.9859 0.0141     0.0025        0.1250   0.0688         0.0167            0.0      -0.0175     0.3875             4                   1              1696
+32610.8s 534 fedprox 0.0031 0.0127 0.0175 0.0131  0.0226       0.9970 0.0030     0.0150        0.0179   0.0179         0.0226            0.0      -0.0141     0.4000             4                   1              1696
+32610.8s 535 persfl 0.0021 0.0114 0.0116 0.0049  0.1411       0.9328 0.0672     0.0050        0.1518   0.1691         0.0084            0.0      -0.0223     0.4875             4                   1              1696
+32610.8s 536 fednova 0.0013 0.0000 0.0000 0.0000  0.0000       1.0000 0.0000     0.0000        0.0000   0.0000         0.0000            0.0      -0.0272     0.5000             4                   1              1696
+32610.8s 537 
+32610.8s 538 BEST (AUPRC):
+32610.8s 539 lgbm                       AUPRC=0.0306  MCC=0.0286  F2=0.0383  banks_with_fraud=1/4
+32611.7s 540 Saved: /kaggle/working/saml_alpha0.05_benchmark_results.png
+32612.0s 541 
+32612.0s 542 SAML alpha=0.05 done | 543.0m
+32612.0s 543 
+32612.0s 544 ============================================================
+32612.0s 545 SAML | alpha=0.1 | 4 banks
+32612.0s 546 ============================================================
+32618.7s 547 
+32618.7s 548 Partition [SAML] — 4 banks | Dirichlet alpha=0.1 | temporal split:
+32618.7s 549 SAML-Bank0          :  2,373,746 txns |      2 fraud (0.000%) | train=2 val=0 test=0 fraud
+32618.7s 550 SAML-Bank1          :  2,373,745 txns |      1 fraud (0.000%) | train=1 val=0 test=0 fraud
+32618.7s 551 SAML-Bank2          :  2,373,745 txns |      1 fraud (0.000%) | train=1 val=0 test=0 fraud
+32618.7s 552 SAML-Bank3          :  2,383,616 txns |  9,869 fraud (0.414%) | train=6764 val=1412 test=1693 fraud
+32618.7s 553 NOTE: SAML-Bank0 has 0 fraud in test — will report specificity/FPR instead of recall/AUPRC
+32618.7s 554 NOTE: SAML-Bank1 has 0 fraud in test — will report specificity/FPR instead of recall/AUPRC
+32618.7s 555 NOTE: SAML-Bank2 has 0 fraud in test — will report specificity/FPR instead of recall/AUPRC
+32618.7s 556 
+32618.7s 557 FL training:
+33353.8s 558 [FEDAVG] 20 rounds  5 10 15 20
+34061.6s 559 [FEDPROX] 20 rounds  5 10 15 20
+34964.4s 560 [FEDNOVA] 20 rounds  5 10 15 20
+35738.5s 561 [PERSFL] 20 rounds  5 10 15 20
+35738.7s 562 
+35738.7s 563 Local experts (XGB cuda + LGBM cpu + CatBoost gpu)...
+35740.0s 564 SAML-Bank0           XGB     : (no test fraud) Specificity=0.8759 FPR=0.1241 FP=44191
+35747.0s 565 SAML-Bank0           LGBM    : (no test fraud) Specificity=0.9928 FPR=0.0072 FP=2577
+35796.0s 566 SAML-Bank0           CATBOOST: (no test fraud) Specificity=0.9997 FPR=0.0003 FP=109
+35797.3s 567 SAML-Bank1           XGB     : (no test fraud) Specificity=0.0000 FPR=1.0000 FP=356063
+35804.6s 568 SAML-Bank1           LGBM    : (no test fraud) Specificity=1.0000 FPR=0.0000 FP=0
+35852.2s 569 SAML-Bank1           CATBOOST: (no test fraud) Specificity=0.9997 FPR=0.0003 FP=95
+35853.5s 570 SAML-Bank2           XGB     : (no test fraud) Specificity=0.9997 FPR=0.0003 FP=100
+35860.6s 571 SAML-Bank2           LGBM    : (no test fraud) Specificity=0.9730 FPR=0.0270 FP=9610
+35909.2s 572 SAML-Bank2           CATBOOST: (no test fraud) Specificity=0.9998 FPR=0.0002 FP=71
+35913.5s 573 SAML-Bank3           XGB     : F1=0.0316  AUPRC=0.1171
+35946.0s 574 SAML-Bank3           LGBM    : F1=0.0333  AUPRC=0.1236
+36071.6s 575 SAML-Bank3           CATBOOST: F1=0.0309  AUPRC=0.1219
+36071.6s 576 
+36071.6s 577 Evaluating all models + MoE gates...
+36095.5s 578 [triage] captured expert probs -> probs_saml_alpha0.1_seed1.npz
+36238.0s 579 
+36238.0s 580 ======================================================================
+36238.0s 581 SAML (alpha=0.1) BENCHMARK — Temporal Split, Dirichlet (4 Banks)
+36238.0s 582 All banks included. Fraud metrics=0 for banks with no test fraud.
+36238.0s 583 ======================================================================
+36238.0s 584 strategy  auprc    mcc     f2     f1  recall  specificity    fpr  ap_at_100  typ_coverage  typ_wf1  client_equity  worst_bank_f1  collab_gain  threshold  n_eval_banks  n_banks_with_fraud  total_test_fraud
+36238.0s 585 moe_typology_aware 0.0340 0.0361 0.0476 0.0297  0.0794       0.9952 0.0048     0.2500        0.1429   0.1110         0.0515            0.0       0.0013     0.5250             4                   1              1693
+36238.0s 586 lgbm 0.0309 0.0291 0.0390 0.0234  0.0701       0.9858 0.0142     0.2500        0.1429   0.0852         0.0405            0.0          NaN     0.5875             4                   1              1693
+36238.0s 587 catboost 0.0305 0.0294 0.0374 0.0284  0.0475       0.9972 0.0028     0.2500        0.1339   0.0620         0.0491            0.0          NaN     0.6000             4                   1              1693
+36238.0s 588 xgb 0.0293 0.0278 0.0356 0.0268  0.0455       0.7163 0.2837     0.2500        0.1339   0.0603         0.0465            0.0          NaN     0.6000             4                   1              1693
+36238.0s 589 persfl 0.0178 0.0401 0.0189 0.0272  0.0157       0.9999 0.0001     0.2275        0.0446   0.0103         0.0471            0.0      -0.0011     0.5750             4                   1              1693
+36238.0s 590 moe_static 0.0161 0.0274 0.0369 0.0227  0.0632       0.9949 0.0051     0.1425        0.1161   0.0561         0.0393            0.0      -0.0057     0.5000             4                   1              1693
+36238.0s 591 moe_performance 0.0160 0.0280 0.0375 0.0236  0.0622       0.9952 0.0048     0.1375        0.1071   0.0549         0.0408            0.0      -0.0048     0.5250             4                   1              1693
+36238.0s 592 moe_confidence 0.0154 0.0264 0.0356 0.0227  0.0573       0.9955 0.0045     0.1400        0.1071   0.0515         0.0393            0.0      -0.0057     0.4750             4                   1              1693
+36238.0s 593 fedprox 0.0129 0.0199 0.0274 0.0182  0.0412       0.9928 0.0072     0.1300        0.1071   0.0415         0.0315            0.0      -0.0102     0.4250             4                   1              1693
+36238.0s 594 fedavg 0.0127 0.0206 0.0283 0.0187  0.0431       0.9916 0.0084     0.1250        0.0893   0.0425         0.0324            0.0      -0.0097     0.4375             4                   1              1693
+36238.0s 595 fednova 0.0118 0.0445 0.0099 0.0155  0.0080       1.0000 0.0000     0.1375        0.0179   0.0045         0.0268            0.0      -0.0129     0.3875             4                   1              1693
+36238.0s 596 
+36238.0s 597 BEST (AUPRC):
+36238.0s 598 moe_typology_aware         AUPRC=0.0340  MCC=0.0361  F2=0.0476  banks_with_fraud=1/4
+36239.4s 599 Saved: /kaggle/working/saml_alpha0.1_benchmark_results.png
+36239.4s 600 
+36239.4s 601 SAML alpha=0.1 done | 603.5m
+36239.4s 602 
+36239.4s 603 [BUDGET] 603.5m elapsed -- the next cell (~1.1h) does not fit inside SESSION_BUDGET_H=10.5h. Stopping cleanly; completed cells are on disk and the next session resumes from them.
+36239.4s 604 
+36239.4s 605 SAML — stopped at the session budget | 603.5m
+36239.4s 606 
+36239.4s 607 Seed 1 incomplete (2/3 cells) -- per-cell CSVs are saved; the per-seed combined CSV is written on resume.
+36239.4s 608 
+36239.4s 609 Multi-seed master CSV: 66 rows -> all_benchmarks_multiseed.csv
+36239.4s 610 
+36239.4s 611 Per-cell AUPRC mean/std/n_seeds:
+36239.4s 612 mean     std  count
+36239.4s 613 strategy           dataset alpha
+36239.4s 614 catboost           SAML    0.05   0.0303  0.0003      2
+36239.4s 615 0.10   0.0428  0.0068      2
+36239.4s 616 0.50   0.0758  0.0063      2
+36239.4s 617 fedavg             SAML    0.05   0.0030  0.0010      2
+36239.4s 618 0.10   0.0222  0.0145      2
+36239.4s 619 0.50   0.0658  0.0502      2
+36239.4s 620 fednova            SAML    0.05   0.0020  0.0001      2
+36239.4s 621 0.10   0.0134  0.0017      2
+36239.4s 622 0.50   0.0664  0.0502      2
+36239.4s 623 fedprox            SAML    0.05   0.0024  0.0006      2
+36239.4s 624 0.10   0.0234  0.0177      2
+36239.4s 625 0.50   0.0652  0.0506      2
+36239.4s 626 lgbm               SAML    0.05   0.0304  0.0008      2
+36239.4s 627 0.10   0.0446  0.0068      2
+36239.4s 628 0.50   0.0834  0.0245      2
+36239.4s 629 moe_confidence     SAML    0.05   0.0152  0.0130      2
+36239.4s 630 0.10   0.0207  0.0095      2
+36239.4s 631 0.50   0.0674  0.0502      2
+36239.4s 632 moe_performance    SAML    0.05   0.0198  0.0135      2
+36239.4s 633 0.10   0.0248  0.0136      2
+36239.4s 634 0.50   0.0680  0.0500      2
+36239.4s 635 moe_static         SAML    0.05   0.0161  0.0123      2
+36239.4s 636 0.10   0.0234  0.0124      2
+36239.4s 637 0.50   0.0676  0.0501      2
+36239.4s 638 moe_typology_aware SAML    0.05   0.0112  0.0060      2
+36239.4s 639 0.10   0.0416  0.0146      2
+36239.4s 640 0.50   0.0781  0.0378      2
+36239.4s 641 persfl             SAML    0.05   0.0044  0.0037      2
+36239.4s 642 0.10   0.0272  0.0127      2
+36239.4s 643 0.50   0.0724  0.0412      2
+36239.4s 644 xgb                SAML    0.05   0.0298  0.0004      2
+36239.4s 645 0.10   0.0450  0.0076      2
+36239.4s 646 0.50   0.0844  0.0229      2
+36239.5s 647 Session budget hit -> A2 centralised baseline skipped this session (it reruns in the final resume session).
+36239.5s 648 RUN_CENTRALISED_BASELINE=False -> skipped
+36239.6s 649 Reading /kaggle/working/gate_weights_log.jsonl ...
+36239.7s 650 loaded 697 log records
+36239.7s 651 exploded to 4,879 (record, expert) rows
+36240.8s 652 wrote chart_a1_gate_mean_weights.png
+36241.6s 653 wrote chart_a1_gate_entropy.png
+36242.0s 654 wrote chart_a1_gate_typology_heatmap.png
+36242.0s 655 wrote a1_gate_summary.csv (12 rows)
+36242.0s 656 
+36242.0s 657 A1 summary:
+36242.0s 658 gate dataset  alpha top_expert  top_expert_mean_weight  ml_share  fl_share  collapsed_to_one_expert
+36242.0s 659 moe_confidence    SAML   0.05    fednova                   0.214     0.061     0.204                    False
+36242.0s 660 moe_performance    SAML   0.05       lgbm                   0.172     0.171     0.122                    False
+36242.0s 661 moe_static    SAML   0.05     fedavg                   0.196     0.071     0.196                    False
+36242.0s 662 moe_typology_aware    SAML   0.05     persfl                   0.207     0.159     0.131                    False
+36242.0s 663 moe_confidence    SAML   0.10    fednova                   0.172     0.126     0.156                    False
+36242.0s 664 moe_performance    SAML   0.10       lgbm                   0.170     0.166     0.125                    False
+36242.0s 665 moe_static    SAML   0.10     fedavg                   0.152     0.131     0.152                    False
+36242.0s 666 moe_typology_aware    SAML   0.10       lgbm                   0.179     0.169     0.123                    False
+36242.0s 667 moe_confidence    SAML   0.50        xgb                   0.149     0.145     0.141                    False
+36242.0s 668 moe_performance    SAML   0.50       lgbm                   0.161     0.149     0.138                    False
+36242.0s 669 moe_static    SAML   0.50   catboost                   0.143     0.143     0.143                    False
+36242.0s 670 moe_typology_aware    SAML   0.50    fedprox                   0.154     0.145     0.141                    False
+36242.0s 671 
+36242.0s 672 VERDICT: 0/12 cells have one expert >85% mass.
+36242.0s 673 -> Healthy routing; MoE is genuinely blending experts.
+36242.2s 674 wrote /kaggle/working/a4_cost_results.csv  (297 rows)
+36242.2s 675 wrote /kaggle/working/a4_cost_ranking_flips.csv  -- 27/27 cells flip
+36242.8s 676 wrote chart_a4_cost_curves.png
+36242.8s 677 
+36242.8s 678 VERDICT: 100% of cells flip method when judged by cost.
+36242.8s 679 AUPRC ranking is misleading at realistic FN/FP ratios.
+36242.8s 680 Report cost-sensitive results in your paper alongside AUPRC.
+36242.8s 681 
+36242.8s 682 Example flips:
+36242.8s 683 SAML  a=0.05  ratio=  10  auprc-best=lgbm                   cost-best=fednova                 saves 180543.8 cost-units
+36242.8s 684 SAML  a=0.05  ratio=  25  auprc-best=lgbm                   cost-best=fednova                 saves 179294.1 cost-units
+36242.8s 685 SAML  a=0.05  ratio=  50  auprc-best=lgbm                   cost-best=fednova                 saves 177211.4 cost-units
+36242.8s 686 SAML  a=0.05  ratio= 100  auprc-best=lgbm                   cost-best=moe_performance         saves 173938.9 cost-units
+36242.8s 687 SAML  a=0.05  ratio= 200  auprc-best=lgbm                   cost-best=moe_performance         saves 168465.6 cost-units
+36242.8s 688 SAML  a=0.05  ratio= 500  auprc-best=lgbm                   cost-best=moe_static              saves 153781.1 cost-units
+36242.8s 689 SAML  a=0.05  ratio=1000  auprc-best=lgbm                   cost-best=persfl                  saves 134375.5 cost-units
+36242.8s 690 SAML  a=0.05  ratio=2000  auprc-best=lgbm                   cost-best=persfl                  saves 108261.0 cost-units
+36242.8s 691 SAML  a=0.05  ratio=5000  auprc-best=lgbm                   cost-best=xgb                     saves 215845.3 cost-units
+36242.8s 692 SAML  a=0.1   ratio=  10  auprc-best=xgb                    cost-best=moe_typology_aware      saves 48320.2 cost-units
+36243.0s 693 Loaded all_benchmarks_combined_seed0.csv  (33 rows, seed=0)
+36243.0s 694 Loaded all_benchmarks_combined_seed42.csv  (33 rows, seed=42)
+36243.0s 695 Master CSV: 66 rows, 2 seeds -> all_benchmarks_multiseed.csv
+36243.0s 696 Loaded multi-seed CSV: 66 rows, 2 seeds
+36243.0s 697 ==============================================================================
+36243.0s 698 A3 - Multi-Seed Statistical Tests
+36243.0s 699 Seeds: [np.int64(0), np.int64(42)]   n_conditions=3   n_seeds=2
+36243.0s 700 Effective paired blocks for Wilcoxon: 6
+36243.0s 701 ==============================================================================
+36243.0s 702 
+36243.0s 703 ------------------------------------------------------------------------------
+36243.0s 704 1) Per-cell AUPRC mean +/- std across seeds
+36243.0s 705 ------------------------------------------------------------------------------
+36243.0s 706 Wrote a3_statistics_summary.csv  (33 rows)
+36243.0s 707 
+36243.0s 708 AUPRC mean pivot (dataset x alpha x strategy):
+36243.0s 709 strategy       catboost  fedavg  fednova  fedprox    lgbm  moe_confidence  moe_performance  moe_static  moe_typology_aware  persfl     xgb
+36243.0s 710 dataset alpha
+36243.0s 711 SAML    0.05     0.0303  0.0030   0.0020   0.0024  0.0304          0.0152           0.0198      0.0161              0.0112  0.0044  0.0298
+36243.0s 712 0.10     0.0428  0.0222   0.0134   0.0234  0.0446          0.0207           0.0248      0.0234              0.0416  0.0272  0.0450
+36243.0s 713 0.50     0.0758  0.0658   0.0664   0.0652  0.0834          0.0674           0.0680      0.0676              0.0781  0.0724  0.0844
+36243.0s 714 
+36243.0s 715 AUPRC std pivot:
+36243.0s 716 strategy       catboost  fedavg  fednova  fedprox    lgbm  moe_confidence  moe_performance  moe_static  moe_typology_aware  persfl     xgb
+36243.0s 717 dataset alpha
+36243.0s 718 SAML    0.05     0.0003  0.0010   0.0001   0.0006  0.0008          0.0130           0.0135      0.0123              0.0060  0.0037  0.0004
+36243.0s 719 0.10     0.0068  0.0145   0.0017   0.0177  0.0068          0.0095           0.0136      0.0124              0.0146  0.0127  0.0076
+36243.0s 720 0.50     0.0063  0.0502   0.0502   0.0506  0.0245          0.0502           0.0500      0.0501              0.0378  0.0412  0.0229
+36243.0s 721 
+36243.0s 722 ------------------------------------------------------------------------------
+36243.0s 723 2) Friedman rank test
+36243.0s 724 ------------------------------------------------------------------------------
+36243.3s 725 [All 11 methods]  n_blocks=6  k=11
+36243.3s 726 chi2=30.2729  df=10  p=0.000773  ***
+36243.3s 727 Average ranks (1=best):
+36243.3s 728 LightGBM                3.167
+36243.3s 729 MoE-TypAware            3.500
+36243.3s 730 XGBoost                 3.583
+36243.3s 731 CatBoost                3.750
+36243.3s 732 MoE-Perf                5.000
+36243.3s 733 MoE-Static              6.167
+36243.3s 734 PersFL                  6.500
+36243.3s 735 MoE-Conf                7.333
+36243.3s 736 FedAvg                  8.667
+36243.3s 737 FedNova                 9.000
+36243.3s 738 FedProx                 9.333
+36243.3s 739 [10 methods (no oracle)]  n_blocks=6  k=10
+36243.3s 740 chi2=25.0890  df=9  p=0.002874  **
+36243.3s 741 Average ranks (1=best):
+36243.3s 742 LightGBM                2.833
+36243.3s 743 XGBoost                 3.250
+36243.3s 744 CatBoost                3.417
+36243.3s 745 MoE-Perf                4.167
+36243.3s 746 MoE-Static              5.333
+36243.3s 747 PersFL                  5.500
+36243.3s 748 MoE-Conf                6.500
+36243.3s 749 FedAvg                  7.667
+36243.3s 750 FedNova                 8.000
+36243.3s 751 FedProx                 8.333
+36243.3s 752 
+36243.3s 753 ------------------------------------------------------------------------------
+36243.3s 754 3) Wilcoxon signed-rank -- family comparisons
+36243.3s 755 ------------------------------------------------------------------------------
+36243.5s 756 [MoE_mean(no_oracle) vs FL_mean]  n=6  W=1.0  p=0.0625 ns  delta=+0.22 (small)  +/-=5/1
+36243.5s 757 [MoE_mean(no_oracle) vs ML_mean]  n=6  W=3.0  p=0.1562 ns  delta=-0.44 (medium)  +/-=1/5
+36243.5s 758 [MoE_mean(all) vs FL_mean]  n=6  W=0.0  p=0.0312 *  delta=+0.33 (medium)  +/-=6/0
+36243.5s 759 [MoE_mean(all) vs ML_mean]  n=6  W=3.0  p=0.1562 ns  delta=-0.44 (medium)  +/-=1/5
+36243.5s 760 [MoE_best(no_oracle) vs FL_best]  n=6  W=10.0  p=1.0000 ns  delta=+0.06 (negligible)  +/-=3/3
+36243.5s 761 [MoE_best(no_oracle) vs ML_best]  n=6  W=2.0  p=0.0938 ns  delta=-0.44 (medium)  +/-=1/5
+36243.5s 762 
+36243.5s 763 ------------------------------------------------------------------------------
+36243.5s 764 4) Wilcoxon signed-rank -- each method vs FedAvg
+36243.5s 765 ------------------------------------------------------------------------------
+36243.5s 766 [CatBoost               vs FedAvg]  n=6  W=2.0  p=0.0938 ns  delta=+0.50 (large)
+36243.5s 767 [FedNova                vs FedAvg]  n=6  W=8.0  p=0.6875 ns  delta=-0.11 (negligible)
+36243.5s 768 [FedProx                vs FedAvg]  n=6  W=6.0  p=0.4375 ns  delta=-0.11 (negligible)
+36243.5s 769 [LightGBM               vs FedAvg]  n=6  W=1.0  p=0.0625 ns  delta=+0.50 (large)
+36243.5s 770 [MoE-Conf               vs FedAvg]  n=6  W=5.0  p=0.3125 ns  delta=+0.17 (small)
+36243.5s 771 [MoE-Perf               vs FedAvg]  n=6  W=0.0  p=0.0312 *  delta=+0.33 (medium)
+36243.5s 772 [MoE-Static             vs FedAvg]  n=6  W=1.0  p=0.0625 ns  delta=+0.22 (small)
+36243.5s 773 [MoE-TypAware           vs FedAvg]  n=6  W=0.0  p=0.0312 *  delta=+0.39 (medium)
+36243.5s 774 [PersFL                 vs FedAvg]  n=6  W=2.0  p=0.0938 ns  delta=+0.17 (small)
+36243.5s 775 [XGBoost                vs FedAvg]  n=6  W=1.0  p=0.0625 ns  delta=+0.44 (medium)
+36243.5s 776 
+36243.5s 777 Wrote a3_wilcoxon.csv
+36243.5s 778 
+36243.5s 779 ------------------------------------------------------------------------------
+36243.5s 780 5) Kruskal-Wallis -- FL vs ML vs MoE
+36243.5s 781 ------------------------------------------------------------------------------
+36243.5s 782 [excl. oracle]  H=9.7367  df=2  p=0.0077 **
+36243.5s 783 [incl. oracle]  H=9.3051  df=2  p=0.0095 **
+36243.5s 784 
+36243.5s 785 ------------------------------------------------------------------------------
+36243.5s 786 6) Spearman: AUPRC vs alpha per dataset
+36243.5s 787 ------------------------------------------------------------------------------
+36243.5s 788 SAML    rho=+0.766  p=6.58e-14 ***  (n=66)
+36243.5s 789 
+36243.5s 790 ------------------------------------------------------------------------------
+36243.5s 791 7) Bootstrap 95% CIs using seed variance (true CIs)
+36243.5s 792 ------------------------------------------------------------------------------
+36243.5s 793 SAML    best=XGBoost             mean=0.0531  95% CI=[0.0349, 0.0750]  (n_obs=6)
+36243.5s 794 
+36243.5s 795 ------------------------------------------------------------------------------
+36243.5s 796 8) Cohen's d / Hedges' g vs FedAvg
+36243.5s 797 ------------------------------------------------------------------------------
+36243.5s 798 CatBoost                d=+0.833  g=+0.701  (large)
+36243.5s 799 FedNova                 d=-0.424  g=-0.357  (small)
+36243.5s 800 FedProx                 d=-0.019  g=-0.016  (negligible)
+36243.5s 801 LightGBM                d=+1.440  g=+1.213  (large)
+36243.5s 802 MoE-Conf                d=+0.441  g=+0.371  (small)
+36243.5s 803 MoE-Perf                d=+0.725  g=+0.610  (medium)
+36243.5s 804 MoE-Static              d=+0.629  g=+0.530  (medium)
+36243.5s 805 MoE-TypAware            d=+1.698  g=+1.430  (large)
+36243.5s 806 PersFL                  d=+0.883  g=+0.744  (large)
+36243.5s 807 XGBoost                 d=+1.408  g=+1.186  (large)
+36243.5s 808 
+36243.5s 809 ------------------------------------------------------------------------------
+36243.5s 810 9) Mean +/- std AUPRC chart
+36243.5s 811 ------------------------------------------------------------------------------
+36243.8s 812 Chart saved: chart_a3_mean_std.png
+36243.8s 813 
+36243.8s 814 ==============================================================================
+36243.8s 815 FILES WRITTEN
+36243.8s 816 ==============================================================================
+36243.8s 817 a3_statistics_summary.csv  (1,769 bytes)
+36243.8s 818 a3_wilcoxon.csv  (1,002 bytes)
+36243.8s 819 chart_a3_mean_std.png  (70,242 bytes)
+36243.8s 820 Written: a3_statistics_report.txt
+36243.9s 821 
+36243.9s 822 ======================================================================
+36243.9s 823 OUTPUTS IN /kaggle/working
+36243.9s 824 ======================================================================
+36243.9s 825 755 B   a1_gate_summary.csv
+36243.9s 826 1,769 B   a3_statistics_summary.csv
+36243.9s 827 1,002 B   a3_wilcoxon.csv
+36243.9s 828 1,268 B   a4_cost_ranking_flips.csv
+36243.9s 829 17,292 B   a4_cost_results.csv
+36243.9s 830 11,220 B   all_benchmarks_combined.csv
+36243.9s 831 5,683 B   all_benchmarks_combined_seed0.csv
+36243.9s 832 5,816 B   all_benchmarks_combined_seed42.csv
+36243.9s 833 11,220 B   all_benchmarks_multiseed.csv
+36243.9s 834 43,336 B   chart_a1_gate_entropy.png
+36243.9s 835 109,964 B   chart_a1_gate_mean_weights.png
+36243.9s 836 113,932 B   chart_a1_gate_typology_heatmap.png
+36243.9s 837 70,242 B   chart_a3_mean_std.png
+36243.9s 838 62,800 B   chart_a4_cost_curves.png
+36243.9s 839 233,278 B   gate_weights_log.jsonl
+36243.9s 840 2,084 B   saml_alpha0.05_benchmark.csv
+36243.9s 841 109,346 B   saml_alpha0.05_benchmark_results.png
+36243.9s 842 3,254 B   saml_alpha0.05_fl_history.csv
+36243.9s 843 2,010 B   saml_alpha0.05_seed0_benchmark.csv
+36243.9s 844 3,509 B   saml_alpha0.05_seed0_fl_history.csv
+36243.9s 845 2,084 B   saml_alpha0.05_seed1_benchmark.csv
+36243.9s 846 3,254 B   saml_alpha0.05_seed1_fl_history.csv
+36243.9s 847 2,104 B   saml_alpha0.05_seed42_benchmark.csv
+36243.9s 848 3,578 B   saml_alpha0.05_seed42_fl_history.csv
+36243.9s 849 2,102 B   saml_alpha0.1_benchmark.csv
+36243.9s 850 111,260 B   saml_alpha0.1_benchmark_results.png
+36243.9s 851 3,259 B   saml_alpha0.1_fl_history.csv
+36243.9s 852 2,115 B   saml_alpha0.1_seed0_benchmark.csv
+36243.9s 853 4,424 B   saml_alpha0.1_seed0_fl_history.csv
+36243.9s 854 2,102 B   saml_alpha0.1_seed1_benchmark.csv
+36243.9s 855 3,259 B   saml_alpha0.1_seed1_fl_history.csv
+36243.9s 856 2,118 B   saml_alpha0.1_seed42_benchmark.csv
+36243.9s 857 3,880 B   saml_alpha0.1_seed42_fl_history.csv
+36243.9s 858 2,116 B   saml_alpha0.5_benchmark.csv
+36243.9s 859 112,171 B   saml_alpha0.5_benchmark_results.png
+36243.9s 860 4,977 B   saml_alpha0.5_fl_history.csv
+36243.9s 861 2,116 B   saml_alpha0.5_seed0_benchmark.csv
+36243.9s 862 4,977 B   saml_alpha0.5_seed0_fl_history.csv
+36243.9s 863 2,152 B   saml_alpha0.5_seed42_benchmark.csv
+36243.9s 864 4,982 B   saml_alpha0.5_seed42_fl_history.csv
+36243.9s 865 
+36243.9s 866 Total runtime: 603.6m
+36244.0s 867 triage package not importable here - download probs_*.npz and run:
+36244.0s 868 python -m triage.integration <folder> --out triage_results.csv
+36244.1s 869 
+36244.1s 870 ======================================================================
+36244.1s 871 PARTIAL RUN — stopped at the session budget.
+36244.1s 872 Remaining cells (1):
+36244.1s 873 seed=1   SAML  alpha=0.5
+36244.1s 874 
+36244.1s 875 To finish: Save Version, then attach this session's OUTPUT as a Dataset
+36244.1s 876 input of a new session and run this same script again, unchanged.
+36244.1s 877 (RESUME_DIR='auto' finds the mount and skips every finished cell.)
+36244.1s 878 Total: 603.6m
+36249.7s 879 /usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\|'
+36249.7s 880 cells[i][c] = re.sub('\\\\\|', '|', cell)
+36249.9s 881 /usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\_'
+36249.9s 882 text = re.sub(r'_', '\_', text) # Escape underscores in display text
+36250.6s 883 [NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+36251.0s 884 [NbConvertApp] Writing 220660 bytes to __notebook__.ipynb
+36253.6s 885 [NbConvertApp] Converting notebook __notebook__.ipynb to html
+36255.1s 886 [NbConvertApp] Writing 946576 bytes to __results__.html
