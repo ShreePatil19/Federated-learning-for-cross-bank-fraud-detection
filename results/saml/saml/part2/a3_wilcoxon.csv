@@ -1,0 +1,17 @@
+test,comparison,n,W,p,cliff_delta,effect
+family,MoE_mean(no_oracle) vs FL_mean,6,6.0,0.4375,0.1667,small
+family,MoE_mean(no_oracle) vs ML_mean,6,9.0,0.84375,0.0,negligible
+family,MoE_mean(all) vs FL_mean,6,4.0,0.21875,0.2222,small
+family,MoE_mean(all) vs ML_mean,6,9.0,0.84375,0.1667,small
+family,MoE_best(no_oracle) vs FL_best,6,10.0,1.0,-0.0833,negligible
+family,MoE_best(no_oracle) vs ML_best,6,5.0,0.3125,-0.1111,negligible
+vs_fedavg,catboost vs fedavg,6,8.0,0.6875,0.0,negligible
+vs_fedavg,fednova vs fedavg,6,4.0,0.21875,-0.2222,small
+vs_fedavg,fedprox vs fedavg,6,7.0,0.5625,-0.1111,negligible
+vs_fedavg,lgbm vs fedavg,6,10.0,1.0,-0.1111,negligible
+vs_fedavg,moe_confidence vs fedavg,6,6.0,0.4375,0.0556,negligible
+vs_fedavg,moe_performance vs fedavg,6,6.0,0.4375,0.1111,negligible
+vs_fedavg,moe_static vs fedavg,6,6.0,0.4375,0.0556,negligible
+vs_fedavg,moe_typology_aware vs fedavg,6,2.0,0.09375,0.2222,small
+vs_fedavg,persfl vs fedavg,6,9.0,0.84375,-0.1111,negligible
+vs_fedavg,xgb vs fedavg,6,9.0,0.78125,-0.0556,negligible
