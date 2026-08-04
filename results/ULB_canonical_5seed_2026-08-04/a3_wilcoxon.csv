@@ -1,0 +1,17 @@
+test,comparison,n,W,p,cliff_delta,effect
+family,MoE_mean(no_oracle) vs FL_mean,15,22.0,0.0301513671875,0.1022,negligible
+family,MoE_mean(no_oracle) vs ML_mean,15,1.0,0.0001220703125,0.1822,small
+family,MoE_mean(all) vs FL_mean,15,22.0,0.0301513671875,0.1022,negligible
+family,MoE_mean(all) vs ML_mean,15,1.0,0.0001220703125,0.1822,small
+family,MoE_best(no_oracle) vs FL_best,15,55.5,0.7981933484818879,-0.0044,negligible
+family,MoE_best(no_oracle) vs ML_best,15,9.0,0.00201416015625,0.1644,small
+vs_fedavg,catboost vs fedavg,15,33.0,0.1353759765625,-0.0756,negligible
+vs_fedavg,fednova vs fedavg,15,35.0,0.15555209959634383,-0.04,negligible
+vs_fedavg,fedprox vs fedavg,15,57.5,0.8870649234635408,0.0578,negligible
+vs_fedavg,lgbm vs fedavg,15,42.0,0.33026123046875,-0.0489,negligible
+vs_fedavg,moe_confidence vs fedavg,15,22.0,0.0301513671875,0.1111,negligible
+vs_fedavg,moe_performance vs fedavg,15,23.0,0.03533935546875,0.0933,negligible
+vs_fedavg,moe_static vs fedavg,15,22.0,0.0301513671875,0.1111,negligible
+vs_fedavg,moe_typology_aware vs fedavg,15,23.0,0.03533935546875,0.0933,negligible
+vs_fedavg,persfl vs fedavg,15,54.0,0.76153564453125,0.0667,negligible
+vs_fedavg,xgb vs fedavg,15,49.0,0.5614013671875,-0.0489,negligible
