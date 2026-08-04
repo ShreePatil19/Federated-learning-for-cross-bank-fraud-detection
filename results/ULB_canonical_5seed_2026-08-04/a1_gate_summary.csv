@@ -1,0 +1,13 @@
+gate,dataset,alpha,top_expert,top_expert_mean_weight,ml_share,fl_share,collapsed_to_one_expert
+moe_confidence,ULB,0.05,persfl,0.18,0.093,0.18,False
+moe_performance,ULB,0.05,fedavg,0.153,0.139,0.146,False
+moe_static,ULB,0.05,fedavg,0.18,0.093,0.18,False
+moe_typology_aware,ULB,0.05,fedavg,0.15,0.142,0.144,False
+moe_confidence,ULB,0.1,fednova,0.159,0.121,0.159,False
+moe_performance,ULB,0.1,catboost,0.147,0.142,0.144,False
+moe_static,ULB,0.1,fedavg,0.159,0.121,0.159,False
+moe_typology_aware,ULB,0.1,catboost,0.148,0.143,0.143,False
+moe_confidence,ULB,0.5,persfl,0.143,0.143,0.143,False
+moe_performance,ULB,0.5,fedprox,0.149,0.136,0.148,False
+moe_static,ULB,0.5,catboost,0.143,0.143,0.143,False
+moe_typology_aware,ULB,0.5,persfl,0.149,0.136,0.148,False

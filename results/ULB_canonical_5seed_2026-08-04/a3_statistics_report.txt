@@ -1,0 +1,123 @@
+==============================================================================
+A3 - Multi-Seed Statistical Tests
+Seeds: [np.int64(0), np.int64(1), np.int64(2), np.int64(3), np.int64(42)]   n_conditions=3   n_seeds=5
+Effective paired blocks for Wilcoxon: 15
+==============================================================================
+
+------------------------------------------------------------------------------
+1) Per-cell AUPRC mean +/- std across seeds
+------------------------------------------------------------------------------
+Wrote a3_statistics_summary.csv  (33 rows)
+
+AUPRC mean pivot (dataset x alpha x strategy):
+strategy       catboost  fedavg  fednova  fedprox    lgbm  moe_confidence  moe_performance  moe_static  moe_typology_aware  persfl     xgb
+dataset alpha                                                                                                                             
+ULB     0.05     0.3175  0.3176   0.3132   0.3195  0.3224          0.3256           0.3257      0.3256              0.3256  0.3266  0.3243
+        0.10     0.4219  0.4252   0.4229   0.4491  0.4380          0.4530           0.4525      0.4530              0.4526  0.4356  0.4308
+        0.50     0.5651  0.6090   0.6107   0.6037  0.5669          0.6121           0.6119      0.6121              0.6120  0.5904  0.5738
+
+AUPRC std pivot:
+strategy       catboost  fedavg  fednova  fedprox    lgbm  moe_confidence  moe_performance  moe_static  moe_typology_aware  persfl     xgb
+dataset alpha                                                                                                                             
+ULB     0.05     0.1139  0.1112   0.1133   0.1129  0.1140          0.1145           0.1145      0.1145              0.1146  0.1156  0.1152
+        0.10     0.1133  0.1107   0.1129   0.0930  0.0988          0.0930           0.0934      0.0930              0.0934  0.1081  0.1003
+        0.50     0.1566  0.1510   0.1510   0.1485  0.1530          0.1511           0.1512      0.1511              0.1512  0.1220  0.1511
+
+------------------------------------------------------------------------------
+2) Friedman rank test
+------------------------------------------------------------------------------
+  [All 11 methods]  n_blocks=15  k=11
+    chi2=45.9284  df=10  p=0.000001  ***
+    Average ranks (1=best):
+      MoE-Conf                3.900
+      MoE-Static              3.900
+      MoE-Perf                4.033
+      MoE-TypAware            4.033
+      PersFL                  6.067
+      FedAvg                  6.133
+      FedProx                 6.867
+      FedNova                 6.933
+      XGBoost                 7.200
+      LightGBM                7.667
+      CatBoost                9.267
+  [10 methods (no oracle)]  n_blocks=15  k=10
+    chi2=39.3317  df=9  p=0.000010  ***
+    Average ranks (1=best):
+      MoE-Conf                3.433
+      MoE-Static              3.433
+      MoE-Perf                3.467
+      PersFL                  5.400
+      FedAvg                  5.467
+      FedProx                 6.133
+      FedNova                 6.267
+      XGBoost                 6.333
+      LightGBM                6.800
+      CatBoost                8.267
+
+------------------------------------------------------------------------------
+3) Wilcoxon signed-rank -- family comparisons
+------------------------------------------------------------------------------
+  [MoE_mean(no_oracle) vs FL_mean]  n=15  W=22.0  p=0.0302 *  delta=+0.10 (negligible)  +/-=10/5
+  [MoE_mean(no_oracle) vs ML_mean]  n=15  W=1.0  p=0.0001 ***  delta=+0.18 (small)  +/-=14/1
+  [MoE_mean(all) vs FL_mean]  n=15  W=22.0  p=0.0302 *  delta=+0.10 (negligible)  +/-=10/5
+  [MoE_mean(all) vs ML_mean]  n=15  W=1.0  p=0.0001 ***  delta=+0.18 (small)  +/-=14/1
+  [MoE_best(no_oracle) vs FL_best]  n=15  W=55.5  p=0.7982 ns  delta=-0.00 (negligible)  +/-=8/7
+  [MoE_best(no_oracle) vs ML_best]  n=15  W=9.0  p=0.0020 **  delta=+0.16 (small)  +/-=14/1
+
+------------------------------------------------------------------------------
+4) Wilcoxon signed-rank -- each method vs FedAvg
+------------------------------------------------------------------------------
+  [CatBoost               vs FedAvg]  n=15  W=33.0  p=0.1354 ns  delta=-0.08 (negligible)
+  [FedNova                vs FedAvg]  n=15  W=35.0  p=0.1556 ns  delta=-0.04 (negligible)
+  [FedProx                vs FedAvg]  n=15  W=57.5  p=0.8871 ns  delta=+0.06 (negligible)
+  [LightGBM               vs FedAvg]  n=15  W=42.0  p=0.3303 ns  delta=-0.05 (negligible)
+  [MoE-Conf               vs FedAvg]  n=15  W=22.0  p=0.0302 *  delta=+0.11 (negligible)
+  [MoE-Perf               vs FedAvg]  n=15  W=23.0  p=0.0353 *  delta=+0.09 (negligible)
+  [MoE-Static             vs FedAvg]  n=15  W=22.0  p=0.0302 *  delta=+0.11 (negligible)
+  [MoE-TypAware           vs FedAvg]  n=15  W=23.0  p=0.0353 *  delta=+0.09 (negligible)
+  [PersFL                 vs FedAvg]  n=15  W=54.0  p=0.7615 ns  delta=+0.07 (negligible)
+  [XGBoost                vs FedAvg]  n=15  W=49.0  p=0.5614 ns  delta=-0.05 (negligible)
+
+Wrote a3_wilcoxon.csv
+
+------------------------------------------------------------------------------
+5) Kruskal-Wallis -- FL vs ML vs MoE
+------------------------------------------------------------------------------
+  [excl. oracle]  H=1.8510  df=2  p=0.3963 ns
+  [incl. oracle]  H=2.1302  df=2  p=0.3447 ns
+
+------------------------------------------------------------------------------
+6) Spearman: AUPRC vs alpha per dataset
+------------------------------------------------------------------------------
+  ULB     rho=+0.679  p=1.15e-23 ***  (n=165)
+
+------------------------------------------------------------------------------
+7) Bootstrap 95% CIs using seed variance (true CIs)
+------------------------------------------------------------------------------
+  ULB     best=MoE-Conf            mean=0.4636  95% CI=[0.3862, 0.5445]  (n_obs=15)
+
+------------------------------------------------------------------------------
+8) Cohen's d / Hedges' g vs FedAvg
+------------------------------------------------------------------------------
+  CatBoost                d=-0.282  g=-0.267  (small)
+  FedNova                 d=-0.314  g=-0.297  (small)
+  FedProx                 d=+0.202  g=+0.191  (small)
+  LightGBM                d=-0.148  g=-0.140  (negligible)
+  MoE-Conf                d=+0.388  g=+0.367  (small)
+  MoE-Perf                d=+0.381  g=+0.360  (small)
+  MoE-Static              d=+0.388  g=+0.367  (small)
+  MoE-TypAware            d=+0.382  g=+0.361  (small)
+  PersFL                  d=+0.006  g=+0.006  (negligible)
+  XGBoost                 d=-0.145  g=-0.137  (negligible)
+
+------------------------------------------------------------------------------
+9) Mean +/- std AUPRC chart
+------------------------------------------------------------------------------
+Chart saved: chart_a3_mean_std.png
+
+==============================================================================
+FILES WRITTEN
+==============================================================================
+  a3_statistics_summary.csv  (1,789 bytes)
+  a3_wilcoxon.csv  (1,231 bytes)
+  chart_a3_mean_std.png  (63,938 bytes)
