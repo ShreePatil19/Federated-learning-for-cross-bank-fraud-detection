@@ -1,0 +1,37 @@
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Background and Motivation}{4}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Federated Learning as a Solution}{4}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}The Non-IID Problem}{5}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Literature Review}{5}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}Contributions}{5}{subsection.1.5}%
+\contentsline {subsection}{\numberline {1.6}Paper Structure}{6}{subsection.1.6}%
+\contentsline {section}{\numberline {2}Methods}{6}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Systematic Literature Review}{6}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}Search Strategy}{6}{subsubsection.2.1.1}%
+\contentsline {subsubsection}{\numberline {2.1.2}Inclusion Criteria}{6}{subsubsection.2.1.2}%
+\contentsline {subsubsection}{\numberline {2.1.3}Exclusion Criteria}{7}{subsubsection.2.1.3}%
+\contentsline {subsection}{\numberline {2.2}FL Algorithm Taxonomy}{7}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}FedAvg}{7}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}FedProx}{7}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.3}FedNova}{7}{subsubsection.2.2.3}%
+\contentsline {subsubsection}{\numberline {2.2.4}SCAFFOLD}{8}{subsubsection.2.2.4}%
+\contentsline {subsubsection}{\numberline {2.2.5}Personalised FL (PersFL)}{8}{subsubsection.2.2.5}%
+\contentsline {subsection}{\numberline {2.3}Non-IID Data Simulation}{8}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Datasets}{9}{subsection.2.4}%
+\contentsline {subsubsection}{\numberline {2.4.1}Kaggle Credit Card Fraud Dataset}{9}{subsubsection.2.4.1}%
+\contentsline {subsubsection}{\numberline {2.4.2}IEEE-CIS Fraud Detection Dataset}{9}{subsubsection.2.4.2}%
+\contentsline {subsubsection}{\numberline {2.4.3}SAML Dataset}{9}{subsubsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.5}Model Architectures}{9}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Training Setup}{10}{subsection.2.6}%
+\contentsline {subsection}{\numberline {2.7}Evaluation Metrics}{10}{subsection.2.7}%
+\contentsline {section}{\numberline {3}Experiments and Results}{11}{section.3}%
+\contentsline {subsection}{\numberline {3.1}MLP Results --- Kaggle Credit Card Dataset}{11}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}LR Results --- Kaggle Credit Card Dataset}{12}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Non-IID Robustness --- IEEE-CIS Dataset}{12}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}SLR Multi-Dimensional Analysis}{13}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Discussion}{14}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Which Algorithm Should Banks Use?}{14}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Differential Privacy Is Worth the Small Cost}{14}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}What the Literature Is Missing}{15}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Limitations}{15}{subsection.4.4}%
+\contentsline {section}{\numberline {5}Conclusion}{16}{section.5}%
